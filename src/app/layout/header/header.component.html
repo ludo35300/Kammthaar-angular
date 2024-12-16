@@ -20,9 +20,11 @@
     <div class="d-flex ms-auto align-items-center">
 
       <!-- Bouton Serveur -->
-      <button class="btn btn-alt-secondary me-3" disabled>
-        <span *ngIf="isServerOnline" ><fa-icon [icon]="faCheck" class="text-success"></fa-icon></span>
-        <span *ngIf="!isServerOnline"><fa-icon [icon]="faXmark"  class="text-danger"></fa-icon></span>
+      <button class="btn btn-alt-secondary me-3" 
+        [ngbTooltip]="isServerOnline ? 'Serveur connecté' : 'Serveur hors ligne'" 
+        placement="bottom">
+          <span *ngIf="isServerOnline"><fa-icon [icon]="faCheck" class="text-success"></fa-icon></span>
+          <span *ngIf="!isServerOnline" ><fa-icon [icon]="faXmark"  class="text-danger"></fa-icon></span>
       </button>
 
       <!-- Profil -->
@@ -114,6 +116,7 @@
           role="button"
           aria-expanded="false"
           aria-controls="collapseProfile"
+          
         >
           <span><fa-icon [icon]="faUser"></fa-icon> &nbsp; Profil</span>
           <fa-icon [icon]="faChevronDown"></fa-icon>

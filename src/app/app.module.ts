@@ -15,20 +15,19 @@ import { BatterieComponent } from './components/batterie/batterie.component';
 import { NgApexchartsModule } from "ng-apexcharts";
 import { BatterieParametresComponent } from './components/batterie/batterie-parametres/batterie-parametres.component';
 import { BatterieDataComponent } from './components/batterie/batterie-data/batterie-data.component';
-import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ControllerDataComponent } from './components/controller/controller-data/controller-data.component';
 import { PsDataComponent } from './components/ps/ps-data/ps-data.component';
 import { NgOptimizedImage } from '@angular/common';
 import { ControllerGraphiqueComponent } from './components/controller/controller-graphique/controller-graphique.component';
 import { PsGraphiqueComponent } from './components/ps/ps-graphique/ps-graphique.component';
 import { BatterieGraphiqueComponent } from './components/batterie/batterie-graphique/batterie-graphique.component';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     PsComponent,
-    
     DashboardComponent,
     ControllerComponent,
     BatterieComponent,
@@ -47,9 +46,11 @@ import { BatterieGraphiqueComponent } from './components/batterie/batterie-graph
     NgxGaugeModule,
     FontAwesomeModule,
     NgApexchartsModule,
-    TooltipModule.forRoot(),
+    NgbTooltipModule,
+    
   ],
   providers: [provideHttpClient(), provideAnimationsAsync()],
   bootstrap: [AppComponent]
+  
 })
 export class AppModule { }

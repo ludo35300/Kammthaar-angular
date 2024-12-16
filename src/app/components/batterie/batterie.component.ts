@@ -37,10 +37,8 @@ export class BatterieComponent implements OnInit{
       this.isServerOnline = status;
 
       if (this.isServerOnline) {
-        console.log('Serveur en ligne, récupération des données en temps réel.controller');
         this.getControllerRealtime();
       } else {
-        console.log('Serveur hors ligne, récupération des dernières données enregistrées.controller');
         this.getLastControllerData();
       }
     });
@@ -54,7 +52,7 @@ export class BatterieComponent implements OnInit{
           this.isLoading = false;
         },
         error: (error) => {
-          console.error('Erreur lors de la récupération des données du controlleur MPPT:', error);
+          //console.error('Erreur lors de la récupération des données du controlleur MPPT:', error);
           this.isLoading = false;
         },
       });
@@ -67,7 +65,7 @@ export class BatterieComponent implements OnInit{
           this.isLoading = false;
         },
         error: (error) => {
-          console.error('Erreur lors de la récupération des dernières données du controlleur MPPT:', error);
+          //console.error('Erreur lors de la récupération des dernières données du controlleur MPPT:', error);
           this.isLoading = false;
         },
       });

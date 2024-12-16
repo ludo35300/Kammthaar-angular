@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { faCarBattery, faCheck, faChevronDown, faDumpster, faLocationArrow, faSolarPanel, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { ServeurService } from '../../services/serveur/serveur.service';
 import { TITLE } from '../../constantes';
@@ -25,13 +25,11 @@ export class HeaderComponent {
   constructor(private serveurService: ServeurService){}
 
   ngOnInit() {
-
+    // Vérification si le serveur est connecté à Internet ou pas
     this.serveurService.serverStatus$.subscribe((status) => {
       if (status !== this.isServerOnline) {
          this.isServerOnline = status;
       }
     });
-
-    
   }
 }
