@@ -1,6 +1,6 @@
-import { Component, Input, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { BatterieRealtimeService } from '../../../services/batterie/batterie-realtime.service';
-import { ChartComponent,
+import {
   ApexAxisChartSeries,
   ApexChart,
   ApexXAxis,
@@ -9,88 +9,95 @@ import { ChartComponent,
   ApexYAxis,
   ApexTitleSubtitle,
   ApexTooltip,
-  NgApexchartsModule} from 'ng-apexcharts';
+} from 'ng-apexcharts';
 import { faSun } from '@fortawesome/free-solid-svg-icons';
 
 export type ChartOptions = {
-  series?: ApexAxisChartSeries;
-  chart?: ApexChart;
-  xaxis?: ApexXAxis;
-  stroke?: ApexStroke;
-  dataLabels?: ApexDataLabels;
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  stroke: ApexStroke;
+  dataLabels: ApexDataLabels;
   yaxis?: ApexYAxis;
-  title?: ApexTitleSubtitle;
-  tooltip?: ApexTooltip;
-  dropShadow?: NgApexchartsModule;
+  title: ApexTitleSubtitle;
+  apexTooltip: ApexTooltip;
+  fill?: any; // ApexFill n'est pas importé par défaut, mais est utilisé pour les gradients
 };
-
 
 @Component({
   selector: 'app-batterie-graphique',
   templateUrl: './batterie-graphique.component.html',
-  styleUrl: './batterie-graphique.component.scss'
+  styleUrls: ['./batterie-graphique.component.scss']
 })
 export class BatterieGraphiqueComponent {
   @Input() selectedLabel: string | null = null;
-  isLoading = true;
-  batterieData: any ;
-  faSun= faSun;
 
-  
-  @ViewChild("chart", { static: false }) chart!: ChartComponent;
-  public chartOptions: Partial<ChartOptions>;
-  
- 
+  // Propriétés utilisées dans le HTML pour apx-chart
+  chartSeries: ApexAxisChartSeries = [];
+  chartOptions: Partial<ChartOptions> = {};
+
+  isLoading = true;
+  faSun = faSun;
 
   constructor(private batterieService: BatterieRealtimeService) {
+    // Configuration de base du graphique
     this.chartOptions = {
-      series: [
-        {
-          name: 'Pourcentage de Batterie',
-          data: [] // Initialisation des données vides
-        },
-      ],
       chart: {
         type: 'area',
         height: 350,
         zoom: {
-          enabled: false
+          enabled: false,
         },
       },
       xaxis: {
-        type: 'datetime', // Gestion des timestamps
+        type: 'datetime', // Permet de traiter les timestamps en millisecondes
       },
-      tooltip: {
-        x: {
-          format: 'dd MMM HH:mm', // Format attendu
-        },
-      },
-      dropShadow: undefined, // Supprimez cette propriété si elle n'existe pas dans ApexCharts
       stroke: {
-        width: 1,
         curve: 'smooth',
+        width: 2,
       },
       dataLabels: {
         enabled: false,
       },
-      yaxis: {
-        title: {
-          text: 'Valeur',
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shade: 'dark',
+          gradientToColors: ['#21D4FD'], // Couleur de fin
+          shadeIntensity: 1,
+          type: 'vertical',
+          opacityFrom: 0.7,
+          opacityTo: 0.2,
+          stops: [0, 100],
         },
       },
+      apexTooltip: {
+        theme: 'dark',
+        x: {
+          formatter: (value: number) => {
+            const date = new Date(value);
+            const options: Intl.DateTimeFormatOptions = {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+            };
+            return new Intl.DateTimeFormat('fr-FR', options).format(date); 
+          },
+        }
+      },
       title: {
-        text: 'Pourcentage Batterie sur 24h',
+        text: 'Graphique de la batterie',
         align: 'center',
       },
     };
   }
-  
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.isLoading=true;
-    
-    if (changes['selectedLabel'] && this.selectedLabel) {
+    this.isLoading = true;
 
+    if (changes['selectedLabel'] && this.selectedLabel) {
       switch (this.selectedLabel) {
         case 'Pourcentage':
           this.getPourcent24h();
@@ -116,36 +123,35 @@ export class BatterieGraphiqueComponent {
 
   getPourcent24h() {
     this.batterieService.getPourcent24h().subscribe({
-      next: (data) => this.handleChartData(data, '%', 'Pourcentage Batterie sur 24h'),
+      next: (data) => this.handleChartData(data, '%', 'Pourcentage de la batterie'),
       error: (error) => this.handleError(error),
     });
   }
-  
-  // Méthode pour gérer les autres types de données
+
   getAmperage24h() {
     this.batterieService.getAmperage24h().subscribe({
-      next: (data) => this.handleChartData(data, 'A', 'Amperage sur 24h'),
+      next: (data) => this.handleChartData(data, 'A', 'Ampérage de la batterie'),
       error: (error) => this.handleError(error),
     });
   }
-  
+
   getVoltage24h() {
     this.batterieService.getVoltage24h().subscribe({
-      next: (data) => this.handleChartData(data, 'V', 'Voltage sur 24h'),
+      next: (data) => this.handleChartData(data, 'V', 'Voltage de la batterie'),
       error: (error) => this.handleError(error),
     });
   }
-  
+
   getTemp24h() {
     this.batterieService.getTemp24h().subscribe({
-      next: (data) => this.handleChartData(data, '°C', 'Température sur 24h'),
+      next: (data) => this.handleChartData(data, '°C', 'Température de la batterie'),
       error: (error) => this.handleError(error),
     });
   }
-  
+
   getPower24h() {
     this.batterieService.getPower24h().subscribe({
-      next: (data) => this.handleChartData(data, 'W', 'Puissance sur 24h'),
+      next: (data) => this.handleChartData(data, 'W', 'Puissancede la batterie'),
       error: (error) => this.handleError(error),
     });
   }
@@ -155,32 +161,33 @@ export class BatterieGraphiqueComponent {
       x: new Date(item.time).getTime(),
       y: item.value,
     }));
-  
-    this.chartOptions.series = [
+
+    this.chartSeries = [
       {
         name: title,
         data: chartData,
       },
     ];
-  
-    this.chartOptions.tooltip = {
-      x: {
-        format: 'dd MMM HH:mm',
+
+    this.chartOptions = {
+      ...this.chartOptions,
+      apexTooltip: {
+        ...this.chartOptions.apexTooltip,
+        y: {
+          formatter: (val: number) => `${val} ${unit}`,
+        },
+      },
+      title: {
+        text: title+' sur 24 heures',
+        align: 'center',
       },
     };
-  
-    this.chartOptions.title = {
-      text: title,
-      align: 'center',
-    };
-  
+
     this.isLoading = false;
   }
-  
+
   handleError(error: any) {
     console.error('Erreur lors de la récupération des données:', error);
     this.isLoading = false;
   }
-  
-
 }

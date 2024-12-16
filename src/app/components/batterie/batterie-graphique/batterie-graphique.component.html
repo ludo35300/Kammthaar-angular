@@ -1,14 +1,19 @@
-<div *ngIf="isLoading" class="loading-spinner">
-  Chargement des données...
-</div>
-<div *ngIf="!isLoading">
-  <apx-chart
-    [series]="chartOptions.series"
-    [chart]="chartOptions.chart"
-    [xaxis]="chartOptions.xaxis"
-    [stroke]="chartOptions.stroke"
-    [dataLabels]="chartOptions.dataLabels"
-    [yaxis]="chartOptions.yaxis"
-    [title]="chartOptions.title"
-  ></apx-chart>
+<div class="row g-4 mt-4">
+  <div class="col-12">
+    <div class="card text-center shadow-sm" *ngIf="!isLoading">
+        
+      <div class="card-body" >
+        <apx-chart
+        [series]="chartSeries"
+        [chart]="chartOptions.chart"
+        [xaxis]="chartOptions.xaxis"
+        [stroke]="chartOptions.stroke"
+        [dataLabels]="chartOptions.dataLabels"
+        [fill]="chartOptions.fill"
+        [tooltip]="chartOptions.apexTooltip"
+        [title]="chartOptions.title">
+      </apx-chart>
+      </div>-
+    </div>
+  </div>
 </div>

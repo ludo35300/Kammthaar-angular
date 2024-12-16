@@ -19,6 +19,7 @@
     </div>
 
     <app-batterie-data *ngIf="!isLoading" (labelSelected)="onLabelSelected($event)" [isServerOnline]="isServerOnline" ></app-batterie-data>
+    
     <app-batterie-graphique [selectedLabel]="selectedLabel"></app-batterie-graphique>
     <app-batterie-parametres *ngIf="!isLoading"></app-batterie-parametres>
 
