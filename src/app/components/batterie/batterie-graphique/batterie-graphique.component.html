@@ -1,0 +1,14 @@
+<div *ngIf="isLoading" class="loading-spinner">
+  Chargement des données...
+</div>
+<div *ngIf="!isLoading">
+  <apx-chart
+    [series]="chartOptions.series"
+    [chart]="chartOptions.chart"
+    [xaxis]="chartOptions.xaxis"
+    [stroke]="chartOptions.stroke"
+    [dataLabels]="chartOptions.dataLabels"
+    [yaxis]="chartOptions.yaxis"
+    [title]="chartOptions.title"
+  ></apx-chart>
+</div>

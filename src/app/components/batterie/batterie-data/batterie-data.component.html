@@ -1,0 +1,33 @@
+<!-- Gauges -->
+<div class="row g-4 mt-4">
+      <div class="col-12 col-sm-6 col-md-4 col-lg-4" *ngFor="let gauge of gauges">
+      <div class="card text-center shadow-sm">
+        
+        <div class="card-body">
+          <ngx-gauge
+            [type]="'arch'"
+            [thick]="10"
+            [size]="140"
+            [value]="gauge.value"
+            [label]="gauge.label"
+            [append]="gauge.unit"
+            [foregroundColor]="'#1263BE'"
+            [max]="gauge.max"
+            cap="round"
+          ></ngx-gauge>
+        </div>
+        
+        <div class="card-footer">
+          <a
+            href="javascript:void(0)"
+            (click)="onViewGraph(gauge.label)"
+            class="custom-link"
+          >
+            Voir les dernières 24H
+            <fa-icon [icon]="faArrowRight" class="ms-2"></fa-icon>
+          </a>
+        </div>
+
+      </div>
+    </div>
+</div>

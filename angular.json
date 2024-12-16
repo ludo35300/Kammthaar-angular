@@ -28,27 +28,32 @@
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
-              "zone.js"
+              "zone.js",
+              "@angular/localize/init"
             ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              {
-                "glob": "**/*",
-                "input": "public"
-              }
+              "src/assets",
+              "src/assets/favicon.ico"
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/azure-blue.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/apexcharts/dist/apexcharts.css",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+              "node_modules/apexcharts/dist/apexcharts.min.js"
+            ]
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
+                  "maximumWarning": "1000kB",
                   "maximumError": "1MB"
                 },
                 {
@@ -65,7 +70,7 @@
               "sourceMap": true
             }
           },
-          "defaultConfiguration": "production"
+          "defaultConfiguration": "development"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -87,7 +92,8 @@
           "options": {
             "polyfills": [
               "zone.js",
-              "zone.js/testing"
+              "zone.js/testing",
+              "@angular/localize/init"
             ],
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
@@ -98,6 +104,7 @@
               }
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.scss"
             ],
             "scripts": []

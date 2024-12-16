@@ -1,0 +1,86 @@
+nav.navbar {
+    height: 56px;
+    z-index: 1050; /* Plus haut que la sidebar */
+  }
+
+  nav.navbar {
+    z-index: 1040;
+    position: sticky;
+    top: 0;
+  }
+  
+  .offcanvas {
+    width: 250px;
+  }
+  .logo-rounded {
+    width: 40px; /* Taille ajustée pour correspondre au design */
+    height: 40px;
+    border-radius: 50%; /* Coins arrondis pour donner un effet circulaire */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Ombre douce pour un effet élégant */
+    border: 2px solid #1263BE; /* Bordure pour ajouter du contraste */
+    object-fit: cover; /* Ajuste l'image sans la déformer */
+    
+  }
+  
+  .offcanvas-header {
+    background-color: #1263BE;
+    // padding-top: 15px;
+    padding-left: 30px !important;
+    color: #fff;
+    
+  }
+  .offcanvas-title{
+    padding-left: 10px !important;
+  }
+  
+  .offcanvas-body {
+    background: #343a40;
+    padding: 15px;
+  }
+  
+  .list-unstyled {
+    border: none;
+    padding: 10px 0;
+  }
+  
+  .list-unstyled a {
+    text-decoration: none;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: .5rem .625rem;
+    margin: 2px 10px;
+    min-height: 2.25rem;
+    font-size: .875rem;
+    font-weight: 500;
+    line-height: 1.25rem;
+    letter-spacing: .0125em;
+    color: #96a1b6;
+    border-radius: .25rem;
+    padding: 1px, 5px;
+    &.is-active, &:hover{
+      background-color: #21252f;
+      color: #fff !important
+    }
+    &:hover {
+      color: #1263be;
+    }
+  }
+  
+  
+  .sidebar a{
+    text-decoration: none;
+   
+        position: relative;
+        display: flex;
+        
+        padding: 1px, 5px;
+  }
+  .is-active, .sidebar a:hover{
+    background-color: #21252f;
+    color: #fff !important
+  }
+  fa-icon{
+    color: #6a677e;
+  }
+  

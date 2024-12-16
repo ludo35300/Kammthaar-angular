@@ -1,0 +1,27 @@
+<div class="container-fluid">
+  <div class="content">
+    <!-- En-tête -->
+    <div class="content-header d-flex align-items-center justify-content-between">
+      <h4 class="content-title">
+        <fa-icon [icon]="faCarBattery"></fa-icon> &nbsp; 
+        <span *ngIf="isServerOnline">Données en temps réel de la batterie</span>
+        <span *ngIf="!isServerOnline">Dernières données enregistrées de la batterie</span>
+      </h4>
+      <button class="btn btn-sm btn-alt-primary" *ngIf="controllerData && !isLoading">
+          Le {{ controllerData.controller_date | date: 'd MMMM yyyy à HH:mm':'-01:00':'fr' }}
+      </button>
+      <!-- <button class="btn btn-sm btn-alt-primary" *ngIf="lastControllerData && !isLoading">
+        Le {{lastControllerData.controller_date | date: 'd MMMM yyyy à HH:mm':'+01:00':'fr' }}
+      </button> -->
+      <button class="btn btn-sm btn-alt-primary" *ngIf="isLoading">
+        <fa-icon [icon]="faSun" class="fa-spin" animation="shake"></fa-icon>
+      </button>
+    </div>
+
+    <app-batterie-data *ngIf="!isLoading" (labelSelected)="onLabelSelected($event)" [isServerOnline]="isServerOnline" ></app-batterie-data>
+    <app-batterie-graphique [selectedLabel]="selectedLabel"></app-batterie-graphique>
+    <app-batterie-parametres *ngIf="!isLoading"></app-batterie-parametres>
+
+  </div>
+</div>
+  
