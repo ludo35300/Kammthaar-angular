@@ -1,65 +1,31 @@
 <div class="container-fluid">
-    <!-- Loader -->
-    <div *ngIf="isLoading" class="text-center py-1">
-      <p><fa-icon [icon]="faSun" class="fa-spin color-primary" animation="shake"></fa-icon> &nbsp; Chargement des données en cours...</p>
+  <div class="content">
+    <!-- En-tête -->
+    <div class="content-header d-flex align-items-center justify-content-between">
+      <h4 class="content-title">
+        <fa-icon [icon]="faChart"></fa-icon> &nbsp; 
+        <span>Dashboard</span>
+      </h4>
+      <div class="float-end">
+        <button class="btn btn-sm btn-alt-primary" *ngIf="controllerData && !isLoading" disabled>
+            Le {{ controllerData.controller_date | date: 'd MMMM yyyy à HH:mm':'-01:00':'fr' }}
+        </button>
+        <button class="btn btn-sm btn-alt-primary etatJour" *ngIf="isServerOnline" 
+          [ngbTooltip]="controllerData?.is_day ? 'Panneau actif' : 'Panneau inactif'" 
+          placement="bottom">
+          <fa-icon class="ms-auto" *ngIf="controllerData?.is_day" [icon]="faSun"  data-bs-toggle="tooltip" title="Panneau solaire actif"></fa-icon>
+          <fa-icon class="ms-auto" *ngIf="controllerData?.is_night" [icon]="faMoon"  data-bs-toggle="tooltip" title="Panneau solaire inactif"></fa-icon>
+        </button>
+        <button class="btn btn-sm btn-alt-primary " *ngIf="isLoading">
+          <fa-icon [icon]="faSun" class="fa-spin" animation="shake"></fa-icon>
+        </button>
+        
+      </div>
     </div>
-  
-    <div *ngIf="!isLoading && (statistiquesRealtimeData || lastStatistiquesData)" class="content">
-      <!-- En-tête -->
-      <div class="content-header d-flex align-items-center justify-content-between">
-        <h4 class="content-title">
-          <fa-icon [icon]="faChart"></fa-icon> &nbsp; 
-          <span *ngIf="statistiquesRealtimeData">Statistiques énergétiques en temps réel</span>
-          <span *ngIf="lastStatistiquesData">Dernières statistiques énergétiques enregistrées</span>
-        </h4>
-        
-           
-            <button class="btn btn-sm btn-alt-primary" *ngIf="controllerRealtimeData">
-              <!-- A FAIRE RECUPERER LA DATE VIA LA METHODE STATUS -->
-                Le {{ controllerRealtimeData.controller_date | date: 'd MMMM yyyy à HH:mm':'-01:00':'fr' }}
-            </button>
-            <button class="btn btn-sm btn-alt-primary" *ngIf="lastStatistiquesData">
-                Le {{lastStatistiquesData.last_measurement_time | date: 'd MMMM yyyy à HH:mm':'+01:00':'fr' }}
-            </button>
 
-            <button class="btn btn-sm btn-alt-primary etatJour" *ngIf="controllerRealtimeData">
-
-                <fa-icon class="ms-auto" *ngIf="controllerRealtimeData.is_day" [icon]="faSun"  data-bs-toggle="tooltip" title="Panneau solaire actif"></fa-icon>
-                <fa-icon class="ms-auto" *ngIf="controllerRealtimeData.is_night" [icon]="faMoon"  data-bs-toggle="tooltip" title="Panneau solaire inactif"></fa-icon>
-            </button>
-      </div>
+    <app-statistiques [isServerOnline]="isServerOnline"></app-statistiques>
   
-      <!-- Gauges -->
-      <div class="row g-4 mt-4">
-        <div class="col-12 col-sm-6 col-md-6 col-lg-3" *ngFor="let gauge of gauges">
-        <div class="card text-center shadow-sm">
-            <div class="card-header">
-                {{gauge.label}}
-            </div>
-            <div class="card-body">
-                <ngx-gauge
-                [type]="'arch'"
-                [thick]="10"
-                [size]="140"
-                [value]="gauge.value"
-                [label]="gauge.unit"
-                [foregroundColor]="'#1263BE'"
-                [max]="gauge.max"
-                cap="round"
-                ></ngx-gauge>
-            </div>
-          
-          <!-- <div class="card-footer">
-            <a href="#" class="custom-link">
-              Voir les dernières 24H
-              <fa-icon [icon]="faArrowRight" class="ms-2"></fa-icon>
-            </a>
-          </div> -->
-        </div>
-        
-        
-        </div>
-      </div>
+      
 
       <!-- Informations du serveur du Kammthaar -->
       <div class="row g-4 mt-4" >
@@ -92,10 +58,6 @@
                         <td>Température du serveur</td>
                         <td class="d-flex justify-content-end">{{ systemInfo.temperature  | number: '1.0-1'  }}°C</td>
                       </tr>
-                      <tr>
-                        <td>Consommation estimée</td>
-                        <td class="d-flex justify-content-end">{{ consumed_server*100  | number: '1.0-2'  }}Wh</td>
-                      </tr>
                     </tbody>
                     <!-- Si Kammthaar est hors ligne -->
                     <tbody *ngIf="!isServerOnline">
@@ -109,14 +71,8 @@
             
         </div>
       </div>
-    </div>
-
-    <!-- Message en cas d'absence de données -->
-    <div *ngIf="!isLoading && !statistiquesRealtimeData && !lastStatistiquesData"  class="text-center">
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <fa-icon [icon]="faWarning"></fa-icon> &nbsp; Aucune donnée disponible
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
-        </div>
-    </div>
   </div>
+</div>
+
+
     

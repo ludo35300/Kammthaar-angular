@@ -10,9 +10,6 @@
       <button class="btn btn-sm btn-alt-primary" *ngIf="controllerData && !isLoading">
           Le {{ controllerData.controller_date | date: 'd MMMM yyyy à HH:mm':'-01:00':'fr' }}
       </button>
-      <button class="btn btn-sm btn-alt-primary" *ngIf="lastControllerData && !isLoading">
-        Le {{lastControllerData.controller_date | date: 'd MMMM yyyy à HH:mm':'+01:00':'fr' }}
-      </button>
       <button class="btn btn-sm btn-alt-primary" *ngIf="isLoading">
         <fa-icon [icon]="faSun" class="fa-spin" animation="shake"></fa-icon>
       </button>

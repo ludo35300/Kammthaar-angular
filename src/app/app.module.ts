@@ -22,6 +22,7 @@ import { ControllerGraphiqueComponent } from './components/controller/controller
 import { PsGraphiqueComponent } from './components/ps/ps-graphique/ps-graphique.component';
 import { BatterieGraphiqueComponent } from './components/batterie/batterie-graphique/batterie-graphique.component';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { StatistiquesComponent } from './components/dashboard/statistiques/statistiques.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
     PsDataComponent,
     ControllerGraphiqueComponent,
     PsGraphiqueComponent,
-    BatterieGraphiqueComponent
+    BatterieGraphiqueComponent,
+    StatistiquesComponent
   ],
   imports: [
     NgOptimizedImage,

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Controller, GaugesController } from '../../../modeles/controller';
 import { ControllerService } from '../../../services/controller/controller.service';
 import { faArrowRight, faSun } from '@fortawesome/free-solid-svg-icons';
@@ -11,6 +11,7 @@ import { faArrowRight, faSun } from '@fortawesome/free-solid-svg-icons';
 
 export class ControllerDataComponent {
   @Input() isServerOnline: boolean | null = null;
+  @Output() labelSelected = new EventEmitter<string>();
   isLoading = true;
 
   controllerData: Controller | null = null;
@@ -84,4 +85,10 @@ export class ControllerDataComponent {
     ];
   }
 
+  // Méthode pour émettre un label sélectionné
+  onViewGraph(label: string) {
+    this.labelSelected.emit(label);
+  }
+
 }
+

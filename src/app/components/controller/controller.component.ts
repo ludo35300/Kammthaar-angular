@@ -15,12 +15,17 @@ export class ControllerComponent {
   isLoading = true;
 
   controllerData: Controller | null = null;
-  lastControllerData: Controller | null = null;
 
   faSun = faSun 
   faMoon = faMoon
   faDumpster = faDumpster
   faArrowRight = faArrowRight
+
+  selectedLabel: string | null = null;
+
+  onLabelSelected(label: string) {
+    this.selectedLabel = label; // Mettre à jour le label pour transmettre au graphique
+  }
 
   constructor(
     private controllerService: ControllerService,
@@ -45,7 +50,6 @@ export class ControllerComponent {
       next: (data) => {
         this.controllerData = data;
         this.isLoading = false;
-        this.lastControllerData = null;
       },
       error: (error) => {
         console.error('Erreur lors de la récupération des données du controlleur MPPT:', error);
@@ -58,9 +62,8 @@ export class ControllerComponent {
   getLastControllerData(){
     this.controllerService.getLastController().subscribe({
       next: (data) => {
-        this.lastControllerData = data;
+        this.controllerData = data;
         this.isLoading = false;
-        this.controllerData = null;
       },
       error: (error) => {
         console.error('Erreur lors de la récupération des dernières données du controlleur MPPT:', error);

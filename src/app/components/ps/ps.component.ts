@@ -15,7 +15,6 @@ export class PsComponent {
   isLoading = true;
 
   controllerData: Controller | null = null;
-  lastControllerData: Controller | null = null;
   
   faSolarPanel = faSolarPanel
   faSun = faSun
@@ -47,7 +46,6 @@ export class PsComponent {
       next: (data) => {
         this.controllerData = data;
         this.isLoading = false;
-        this.lastControllerData = null;
       },
       error: (error) => {
         console.error('Erreur lors de la récupération des données du controlleur MPPT:', error);
@@ -59,9 +57,8 @@ export class PsComponent {
   getLastControllerData(){
     this.controllerService.getLastController().subscribe({
       next: (data) => {
-        this.lastControllerData = data;
+        this.controllerData = data;
         this.isLoading = false;
-        this.controllerData = null;
       },
       error: (error) => {
         console.error('Erreur lors de la récupération des dernières données du controlleur MPPT:', error);
