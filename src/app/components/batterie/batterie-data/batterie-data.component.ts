@@ -89,7 +89,6 @@ export class BatterieDataComponent {
       { label: 'Voltage', value: data.battery_voltage || 0, unit: 'V', max: 50 },
       { label: 'Ampérage', value: data.battery_amperage || 0, unit: 'A', max: 30 },
       { label: 'Puissance', value: data.battery_power || 0, unit: 'W', max: 400 },
-      { label: 'Pourcentage', value: data.battery_pourcent || 0, unit: '%', max: 100 },
       { label: 'Température', value: data.battery_temp || 0, unit: '°C', max: 50 }
     ];
   }

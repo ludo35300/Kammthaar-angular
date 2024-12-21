@@ -1,25 +1,23 @@
-import { Component } from '@angular/core';
-import { GaugesStatistiques, Statistiques } from '../../modeles/statistiques';
-import { DashboardService } from '../../services/dashboard/dashboard.service';
+import { Component, OnInit } from '@angular/core';
 import { faArrowRight, faChartLine, faCheck, faMoon, faSun, faWarning } from '@fortawesome/free-solid-svg-icons';
 import { ControllerService } from '../../services/controller/controller.service';
 import { Controller } from '../../modeles/controller';
 import { ServeurService } from '../../services/serveur/serveur.service';
+import { distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
-export class DashboardComponent {
-  statistiquesRealtimeData : Statistiques | null = null;
-  lastStatistiquesData : Statistiques | null = null;
-  controllerRealtimeData : Controller | null = null;
+export class DashboardComponent implements OnInit{
   isServerOnline: boolean | null = null;
-  faWarning = faWarning
-  systemInfo: any;
-  consumed_server:number = 0;
   isLoading = true;
+
+  controllerData: Controller | null = null;
+  systemInfo: any;
+
+  faWarning = faWarning
   faArrowRight = faArrowRight
   faSun = faSun
   faMoon = faMoon
@@ -27,44 +25,53 @@ export class DashboardComponent {
   faCheck = faCheck
 
 
-  // Configuration des jauges
-  gauges: GaugesStatistiques[] = [
-    { label: 'Générés aujourd\'hui', value: 0, unit: 'kWh', max: 10 },
-    { label: 'Consommés aujourd\'hui', value: 0, unit: 'kWh', max: 10 },
-    { label: 'Généré ce mois ci', value: 0, unit: 'kWh', max: 10 },
-    { label: 'Consommé ce mois ci', value: 0, unit: 'kWh', max: 10 },
-  ];
-  // statistiquesData: { label: string; value: number; unit: string }[] = [];
-
-
   constructor(
-    private dashboardService: DashboardService,
-    private serveurService: ServeurService
+    private serveurService: ServeurService,
+    private controllerService: ControllerService,
+    
   ){}
 
   ngOnInit(): void {
-    // Vérificaton si Kammthaar est en ligne
-    this.serveurService.serverStatus$.subscribe((status) => {
-      this.isServerOnline = status;
-      
-
-    });
+    this.serveurService.checkServerStatus()
+        .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
+        .subscribe((status) => {
+          this.isServerOnline = status;
     
-    // Ajout d'un délai avant d'exécuter la logique
-    setTimeout(() => {
-      if (this.isServerOnline) {
-        this.getStatistiquesRealtime();
-        this.getInfosServeur();
-      } else {
-        this.getLastStatistiques();
-      }
-    }, 1000); // Délai de 2 secondes
-    
-    
+          if (this.isServerOnline) {
+            this.getControllerRealtime();
+            this.getInfosServeur();
+          } else {
+            this.getLastControllerData();
+          }
+        });
   }
 
-
-
+  // Récupération des infos du controller pour récupére la date
+  getControllerRealtime(){
+    this.controllerService.getControllerRealtime().subscribe({
+      next: (data) => {
+        this.controllerData = data;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        //console.error('Erreur lors de la récupération des données du controlleur MPPT:', error);
+        this.isLoading = false;
+      },
+    });
+  }
+  // On récupère les dernières données du controlleur enregistrées
+  getLastControllerData(){
+    this.controllerService.getLastController().subscribe({
+      next: (data) => {
+        this.controllerData = data;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        //console.error('Erreur lors de la récupération des dernières données du controlleur MPPT:', error);
+        this.isLoading = false;
+      },
+    });
+  }
   //  On récupère les infos du serveur Kammthaar en temps réel
   getInfosServeur(){ 
     this.serveurService.getSystemInfo().subscribe({
@@ -72,63 +79,6 @@ export class DashboardComponent {
       error: (err) => console.error('Erreur lors de la récupération des données système:', err),
     });
   }
-  
-  // On récupère les statistiques du MPPT en temps réel
-  getStatistiquesRealtime(){
-    this.dashboardService.getStatistiquesRealtimeData().subscribe({
-      next: (data) => {
-        this.statistiquesRealtimeData = data;
-        this.updateGauges(data);
-        this.isLoading = false;
-        this.lastStatistiquesData = null;
-        this.consumed_server=this.statistiquesRealtimeData.generated_energy_today-this.statistiquesRealtimeData.consumed_energy_today;
-      },
-      error: (error) => {
-        console.error('Erreur lors de la récupération des données de statistiques:', error);
-        this.isLoading = false;
-      },
-    });
-  }
-
-  // On récupère les dernières statistiques enregistrées
-  getLastStatistiques(){
-    this.dashboardService.getLastStatistiques().subscribe({
-      next: (data) => {
-        this.lastStatistiquesData = data;
-        this.updateGauges(data);
-        // this.updateStatistiquesData(data);
-        this.isLoading = false;
-        this.controllerRealtimeData=null;
-      },
-      error: (error) => {
-        console.error('Erreur lors de la récupération des données de statistiques:', error);
-        this.isLoading = false;
-      },
-    });
-  }
-
-  
-
-
-
-  // Mise à jour des jauges en fonction des données récupérées
-  updateGauges(data: Statistiques): void {
-    if (!data) return;
-    this.gauges = [
-      { label: 'Générés aujourd\'hui', value: data.generated_energy_today, unit: 'kWh', max: 1.5 },
-      { label: 'Consommés aujourd\'hui', value: data.consumed_energy_today, unit: 'kWh', max: 1.5 },
-      { label: 'Généré ce mois ci', value: data.generated_energy_month, unit: 'kWh', max: 10 },
-      { label: 'Consommé ce mois ci', value: data.consumed_energy_month, unit: 'kWh', max: 10 },
-    ];
-  }
-  //Mise
-  // updateStatistiquesData(data: Statistiques): void {
-  //   this.statistiquesData = [
-  //     { label: 'Énergie générée aujourd\'hui', value: data.generated_energy_today, unit: 'kWh' },
-  //     { label: 'Énergie consommée aujourd\'hui', value: data.consumed_energy_today, unit: 'kWh' },
-  //     { label: 'Énergie générée ce mois', value: data.generated_energy_month, unit: 'kWh' },
-  //     { label: 'Énergie consommée ce mois', value: data.consumed_energy_month, unit: 'kWh' },
-  //   ];
-  // }
-
+   // Colonnes affichées dans le tableau
+   displayedColumns: string[] = ['status', 'cpu_usage', 'memory_usage', 'disk_usage', 'temperature'];
 }

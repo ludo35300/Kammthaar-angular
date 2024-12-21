@@ -1,0 +1,43 @@
+<!-- Informations du serveur du Kammthaar -->
+<div class="row g-4" >
+    <div class="col-12" >
+        <!-- Si Kammthaar est connecté -->
+        <div class="card info-server shadow-sm border-0">
+            <div class="row g-0">
+                <!-- Contenu texte -->
+                  <div class="card-body">
+  
+                    <h5>
+                        Informations du serveur
+                    </h5>
+                    
+                    <p *ngIf="isServerOnline" class="system-infos">
+                        Le serveur est connecté
+                        <fa-icon [icon]="faCheck" class="float-end text-success"></fa-icon> 
+                    </p>
+                    <p *ngIf="!isServerOnline" class="system-infos">
+                        Le serveur est hors ligne
+                        <fa-icon [icon]="faWarning" class="float-end text-warning"></fa-icon> 
+                    </p>
+                    <p *ngIf="systemInfo" class="system-infos">
+                        Utilisation du processeur
+                        <span class="float-end text-success">{{ systemInfo.cpu_usage }}%</span> 
+                    </p>
+                    <p *ngIf="systemInfo" class="system-infos">
+                        Occupation de la mémoire
+                        <span class="float-end text-success">{{ systemInfo.memory_usage }}%</span> 
+                    </p>  
+                    <p *ngIf="systemInfo" class="system-infos">
+                        Utilisation du disque
+                        <span class="float-end text-success">{{ systemInfo.disk_usage }}%</span> 
+                    </p>   
+                    <p *ngIf="systemInfo" class="system-infos">
+                        Température du serveur
+                        <span class="float-end text-success">{{ systemInfo.temperature  | number: '1.0-1'  }}°C</span> 
+                    </p>  
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

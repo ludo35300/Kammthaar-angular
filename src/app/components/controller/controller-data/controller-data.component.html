@@ -16,7 +16,11 @@
           ></ngx-gauge>
         </div>
         <div class="card-footer">
-          <a href="#" class="custom-link">
+          <a
+            href="javascript:void(0)"
+            (click)="onViewGraph(gauge.label)"
+            class="custom-link"
+          >
             Voir les dernières 24H
             <fa-icon [icon]="faArrowRight" class="ms-2"></fa-icon>
           </a>

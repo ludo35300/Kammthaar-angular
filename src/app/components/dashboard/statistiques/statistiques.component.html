@@ -1,0 +1,23 @@
+<!-- Gauges -->
+<div class="row g-4">
+    <div class="col-12 " *ngFor="let gauge of gauges">
+        <div class="row gauge-widget">
+            <div class="col-sm-6 col-md-6 col-lg-6">
+                <h5>{{gauge.label}}</h5>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-6 gauge text-center ">
+                <ngx-gauge
+                [type]="'arch'"
+                [thick]="10"
+                [size]="140"
+                [value]="gauge.value"
+                [label]="gauge.unit"
+                [foregroundColor]="'#16CDC7'"
+                [max]="gauge.max"
+                cap="round"
+                ></ngx-gauge>
+
+            </div>
+        </div>
+    </div>
+  </div>
