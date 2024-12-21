@@ -120,7 +120,7 @@ export class ControllerGraphiqueComponent {
     }
 
     getTemp24h() {
-      this.controllerService.getVoltage24h().subscribe({
+      this.controllerService.getTemperature24h().subscribe({
         next: (data) => this.handleChartData(data, '°C', 'Température du controller MPPT'),
         error: (error) => this.handleError(error),
       });

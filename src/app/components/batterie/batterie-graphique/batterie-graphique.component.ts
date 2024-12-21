@@ -9,6 +9,7 @@ import {
   ApexYAxis,
   ApexTitleSubtitle,
   ApexTooltip,
+  ApexGrid,
 } from 'ng-apexcharts';
 import { faSun } from '@fortawesome/free-solid-svg-icons';
 
@@ -18,6 +19,7 @@ export type ChartOptions = {
   xaxis: ApexXAxis;
   stroke: ApexStroke;
   dataLabels: ApexDataLabels;
+  grid: ApexGrid;
   yaxis?: ApexYAxis;
   title: ApexTitleSubtitle;
   apexTooltip: ApexTooltip;
@@ -50,11 +52,24 @@ export class BatterieGraphiqueComponent {
         },
       },
       xaxis: {
-        type: 'datetime', // Permet de traiter les timestamps en millisecondes
+        labels: {
+          show: false, // Masquer les étiquettes de l'axe Y
+        },
+        axisTicks: {
+          show: false, // Masque les ticks (lignes courtes)
+        },
+      },
+      yaxis: {
+        labels: {
+          show: false, // Masquer les étiquettes de l'axe Y
+        },
       },
       stroke: {
         curve: 'smooth',
         width: 2,
+      },
+      grid: {
+        show: false
       },
       dataLabels: {
         enabled: false,

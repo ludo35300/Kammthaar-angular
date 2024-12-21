@@ -1,25 +1,24 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { faCarBattery, faChartArea, faSun } from '@fortawesome/free-solid-svg-icons';
-import { Observable } from 'rxjs';
-import { BatterieRealtimeService } from '../../../services/batterie/batterie-realtime.service';
+import { faCarBattery, faChartArea, faSun, faTemperatureThreeQuarters } from '@fortawesome/free-solid-svg-icons';
 import { Batterie } from '../../../modeles/batterie';
+import { BatterieRealtimeService } from '../../../services/batterie/batterie-realtime.service';
 
 @Component({
-  selector: 'app-batterie-pourcentage',
-  templateUrl: './batterie-pourcentage.component.html',
-  styleUrl: './batterie-pourcentage.component.scss'
+  selector: 'app-batterie-temperature',
+  templateUrl: './batterie-temperature.component.html',
+  styleUrl: './batterie-temperature.component.scss'
 })
-export class BatteriePourcentageComponent {
+export class BatterieTemperatureComponent {
   @Input() isServerOnline!: boolean | null;
   @Output() labelSelected = new EventEmitter<string>();
   batterieData: Batterie | null = null;
+  
 
   isLoading = true;
 
-  currentCharge: number = 0; // Variable locale pour stocker le pourcentage actuel
+  batterieTemperature: number = 0; // Variable locale pour stocker le pourcentage actuel
 
-
-  faCarBattery = faCarBattery; 
+  faTemperature = faTemperatureThreeQuarters;
   faChart = faChartArea;
   faSun = faSun;
 
@@ -42,7 +41,7 @@ export class BatteriePourcentageComponent {
     if(this.isServerOnline){
       this.batterieService.getBatterieData().subscribe({
         next: (data) => {
-          this.currentCharge = data.battery_pourcent;
+          this.batterieTemperature = data.battery_temp;
           this.isLoading = false;
         },
         error: (error) => {
@@ -58,7 +57,7 @@ export class BatteriePourcentageComponent {
     if(!this.isServerOnline){
       this.batterieService.getLastBatterieData().subscribe({
         next: (data) => {
-          this.currentCharge = data.battery_pourcent;
+          this.batterieTemperature = data.battery_temp;
           this.isLoading = false;
         },
         error: (error) => {
@@ -71,12 +70,12 @@ export class BatteriePourcentageComponent {
 
 
   getProgressBarClass(): string {
-    if (this.currentCharge > 75) {
-      return 'progress-good'; // Vert pour 75% ou plus
-    } else if (this.currentCharge > 40) {
-      return 'bg-warning'; // Orange pour 40%-75%
-    } else {
-      return 'progress-danger'; // Rouge pour moins de 40%
+    if (this.batterieTemperature >= 2 && this.batterieTemperature <= 30) {
+      return 'progress-good'; // Vert ENTRE 2 ET 30°C
+    } else if (this.batterieTemperature < 2) {
+      return 'bg-primary'; // bleu si moins de 2°c
+    } else{
+      return 'progress-danger'; // Rouge pour plus de 30°c
     }
   }
 
@@ -84,5 +83,4 @@ export class BatteriePourcentageComponent {
   onViewGraph(label: string) {
     this.labelSelected.emit(label);
   }
-
 }

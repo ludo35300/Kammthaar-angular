@@ -50,26 +50,3 @@ ngx-gauge {
       }
     }
   }
-  .custom-link {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #4954cb;;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%; /* S'assurer que le lien occupe toute la largeur */
-    padding: 10px 0; /* Uniformité interne */
-    margin: 0; 
-  
-    &:hover {
-      color: #272F87;
-      text-decoration: none;
-    }
-  
-    fa-icon {
-      margin-left: 8px;
-      transition: transform 0.2s ease;
-    }
-  }
-  

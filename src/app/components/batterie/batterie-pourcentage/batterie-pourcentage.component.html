@@ -1,24 +1,49 @@
 
-        <div class="card pourcentage-card shadow-sm border-0">
-            <div class="row g-0">
+<div class="card pourcentage-card shadow-sm border-0">
+  <div class="row g-0">
               <!-- Contenu texte -->
-              <div class="col-12">
-                <div class="card-body">
-                    <h5 class="mb-3"><fa-icon [icon]="faCarBattery"></fa-icon>&nbsp; Charge de la batterie</h5>
-                    <div class="progress" style="height: 25px;">
-                        <div
-                            class="progress-bar"
-                            [ngClass]="getProgressBarClass()"
-                            role="progressbar"
-                            [style.width.%]="currentCharge"
-                            [attr.aria-valuenow]="currentCharge"
-                            aria-valuemin="0"
-                            aria-valuemax="100"
-                        >
-                        {{ currentCharge }}%
-                        </div>
-                    </div>
-                </div>
-              </div>
-            </div>
+    <div class="col-12">
+      <div class="card-body">
+        <div class="row mb-2">
+          <div class="col-8 mt-2">
+            <h5 class="mb-3"><fa-icon [icon]="faCarBattery"></fa-icon>&nbsp; Charge de la batterie</h5>
+          </div>
+          <div class="col-4">
+            <a
+              [ngbTooltip]="'Voir les dernières 24 heures'" 
+              placement="left"
+              href="javascript:void(0)"
+              (click)="onViewGraph('Pourcentage')"
+              class="custom-link btn btn-outline-primary float-end"
+            ><fa-icon [icon]="faChart"></fa-icon></a>
+          </div>
+          
+          
         </div>
+
+        <div *ngIf="!isLoading" class="progress" style="height: 25px;">
+          <div
+            class="progress-bar"
+            [ngClass]="getProgressBarClass()"
+            role="progressbar"
+            [style.width.%]="currentCharge"
+            [attr.aria-valuenow]="currentCharge"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          >
+            {{ currentCharge }}%
+          </div>
+        </div>
+
+        <div *ngIf="isLoading" class="mb-3 text-center">
+          <p class="loading" 
+              [ngbTooltip]="'Chargement des données en cours...'" 
+              placement="bottom">
+              <fa-icon [icon]="faSun" class="fa-spin" animation="spin"></fa-icon>
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

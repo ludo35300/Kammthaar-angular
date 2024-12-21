@@ -1,33 +1,44 @@
 <!-- Gauges -->
 <div class="row g-4">
-      <div class="col-12 col-sm-6 col-md-6 col-lg-6" *ngFor="let gauge of gauges">
-      <div class="card text-center shadow-sm">
+    <div class="col-12 col-sm-6 col-md-4 col-lg-4" *ngFor="let gauge of gauges">
+      <div class="card shadow-sm border-0">
         
         <div class="card-body">
+          <div class="row mb-2">
+            <div class="col-8 mt-2">
+              <h5 class="mb-3"><fa-icon [icon]="faBolt"></fa-icon>&nbsp; {{gauge.label}}</h5>
+            </div>
+            <div class="col-4">
+              <a
+                [ngbTooltip]="'Voir les dernières 24 heures'" 
+                placement="left"
+                href="javascript:void(0)"
+                (click)="onViewGraph(gauge.label)"
+                class="custom-link btn btn-alt-primary float-end"
+              ><fa-icon [icon]="faChart"></fa-icon></a>
+            </div>
+        </div>
+        <div class="text-center" *ngIf="!isLoading">
           <ngx-gauge
             [type]="'arch'"
-            [thick]="10"
-            [size]="140"
+            [thick]="8"
+            [size]="120"
             [value]="gauge.value"
-            [label]="gauge.label"
             [append]="gauge.unit"
-            [foregroundColor]="'#1263BE'"
+            [foregroundColor]="'#FF6C96'"
             [max]="gauge.max"
             cap="round"
           ></ngx-gauge>
         </div>
-        
-        <div class="card-footer">
-          <a
-            href="javascript:void(0)"
-            (click)="onViewGraph(gauge.label)"
-            class="custom-link"
-          >
-            Voir les dernières 24H
-            <fa-icon [icon]="faArrowRight" class="ms-2"></fa-icon>
-          </a>
+        <div *ngIf="isLoading" class="mb-3 text-center">
+          <p class="loading" 
+              [ngbTooltip]="'Chargement des données en cours...'" 
+              placement="bottom">
+              <fa-icon [icon]="faSun" class="fa-spin" animation="spin"></fa-icon>
+          </p>
         </div>
-
+          
       </div>
     </div>
+  </div>
 </div>

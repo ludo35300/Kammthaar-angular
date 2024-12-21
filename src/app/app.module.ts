@@ -27,6 +27,8 @@ import { BienvenueComponent } from './components/dashboard/bienvenue/bienvenue.c
 import { BreadcrumbComponent } from './layout/breadcrumb/breadcrumb.component';
 import { InfosServeurComponent } from './components/dashboard/infos-serveur/infos-serveur.component';
 import { BatteriePourcentageComponent } from './components/batterie/batterie-pourcentage/batterie-pourcentage.component';
+import { BatterieStatusComponent } from './components/batterie/batterie-status/batterie-status.component';
+import { BatterieTemperatureComponent } from './components/batterie/batterie-temperature/batterie-temperature.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,9 @@ import { BatteriePourcentageComponent } from './components/batterie/batterie-pou
     BienvenueComponent,
     BreadcrumbComponent,
     InfosServeurComponent,
-    BatteriePourcentageComponent
+    BatteriePourcentageComponent,
+    BatterieStatusComponent,
+    BatterieTemperatureComponent
   ],
   imports: [
     NgOptimizedImage,

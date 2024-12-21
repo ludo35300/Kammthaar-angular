@@ -1,0 +1,74 @@
+<!-- Informations du status de la batterie -->
+<div class="card status-batterie shadow-sm border-0 mt-4">
+    <div class="row g-4">
+        <div class="col-12">
+                <!-- Contenu texte -->
+                <div class="card-body">
+                    <h5 class="mb-4"><fa-icon [icon]="faHeartPulse"></fa-icon>&nbsp; Santé de la batterie</h5>
+
+                    <div *ngIf="!isLoading">
+                        <!-- Résistance interne de la batterie -->
+                        <div class="status-item d-flex align-items-center mb-3">
+                            <span class="me-2"><i class="fa fa-battery-half text-info"></i></span>
+                            <span
+                                [ngbTooltip]="'Indique si la résistance interne est anormale. Une résistance anormale peut signaler un vieillissement ou un défaut.'" 
+                                placement="bottom"
+                            >Résistance interne:</span>
+
+                            <span class="ms-auto {{ batterieStatusData?.battery_inner_resistence_abnormal ? 'badge bg-danger' : 'badge bg-success' }}">
+                                {{ batterieStatusData?.battery_inner_resistence_abnormal ? 'Anormale' : 'Normale' }}
+                            </span>
+                        </div>
+                        <!-- Status de la température de la batterie -->
+                        <div class="status-item d-flex align-items-center mb-3">
+                            <span class="me-2"><i class="fas fa-thermometer-half text-warning"></i></span>
+                            <span 
+                                [ngbTooltip]="'Alerte liée à la température'" 
+                                placement="bottom"
+                            >
+                                Température :
+                            </span>
+                            <span class="ms-auto p-2 {{ getBadgeClass(batterieStatusData?.temperature_warning_status || '') }}">
+                                {{ getTemperature(batterieStatusData?.temperature_warning_status || null)}}
+                            </span>
+                        </div>
+                        <div class="status-item d-flex align-items-center mb-3">
+                            <span class="me-2"><i class="fas fa-exclamation-circle text-danger"></i></span>
+                            <span
+                                [ngbTooltip]="'Vérifie si la tension nominale de la batterie a été correctement détectée.'" 
+                                placement="bottom"
+                            >
+                                Identification de tension :
+                            </span>
+                            <span
+                                class="ms-auto {{ batterieStatusData?.wrong_identifaction_for_rated_voltage ? 'badge bg-danger' : 'badge bg-success' }}"
+                            >
+                                {{ batterieStatusData?.wrong_identifaction_for_rated_voltage ? 'Erreur' : 'Correcte' }}
+                            </span>
+                        </div>
+                        <div class="status-item d-flex align-items-center mb-3">
+                            <span class="me-2"><i class="fas fa-battery-full text-primary"></i></span>
+                            <span 
+                                [ngbTooltip]="'État général de la batterie.'" 
+                                placement="bottom"
+                            >   
+                                État de la batterie:</span>
+                            <span class="ms-auto {{ getBadgeClass(batterieStatusData?.battery_status || '') }}">
+                                {{ getStatus(batterieStatusData?.battery_status || null)}}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div *ngIf="isLoading" class="mb-3 text-center">
+                        <p class="loading" 
+                            [ngbTooltip]="'Chargement des données en cours...'" 
+                            placement="bottom">
+                            <fa-icon [icon]="faSun" class="fa-spin" animation="spin"></fa-icon>
+                        </p>
+                    </div>
+                    
+                </div>
+        </div>
+    </div>
+</div>
+  
