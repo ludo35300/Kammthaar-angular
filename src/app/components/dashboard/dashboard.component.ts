@@ -39,6 +39,7 @@ export class DashboardComponent implements OnInit{
     
           if (this.isServerOnline) {
             this.getControllerRealtime();
+            this.getInfosServeur();
           } else {
             this.getLastControllerData();
           }
@@ -78,4 +79,6 @@ export class DashboardComponent implements OnInit{
       error: (err) => console.error('Erreur lors de la récupération des données système:', err),
     });
   }
+   // Colonnes affichées dans le tableau
+   displayedColumns: string[] = ['status', 'cpu_usage', 'memory_usage', 'disk_usage', 'temperature'];
 }

@@ -1,29 +1,27 @@
 import { Component, Input } from '@angular/core';
+import { faChargingStation } from '@fortawesome/free-solid-svg-icons';
+import { Statistiques } from '../../../modeles/statistiques';
 import { DashboardService } from '../../../services/dashboard/dashboard.service';
-import { GaugesStatistiques, Statistiques } from '../../../modeles/statistiques';
 
 @Component({
-  selector: 'app-statistiques',
-  templateUrl: './statistiques.component.html',
-  styleUrl: './statistiques.component.scss'
+  selector: 'app-bienvenue',
+  templateUrl: './bienvenue.component.html',
+  styleUrl: './bienvenue.component.scss'
 })
-export class StatistiquesComponent {
+export class BienvenueComponent {
   @Input() isServerOnline: boolean | null = null;
   isLoading = true;
-  
+    
   statistiquesData: Statistiques | null = null;
 
-  // Configuration des gauges
-  gauges: GaugesStatistiques[] = [
-      { label: 'Générés aujourd\'hui', value: 0, unit: 'kWh', max: 10 },
-      { label: 'Consommés aujourd\'hui', value: 0, unit: 'kWh', max: 10 },
-      { label: 'Généré ce mois ci', value: 0, unit: 'kWh', max: 10 },
-      { label: 'Consommé ce mois ci', value: 0, unit: 'kWh', max: 10 },
-  ];
+  // a changer lors de l'intégration du login
+  nom = "Ludo";
+
+  faChargingStation = faChargingStation;
 
   constructor(
-    private dashboardService: DashboardService
-  ){}
+      private dashboardService: DashboardService
+    ){}
 
   ngOnInit(){
     // Si Kammthaar est en ligne on récupère les informations en temps réel
@@ -40,7 +38,6 @@ export class StatistiquesComponent {
     this.dashboardService.getStatistiquesRealtimeData().subscribe({
       next: (data) => {
         this.statistiquesData = data;
-        this.updateGauges(data);
         this.isLoading = false;
       },
       error: (error) => {
@@ -55,8 +52,6 @@ export class StatistiquesComponent {
     this.dashboardService.getLastStatistiques().subscribe({
       next: (data) => {
         this.statistiquesData = data;
-        this.updateGauges(data);
-        // this.updateStatistiquesData(data);
         this.isLoading = false;
       },
       error: (error) => {
@@ -66,13 +61,8 @@ export class StatistiquesComponent {
     });
   }
 
-  // Mise à jour des jauges en fonction des données récupérées
-  updateGauges(data: Statistiques): void {
-    if (!data) return;
-    this.gauges = [
-      { label: 'Générés aujourd\'hui', value: data.generated_energy_today, unit: 'kWh', max: 1.5 },
-      { label: 'Consommés aujourd\'hui', value: data.consumed_energy_today, unit: 'kWh', max: 1.5 },
-      // { label: 'Consommé ce mois ci', value: data.consumed_energy_month, unit: 'kWh', max: 10 },
-    ];
-  }
+  
+
+
+
 }

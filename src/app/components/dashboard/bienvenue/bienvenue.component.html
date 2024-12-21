@@ -1,0 +1,35 @@
+<div class="row g-4 mt-4">
+    <div class="col-12">
+        <div class="card welcome-card shadow-sm border-0">
+            <div class="row g-0">
+              <!-- Contenu texte -->
+              <div class="col-sm-6 col-md-6 col-lg-8">
+                <div class="card-body">
+
+                  <p class="card-text">
+                    Bienvenue {{nom}}
+                  </p>
+                  <p class="card-title mb-3"><fa-icon [icon]="faChargingStation"></fa-icon>&nbsp; 
+                    Généré ce mois ci: {{ statistiquesData?.generated_energy_month }} kWh
+                  </p>
+                  <p class="card-title mb-3"><fa-icon [icon]="faChargingStation"></fa-icon>&nbsp; 
+                    Consommé ce mois ci: {{ statistiquesData?.consumed_energy_month }} kWh
+                  </p>
+                  
+                </div>
+              </div>
+              <!-- Logo / Image -->
+            <div class="col-sm-6 col-md-6 col-lg-4 d-flex align-items-center justify-content-center">
+                <img
+                  src="../../../../assets/welcome-bg.png"
+                  alt="Logo"
+                  width="180px"
+                  class="img-fluid p-3"
+                  
+                />
+              </div>
+            </div>
+            
+        </div>
+    </div>
+</div>

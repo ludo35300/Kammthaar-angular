@@ -1,0 +1,32 @@
+.welcome-card {
+    background: linear-gradient(to right, #5B53FF, #635BFF);
+    color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px -1px #afb6c933 !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .welcome-content {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .card-title{
+    background: #534FD8;
+    padding: 10px;
+    border-radius: 4px; 
+  }
+  
+  .welcome-subtitle {
+    font-size: 1rem;
+    margin: 5px 0 0 0;
+    opacity: 0.9
+    
+  }
+  .img-fluid{
+        margin-bottom: -34px;
+    };
+  

@@ -23,6 +23,10 @@ import { PsGraphiqueComponent } from './components/ps/ps-graphique/ps-graphique.
 import { BatterieGraphiqueComponent } from './components/batterie/batterie-graphique/batterie-graphique.component';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { StatistiquesComponent } from './components/dashboard/statistiques/statistiques.component';
+import { BienvenueComponent } from './components/dashboard/bienvenue/bienvenue.component';
+import { BreadcrumbComponent } from './layout/breadcrumb/breadcrumb.component';
+import { InfosServeurComponent } from './components/dashboard/infos-serveur/infos-serveur.component';
+import { BatteriePourcentageComponent } from './components/batterie/batterie-pourcentage/batterie-pourcentage.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +43,11 @@ import { StatistiquesComponent } from './components/dashboard/statistiques/stati
     ControllerGraphiqueComponent,
     PsGraphiqueComponent,
     BatterieGraphiqueComponent,
-    StatistiquesComponent
+    StatistiquesComponent,
+    BienvenueComponent,
+    BreadcrumbComponent,
+    InfosServeurComponent,
+    BatteriePourcentageComponent
   ],
   imports: [
     NgOptimizedImage,

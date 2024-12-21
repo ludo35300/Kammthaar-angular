@@ -1,76 +1,24 @@
 <div class="container-fluid">
   <div class="content">
-    <!-- En-tête -->
-    <div class="content-header d-flex align-items-center justify-content-between">
-      <h4 class="content-title">
-        <fa-icon [icon]="faChart"></fa-icon> &nbsp; 
-        <span>Dashboard</span>
-      </h4>
-      <div class="float-end">
-        <button class="btn btn-sm btn-alt-primary" *ngIf="controllerData && !isLoading" disabled>
-            Le {{ controllerData.controller_date | date: 'd MMMM yyyy à HH:mm':'-01:00':'fr' }}
-        </button>
-        <button class="btn btn-sm btn-alt-primary etatJour" *ngIf="isServerOnline" 
-          [ngbTooltip]="controllerData?.is_day ? 'Panneau actif' : 'Panneau inactif'" 
-          placement="bottom">
-          <fa-icon class="ms-auto" *ngIf="controllerData?.is_day" [icon]="faSun"  data-bs-toggle="tooltip" title="Panneau solaire actif"></fa-icon>
-          <fa-icon class="ms-auto" *ngIf="controllerData?.is_night" [icon]="faMoon"  data-bs-toggle="tooltip" title="Panneau solaire inactif"></fa-icon>
-        </button>
-        <button class="btn btn-sm btn-alt-primary " *ngIf="isLoading">
-          <fa-icon [icon]="faSun" class="fa-spin" animation="shake"></fa-icon>
-        </button>
-        
+    <app-breadcrumb 
+      [title]="'Dashboard'"
+      [controllerData]="controllerData"
+      [isServerOnline]="isServerOnline"
+    >
+    </app-breadcrumb>
+    <app-bienvenue></app-bienvenue>
+    <div class="row  g-4">
+      <div class="col-12 col-sm-12 col-md-5 col-lg-5">
+        <app-statistiques [isServerOnline]="isServerOnline"></app-statistiques>
       </div>
+
+      <div class="col-12 col-sm-12 col-md-7 col-lg-7">
+        <app-infos-serveur *ngIf="isServerOnline" [isServerOnline]="isServerOnline" [systemInfo]="systemInfo"></app-infos-serveur>
+      </div>
+
     </div>
-
-    <app-statistiques [isServerOnline]="isServerOnline"></app-statistiques>
-  
-      
-
-      <!-- Informations du serveur du Kammthaar -->
-      <div class="row g-4 mt-4" >
-        <div class="col-12 col-sm-6 col-md-6 col-lg-6" >
-            <!-- Si Kammthaar est connecté -->
-            <div class="card">
-                <div class="card-header">
-                  <h5>Informations du serveur</h5>
-                </div>
-                <div class="card-body">
-                  <table class="table table-hover">
-                    <!-- Informations du serveur du Kammthaar s'il est en ligne -->
-                    <tbody *ngIf="isServerOnline && systemInfo">
-                      <tr>
-                        <td class="text-success"><fa-icon [icon]="faCheck"></fa-icon> &nbsp;Le serveur est connecté</td>
-                      </tr>
-                      <tr>
-                        <td>Utilisation du processeur</td>
-                        <td class="d-flex justify-content-end">{{ systemInfo.cpu_usage }}%</td>
-                      </tr>
-                      <tr>
-                        <td>Occupation de la mémoire</td>
-                        <td class="d-flex justify-content-end">{{ systemInfo.memory_usage }}%</td>
-                      </tr>
-                      <tr>
-                        <td>Utilisation du disque</td>
-                        <td class="d-flex justify-content-end">{{ systemInfo.disk_usage }}%</td>
-                      </tr>
-                      <tr>
-                        <td>Température du serveur</td>
-                        <td class="d-flex justify-content-end">{{ systemInfo.temperature  | number: '1.0-1'  }}°C</td>
-                      </tr>
-                    </tbody>
-                    <!-- Si Kammthaar est hors ligne -->
-                    <tbody *ngIf="!isServerOnline">
-                        <tr>
-                            <td class="text-warning"><fa-icon [icon]="faWarning"></fa-icon> &nbsp;Le serveur est hors ligne</td>
-                        </tr>
-                    </tbody>
-                  </table>
-                </div>
-            </div>
-            
-        </div>
-      </div>
+    
+    
   </div>
 </div>
 

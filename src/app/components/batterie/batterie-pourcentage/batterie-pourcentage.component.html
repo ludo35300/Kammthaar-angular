@@ -1,0 +1,24 @@
+
+        <div class="card pourcentage-card shadow-sm border-0">
+            <div class="row g-0">
+              <!-- Contenu texte -->
+              <div class="col-12">
+                <div class="card-body">
+                    <h5 class="mb-3"><fa-icon [icon]="faCarBattery"></fa-icon>&nbsp; Charge de la batterie</h5>
+                    <div class="progress" style="height: 25px;">
+                        <div
+                            class="progress-bar"
+                            [ngClass]="getProgressBarClass()"
+                            role="progressbar"
+                            [style.width.%]="currentCharge"
+                            [attr.aria-valuenow]="currentCharge"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                        >
+                        {{ currentCharge }}%
+                        </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+        </div>
