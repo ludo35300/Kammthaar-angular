@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { InfosServeurComponent } from './infos-serveur.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 describe('InfosServeurComponent', () => {
   let component: InfosServeurComponent;
@@ -8,7 +8,8 @@ describe('InfosServeurComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [InfosServeurComponent]
+      declarations: [InfosServeurComponent],
+      imports: [FontAwesomeModule],
     })
     .compileComponents();
 

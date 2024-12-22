@@ -1,7 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Batterie } from '../../../modeles/batterie';
 import { BatterieRealtimeService } from '../../../services/batterie/batterie-realtime.service';
-import { faArrowRight, faBolt, faCarBattery, faChartArea, faSun } from '@fortawesome/free-solid-svg-icons';
+import { faBolt, faCarBattery, faChartArea, faSun } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-batterie-data',
   templateUrl: './batterie-data.component.html',
@@ -70,7 +70,7 @@ export class BatterieDataComponent {
           this.isLoading = false;
         },
         error: (error) => {
-          console.error('Erreur lors de la récupération des données de statistiques:', error);
+          console.error('Erreur lors de la récupération des dernières données de la batterie:', error);
           this.isLoading = false;
         },
       });

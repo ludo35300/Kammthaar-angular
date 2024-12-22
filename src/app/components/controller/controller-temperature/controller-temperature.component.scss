@@ -1,0 +1,40 @@
+.pourcentage-card{
+    background-color: #DDDBFF;
+    color: #5a5a5a;
+}
+h5 {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+  }
+  .fa-spin{
+    font-size: 1.5rem;
+    color: #635BFF;
+  }
+.progress{
+        background-color: #EDF0F7; /* Changez cette couleur selon vos besoins */
+        border-radius: 0.25rem; /* Conserve les bords arrondis de Bootstrap */
+        overflow: hidden; /* Assure que les bordures sont bien contenues */
+        color: #5a5a5a;
+}
+.progress-bar{
+    color: #5a5a5a;
+    font-weight: bolder;
+}
+
+a{
+    color: #635BFF !important;
+    border: none;
+    background-color: #fff !important;
+    border-radius: 10px;
+}
+
+.progress-good{
+    background-color: #16CDC7;
+}
+.progress-danger{
+    background-color: #FF6692;
+}
+.progress-middle{
+    background-color: #F8C22D;
+}

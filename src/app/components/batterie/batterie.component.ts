@@ -22,7 +22,7 @@ export class BatterieComponent implements OnInit{
 
   faCarBattery = faCarBattery;
   faSun = faSun;
-  selectedLabel: string | null = null;
+  selectedLabel: string  = "Pourcentage";
 
   onLabelSelected(label: string) {
     this.selectedLabel = label; // Mettre à jour le label pour transmettre au graphique

@@ -1,12 +1,18 @@
 import { TestBed } from '@angular/core/testing';
 
 import { BatterieStatusService } from './batterie-status.service';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('BatterieStatusService', () => {
   let service: BatterieStatusService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [
+        provideHttpClient(),
+        BatterieStatusService
+      ],
+    });
     service = TestBed.inject(BatterieStatusService);
   });
 

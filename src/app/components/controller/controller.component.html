@@ -6,7 +6,14 @@
       [isServerOnline]="isServerOnline"
     ></app-breadcrumb>
 
-    <app-controller-data [isServerOnline]="isServerOnline" *ngIf="!isLoading" (labelSelected)="onLabelSelected($event)"></app-controller-data>
-    <app-controller-graphique [selectedLabel]="selectedLabel"></app-controller-graphique>
+    <div class="row  g-4">
+      <div class="col-12 col-sm-12 col-md-8 col-lg-8">
+        <app-controller-data [isServerOnline]="isServerOnline" *ngIf="!isLoading" (labelSelected)="onLabelSelected($event)"></app-controller-data>
+        <app-controller-graphique [selectedLabel]="selectedLabel"></app-controller-graphique>
+      </div>
+      <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+        <app-controller-temperature [isServerOnline]="isServerOnline" (labelSelected)="onLabelSelected($event)"></app-controller-temperature>
+      </div>
+    </div>
   </div>
 </div>

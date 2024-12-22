@@ -1,12 +1,12 @@
 
-<div class="card pourcentage-card shadow-sm border-0 mt-4">
+<div class="card pourcentage-card shadow-sm border-0 ">
     <div class="row g-4">
                 <!-- Contenu texte -->
       <div class="col-12">
         <div class="card-body">
             <div class="row mb-2">
                 <div class="col-8 mt-2">
-                  <h5 class="mb-3"><fa-icon [icon]="faTemperature"></fa-icon>&nbsp; Température:</h5>
+                  <h5 class="mb-3"><fa-icon [icon]="faTemperature"></fa-icon>&nbsp; Température</h5>
                 </div>
                 <div class="col-4">
                   <a
@@ -24,12 +24,12 @@
               class="progress-bar"
               [ngClass]="getProgressBarClass()"
               role="progressbar"
-              [style.width.%]="(batterieTemperature*100)/30"
-              [attr.aria-valuenow]="batterieTemperature"
+              [style.width.%]="(controllerTemperature*100)/30"
+              [attr.aria-valuenow]="controllerTemperature"
               aria-valuemin="-50"
               aria-valuemax="50"
             >
-              {{ batterieTemperature }}°C
+              {{ controllerTemperature }}°C
             </div>
           </div>
   

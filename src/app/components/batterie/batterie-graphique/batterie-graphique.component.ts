@@ -32,7 +32,7 @@ export type ChartOptions = {
   styleUrls: ['./batterie-graphique.component.scss']
 })
 export class BatterieGraphiqueComponent {
-  @Input() selectedLabel: string | null = null;
+  @Input() selectedLabel: string = "Pourcentage";
 
   // Propriétés utilisées dans le HTML pour apx-chart
   chartSeries: ApexAxisChartSeries = [];
@@ -43,6 +43,7 @@ export class BatterieGraphiqueComponent {
 
   constructor(private batterieService: BatterieRealtimeService) {
     // Configuration de base du graphique
+    this.isLoading = true;
     this.chartOptions = {
       chart: {
         type: 'area',
@@ -57,11 +58,6 @@ export class BatterieGraphiqueComponent {
         },
         axisTicks: {
           show: false, // Masque les ticks (lignes courtes)
-        },
-      },
-      yaxis: {
-        labels: {
-          show: false, // Masquer les étiquettes de l'axe Y
         },
       },
       stroke: {
@@ -102,10 +98,6 @@ export class BatterieGraphiqueComponent {
           },
         }
       },
-      title: {
-        text: 'Graphique de la batterie',
-        align: 'center',
-      },
     };
   }
 
@@ -138,35 +130,35 @@ export class BatterieGraphiqueComponent {
 
   getPourcent24h() {
     this.batterieService.getPourcent24h().subscribe({
-      next: (data) => this.handleChartData(data, '%', 'Pourcentage de la batterie'),
+      next: (data) => this.handleChartData(data, '%', 'Charge'),
       error: (error) => this.handleError(error),
     });
   }
 
   getAmperage24h() {
     this.batterieService.getAmperage24h().subscribe({
-      next: (data) => this.handleChartData(data, 'A', 'Ampérage de la batterie'),
+      next: (data) => this.handleChartData(data, 'A', 'Ampérage'),
       error: (error) => this.handleError(error),
     });
   }
 
   getVoltage24h() {
     this.batterieService.getVoltage24h().subscribe({
-      next: (data) => this.handleChartData(data, 'V', 'Voltage de la batterie'),
+      next: (data) => this.handleChartData(data, 'V', 'Voltage'),
       error: (error) => this.handleError(error),
     });
   }
 
   getTemp24h() {
     this.batterieService.getTemp24h().subscribe({
-      next: (data) => this.handleChartData(data, '°C', 'Température de la batterie'),
+      next: (data) => this.handleChartData(data, '°C', 'Température'),
       error: (error) => this.handleError(error),
     });
   }
 
   getPower24h() {
     this.batterieService.getPower24h().subscribe({
-      next: (data) => this.handleChartData(data, 'W', 'Puissancede la batterie'),
+      next: (data) => this.handleChartData(data, 'W', 'Puissance'),
       error: (error) => this.handleError(error),
     });
   }
@@ -194,11 +186,18 @@ export class BatterieGraphiqueComponent {
       },
       title: {
         text: title+' sur 24 heures',
-        align: 'center',
+        margin: 10,
+        style: {
+          fontSize:  '14px',
+          fontWeight:  '400',
+          fontFamily:  "Manrope",
+          color:  '#5A5A5A'
+        },
       },
     };
-
     this.isLoading = false;
+
+    
   }
 
   handleError(error: any) {

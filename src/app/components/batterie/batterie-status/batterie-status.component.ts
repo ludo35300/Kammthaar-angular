@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { BatterieStatus } from '../../../modeles/batterie-status';
-import { faHeartPulse, faSun } from '@fortawesome/free-solid-svg-icons';
+import { faCog, faHeartPulse, faSun } from '@fortawesome/free-solid-svg-icons';
 import { BatteryStatus, TemperatureStatus } from '../../../enums';
 import { BatterieStatusService } from '../../../services/batterie-status/batterie-status.service';
 
@@ -17,6 +17,7 @@ export class BatterieStatusComponent {
 
   faHeartPulse = faHeartPulse;
   faSun = faSun;
+  faCog = faCog;
 
   constructor(
       private batterieStatusService: BatterieStatusService

@@ -29,6 +29,8 @@ import { InfosServeurComponent } from './components/dashboard/infos-serveur/info
 import { BatteriePourcentageComponent } from './components/batterie/batterie-pourcentage/batterie-pourcentage.component';
 import { BatterieStatusComponent } from './components/batterie/batterie-status/batterie-status.component';
 import { BatterieTemperatureComponent } from './components/batterie/batterie-temperature/batterie-temperature.component';
+import { SidebarComponent } from './layout/sidebar/sidebar.component';
+import { ControllerTemperatureComponent } from './components/controller/controller-temperature/controller-temperature.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +53,9 @@ import { BatterieTemperatureComponent } from './components/batterie/batterie-tem
     InfosServeurComponent,
     BatteriePourcentageComponent,
     BatterieStatusComponent,
-    BatterieTemperatureComponent
+    BatterieTemperatureComponent,
+    SidebarComponent,
+    ControllerTemperatureComponent,
   ],
   imports: [
     NgOptimizedImage,

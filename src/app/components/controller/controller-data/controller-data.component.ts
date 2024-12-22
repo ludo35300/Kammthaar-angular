@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Controller, GaugesController } from '../../../modeles/controller';
 import { ControllerService } from '../../../services/controller/controller.service';
-import { faArrowRight, faSun } from '@fortawesome/free-solid-svg-icons';
+import { faBolt, faChartArea, faSun } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-controller-data',
@@ -17,15 +17,15 @@ export class ControllerDataComponent {
   controllerData: Controller | null = null;
   lastControllerData: Controller | null = null;
 
-  faArrowRight = faArrowRight
-  faSun = faSun
+  faSun = faSun;
+  faChart = faChartArea;
+  faBolt = faBolt;
 
   // Configuration des jauges
   gauges: GaugesController[] = [
     { label: 'Voltage', value: 0, unit: 'V', max: 55 },
     { label: 'Ampérage', value: 0, unit: 'A', max: 30 },
-    { label: 'Puissance', value: 0, unit: 'W', max: 500 },
-    { label: 'Température', value: 0, unit: '°C', max: 50 }
+    { label: 'Puissance', value: 0, unit: 'W', max: 500 }
   ];
 
   constructor(
@@ -80,8 +80,7 @@ export class ControllerDataComponent {
     this.gauges = [
       { label: 'Voltage', value: data.controller_load_voltage || 0, unit: 'V', max: 24 },
       { label: 'Ampérage', value: data.controller_load_amperage || 0, unit: 'A', max: 30 },
-      { label: 'Puissance', value: data.controller_load_power || 0, unit: 'W', max: 100 },
-      { label: 'Température', value: data.controller_temperature || 0, unit: '°C', max: 50 }
+      { label: 'Puissance', value: data.controller_load_power || 0, unit: 'W', max: 100 }
     ];
   }
 

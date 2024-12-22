@@ -1,7 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Gauge, Ps } from '../../../modeles/ps';
 import { PsService } from '../../../services/ps/ps.service';
-import { faArrowRight, faSun } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faBolt, faChartArea, faSun } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-ps-data',
@@ -10,13 +10,15 @@ import { faArrowRight, faSun } from '@fortawesome/free-solid-svg-icons';
 })
 export class PsDataComponent {
   @Input() isServerOnline: boolean | null = null;
+  @Output() labelSelected = new EventEmitter<string>();
   isLoading = true;
 
   psData: Ps | null = null;
-  lastPsData: Ps | null = null;
 
-  faArrowRight = faArrowRight
-  faSun = faSun
+  faArrowRight = faArrowRight;
+  faSun = faSun;
+  faBolt = faBolt;
+  faChart = faChartArea;
 
 
   // Configuration des jauges
@@ -44,29 +46,28 @@ export class PsDataComponent {
   
   getPsRealtime(){
     // On récupere les données en temps réel du panneau solaire (Voltage, Ampérage & Power)
-    this.psService.getPsData().subscribe({
-      next: (data) => {
-        this.psData = data;
-        this.updateGauges(data)
-        this.isLoading = false;
-        this.lastPsData = null;
-      },
-      error: (error) => {
-        console.error('Erreur lors de la récupération des données du PS:', error);
-        this.isLoading = false;
-      },
-    });
+    if(this.isServerOnline){
+      this.psService.getPsData().subscribe({
+        next: (data) => {
+          this.psData = data;
+          this.updateGauges(data)
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error('Erreur lors de la récupération des données du PS:', error);
+          this.isLoading = false;
+        },
+      });
+    }
   }
 
   // On récupère les dernières statistiques enregistrées
   getLastPsData(){
     this.psService.getLastPsData().subscribe({
       next: (data) => {
-        this.lastPsData = data;
-        console.log(this.lastPsData)
+        this.psData = data;
         this.updateGauges(data);
         this.isLoading = false;
-        this.psData= null;
       },
       error: (error) => {
         console.error('Erreur lors de la récupération des données de statistiques:', error);
@@ -91,6 +92,11 @@ export class PsDataComponent {
           break;
       }
     });
+  }
+
+  // Méthode pour émettre un label sélectionné
+  onViewGraph(label: string) {
+    this.labelSelected.emit(label);
   }
     
 

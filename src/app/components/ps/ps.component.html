@@ -6,8 +6,12 @@
       [isServerOnline]="isServerOnline"
     ></app-breadcrumb>
 
-    <app-ps-data [isServerOnline]="isServerOnline" *ngIf="!isLoading"></app-ps-data>
-    <!-- <app-ps-graphique [isServerOnline]="isServerOnline" *ngIf="!isLoading"></app-ps-graphique> -->
+    <div class="row  g-4">
+      <div class="col-12">
+        <app-ps-data [isServerOnline]="isServerOnline" (labelSelected)="onLabelSelected($event)"></app-ps-data>
+        <app-ps-graphique [selectedLabel]="selectedLabel" ></app-ps-graphique>
+      </div>
+    </div>
   </div>
 </div>
   
