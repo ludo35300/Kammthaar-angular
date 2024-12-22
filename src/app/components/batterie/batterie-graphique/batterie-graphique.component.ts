@@ -9,6 +9,7 @@ import {
   ApexYAxis,
   ApexTitleSubtitle,
   ApexTooltip,
+  ApexGrid,
 } from 'ng-apexcharts';
 import { faSun } from '@fortawesome/free-solid-svg-icons';
 
@@ -18,6 +19,7 @@ export type ChartOptions = {
   xaxis: ApexXAxis;
   stroke: ApexStroke;
   dataLabels: ApexDataLabels;
+  grid: ApexGrid;
   yaxis?: ApexYAxis;
   title: ApexTitleSubtitle;
   apexTooltip: ApexTooltip;
@@ -30,7 +32,7 @@ export type ChartOptions = {
   styleUrls: ['./batterie-graphique.component.scss']
 })
 export class BatterieGraphiqueComponent {
-  @Input() selectedLabel: string | null = null;
+  @Input() selectedLabel: string = "Pourcentage";
 
   // Propriétés utilisées dans le HTML pour apx-chart
   chartSeries: ApexAxisChartSeries = [];
@@ -41,6 +43,7 @@ export class BatterieGraphiqueComponent {
 
   constructor(private batterieService: BatterieRealtimeService) {
     // Configuration de base du graphique
+    this.isLoading = true;
     this.chartOptions = {
       chart: {
         type: 'area',
@@ -50,11 +53,19 @@ export class BatterieGraphiqueComponent {
         },
       },
       xaxis: {
-        type: 'datetime', // Permet de traiter les timestamps en millisecondes
+        labels: {
+          show: false, // Masquer les étiquettes de l'axe Y
+        },
+        axisTicks: {
+          show: false, // Masque les ticks (lignes courtes)
+        },
       },
       stroke: {
         curve: 'smooth',
         width: 2,
+      },
+      grid: {
+        show: false
       },
       dataLabels: {
         enabled: false,
@@ -86,10 +97,6 @@ export class BatterieGraphiqueComponent {
             return new Intl.DateTimeFormat('fr-FR', options).format(date); 
           },
         }
-      },
-      title: {
-        text: 'Graphique de la batterie',
-        align: 'center',
       },
     };
   }
@@ -123,35 +130,35 @@ export class BatterieGraphiqueComponent {
 
   getPourcent24h() {
     this.batterieService.getPourcent24h().subscribe({
-      next: (data) => this.handleChartData(data, '%', 'Pourcentage de la batterie'),
+      next: (data) => this.handleChartData(data, '%', 'Charge'),
       error: (error) => this.handleError(error),
     });
   }
 
   getAmperage24h() {
     this.batterieService.getAmperage24h().subscribe({
-      next: (data) => this.handleChartData(data, 'A', 'Ampérage de la batterie'),
+      next: (data) => this.handleChartData(data, 'A', 'Ampérage'),
       error: (error) => this.handleError(error),
     });
   }
 
   getVoltage24h() {
     this.batterieService.getVoltage24h().subscribe({
-      next: (data) => this.handleChartData(data, 'V', 'Voltage de la batterie'),
+      next: (data) => this.handleChartData(data, 'V', 'Voltage'),
       error: (error) => this.handleError(error),
     });
   }
 
   getTemp24h() {
     this.batterieService.getTemp24h().subscribe({
-      next: (data) => this.handleChartData(data, '°C', 'Température de la batterie'),
+      next: (data) => this.handleChartData(data, '°C', 'Température'),
       error: (error) => this.handleError(error),
     });
   }
 
   getPower24h() {
     this.batterieService.getPower24h().subscribe({
-      next: (data) => this.handleChartData(data, 'W', 'Puissancede la batterie'),
+      next: (data) => this.handleChartData(data, 'W', 'Puissance'),
       error: (error) => this.handleError(error),
     });
   }
@@ -179,11 +186,18 @@ export class BatterieGraphiqueComponent {
       },
       title: {
         text: title+' sur 24 heures',
-        align: 'center',
+        margin: 10,
+        style: {
+          fontSize:  '14px',
+          fontWeight:  '400',
+          fontFamily:  "Manrope",
+          color:  '#5A5A5A'
+        },
       },
     };
-
     this.isLoading = false;
+
+    
   }
 
   handleError(error: any) {

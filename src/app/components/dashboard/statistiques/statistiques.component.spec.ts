@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StatistiquesComponent } from './statistiques.component';
+import { provideHttpClient } from '@angular/common/http';
+import { DashboardService } from '../../../services/dashboard/dashboard.service';
+import { NgxGauge, NgxGaugeModule } from 'ngx-gauge';
 
 describe('StatistiquesComponent', () => {
   let component: StatistiquesComponent;
@@ -8,7 +11,13 @@ describe('StatistiquesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [StatistiquesComponent]
+      declarations: [StatistiquesComponent],
+      providers: [
+        provideHttpClient(), // Fournit HttpClient
+        DashboardService,
+      ],
+      imports: [NgxGaugeModule]
+
     })
     .compileComponents();
 

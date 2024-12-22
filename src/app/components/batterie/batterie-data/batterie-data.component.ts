@@ -1,9 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Batterie } from '../../../modeles/batterie';
 import { BatterieRealtimeService } from '../../../services/batterie/batterie-realtime.service';
-import { faArrowRight, faCarBattery, faSun } from '@fortawesome/free-solid-svg-icons';
-import { ServeurService } from '../../../services/serveur/serveur.service';
-
+import { faBolt, faCarBattery, faChartArea, faSun } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-batterie-data',
   templateUrl: './batterie-data.component.html',
@@ -18,7 +16,8 @@ export class BatterieDataComponent {
   lastBatterieData: Batterie | null = null;
 
   faCarBattery = faCarBattery
-  faArrowRight = faArrowRight
+  faBolt = faBolt
+  faChart = faChartArea
   faSun = faSun
   
   // Configuration des jauges
@@ -26,8 +25,6 @@ export class BatterieDataComponent {
     { label: 'Voltage', value: 0, unit: 'V', max: 55 },
     { label: 'Ampérage', value: 0, unit: 'A', max: 30 },
     { label: 'Puissance', value: 0, unit: 'W', max: 500 },
-    { label: 'Pourcentage', value: 0, unit: '%', max: 100 },
-    { label: 'Température', value: 0, unit: '°C', max: 50 }
   ];
 
   constructor(
@@ -73,7 +70,7 @@ export class BatterieDataComponent {
           this.isLoading = false;
         },
         error: (error) => {
-          console.error('Erreur lors de la récupération des données de statistiques:', error);
+          console.error('Erreur lors de la récupération des dernières données de la batterie:', error);
           this.isLoading = false;
         },
       });
@@ -88,8 +85,7 @@ export class BatterieDataComponent {
     this.gauges = [
       { label: 'Voltage', value: data.battery_voltage || 0, unit: 'V', max: 50 },
       { label: 'Ampérage', value: data.battery_amperage || 0, unit: 'A', max: 30 },
-      { label: 'Puissance', value: data.battery_power || 0, unit: 'W', max: 400 },
-      { label: 'Température', value: data.battery_temp || 0, unit: '°C', max: 50 }
+      { label: 'Puissance', value: data.battery_power || 0, unit: 'W', max: 400 }
     ];
   }
 

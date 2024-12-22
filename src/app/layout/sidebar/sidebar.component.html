@@ -1,0 +1,30 @@
+<div class="sidebar" [ngClass]="{ collapsed: !isOpen }">
+    <ul class="list-unstyled pt-4">
+      <li>
+        <a routerLink="/dashboard" [routerLinkActive]="['is-active']" class="d-flex align-items-center px-3 py-2">
+          <fa-icon [icon]="faLocationArrow" class="me-3"></fa-icon> &nbsp; Dashboard
+        </a>
+      </li>
+      <li>
+        <a routerLink="/ps" [routerLinkActive]="['is-active']" class="d-flex align-items-center px-3 py-2">
+          <fa-icon [icon]="faSolarPanel" class="me-3"></fa-icon> &nbsp; Panneau solaire
+        </a>
+      </li>
+      <li>
+        <a routerLink="/controller" [routerLinkActive]="['is-active']"class="d-flex align-items-center px-3 py-2">
+          <fa-icon [icon]="faDumpster"  class="me-3"></fa-icon> &nbsp; Contrôleur MPPT
+        </a>
+      </li>
+      <li>
+        <a routerLink="/batterie" [routerLinkActive]="['is-active']"  class="d-flex align-items-center px-3 py-2">
+          <fa-icon [icon]="faCarBattery" class="me-3"></fa-icon> &nbsp; Batterie
+        </a>
+      </li>
+      <li>
+        <hr class="sidebar-divider" />
+      </li>
+
+      
+    </ul>
+  </div>
+  

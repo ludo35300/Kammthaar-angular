@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ControllerDataComponent } from './controller-data.component';
+import { ControllerService } from '../../../services/controller/controller.service';
+import { provideHttpClient } from '@angular/common/http';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 describe('ControllerDataComponent', () => {
   let component: ControllerDataComponent;
@@ -8,7 +12,12 @@ describe('ControllerDataComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ControllerDataComponent]
+      declarations: [ControllerDataComponent],
+      providers: [
+              provideHttpClient(), // Fournit HttpClient
+              ControllerService,           // Fournit PsService
+            ],
+      imports: [FontAwesomeModule, NgbTooltipModule]
     })
     .compileComponents();
 

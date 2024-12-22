@@ -3,6 +3,7 @@ import { faArrowRight, faMoon, faSolarPanel, faSun } from '@fortawesome/free-sol
 import { ServeurService } from '../../services/serveur/serveur.service';
 import { ControllerService } from '../../services/controller/controller.service';
 import { Controller } from '../../modeles/controller';
+import { distinctUntilChanged } from 'rxjs';
 
 
 @Component({
@@ -12,6 +13,7 @@ import { Controller } from '../../modeles/controller';
 })
 export class PsComponent {
   isServerOnline: boolean | null = null;
+  selectedLabel: string  = "Voltage";
   isLoading = true;
 
   controllerData: Controller | null = null;
@@ -21,14 +23,20 @@ export class PsComponent {
   faMoon = faMoon
   faArrowRight = faArrowRight
 
+
+  onLabelSelected(label: string) {
+    this.selectedLabel = label; // Mettre à jour le label pour transmettre au graphique
+  }
+
   constructor(
-    private controllerService: ControllerService, 
-    private serveurService: ServeurService
-  ) {}
+    private serveurService: ServeurService,
+    private controllerService: ControllerService
+  ){}
 
   ngOnInit(): void {
-    // Vérificaton si Kammthaar est en ligne
-    this.serveurService.serverStatus$.subscribe((status) => {
+    this.serveurService.checkServerStatus()
+    .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
+    .subscribe((status) => {
       this.isServerOnline = status;
       if (this.isServerOnline) {
         this.getControllerRealtime();
@@ -36,34 +44,32 @@ export class PsComponent {
         this.getLastControllerData();
       }
     });
-    // On lance la vérification du statut du serveur
-    this.serveurService.checkServerStatus();
   }
 
   // Récupération des infos du controller pour récupére la date
   getControllerRealtime(){
-    this.controllerService.getControllerRealtime().subscribe({
-      next: (data) => {
-        this.controllerData = data;
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('Erreur lors de la récupération des données du controlleur MPPT:', error);
-        this.isLoading = false;
-      },
-    });
+      this.controllerService.getControllerRealtime().subscribe({
+        next: (data) => {
+          this.controllerData = data;
+          this.isLoading = false;
+        },
+        error: (error) => {
+          //console.error('Erreur lors de la récupération des données du controlleur MPPT:', error);
+          this.isLoading = false;
+        },
+      });
   }
   // On récupère les dernières données du controlleur enregistrées
   getLastControllerData(){
-    this.controllerService.getLastController().subscribe({
-      next: (data) => {
-        this.controllerData = data;
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('Erreur lors de la récupération des dernières données du controlleur MPPT:', error);
-        this.isLoading = false;
-      },
-    });
+      this.controllerService.getLastController().subscribe({
+        next: (data) => {
+          this.controllerData = data;
+          this.isLoading = false;
+        },
+        error: (error) => {
+          //console.error('Erreur lors de la récupération des dernières données du controlleur MPPT:', error);
+          this.isLoading = false;
+        },
+      });
   }
 }

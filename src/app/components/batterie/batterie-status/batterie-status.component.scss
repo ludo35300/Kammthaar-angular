@@ -1,0 +1,52 @@
+
+
+
+.status-batterie{
+    background-color: #DDDBFF;
+    color: #5a5a5a;
+    
+    [placement="bottom"] {
+        cursor: pointer;
+      }
+}
+h5 {
+    font-size: 18px;
+    // font-weight: 400;
+    line-height: 20px;
+    border-bottom: 1px solid #5a5a5a;
+    padding-bottom: 10px;
+  }
+  .fa-spin{
+    font-size: 1.5rem;
+    color: #635BFF;
+  }
+
+
+  .badge {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 7px ;
+    border-radius: 6px;
+  }
+
+  .bg-success{
+    background-color: #ebfaf0  !important;
+    color: #36c76c  !important;
+
+  }
+  .bg-danger{
+    background-color: #ffccdb !important;
+    color: #ff6692 !important;
+  }
+
+  
+a{
+  color: #635BFF !important;
+  border: none;
+  background-color: #fff !important;
+  border-radius: 10px;
+}
+
+
+  
+ 

@@ -1,10 +1,70 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  app-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1030;
+  }
+  .d-flex {
+    margin-top: 30px; /* Hauteur du header */
+    display: flex;
+    flex-grow: 1;
+  }
+
+  app-sidebar {
+    position: fixed; /* Sidebar fixée sur le côté gauche */
+    top: 56px; /* Alignée juste sous le header */
+    left: 0;
+    height: calc(100vh - 30px); /* Hauteur totale moins celle du header */
+    background-color: #343a40;
+    color: #ffffff;
+    z-index: 1020;
+    transition: all 0.3s ease;
+    &.sidebar-open {
+      width: 250px; /* Largeur quand la sidebar est ouverte */
+      opacity: 1; /* Entièrement visible */
+    }
+  
+    &.sidebar-closed {
+      width: 0; /* Réduit complètement la largeur */
+      opacity: 0; /* Masque le contenu visuellement */
+    }
+  }
+
+  .content-wrapper {
+    transition: margin-left 0.3s ease, width 0.3s ease;
+    &.sidebar-open {
+      margin-left: 250px; /* Décalage de la largeur de la sidebar */
+      width: calc(100% - 250px); /* Ajuste la largeur en fonction de la sidebar */
+    }
+  
+    &.sidebar-closed {
+      margin-left: 0;
+      width: 100%; /* Utilise toute la largeur disponible */
+    }
+  }
+
+  .main-content {
+    padding: 1rem;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    background-color: #EDF0F7;
+    height:100%;
+    margin-top: 30px; /* Hauteur du header */
+  }
 
   
-  .main-content {
-    margin-top: 10px;
-  }
+}
+/* Global styles (styles.scss) */
+@media (max-width: 1100px) {
   
-  .content {
-    padding: 20px;
-    // margin: 30px; /* Hauteur du header */
+
+  .content-wrapper {
+    margin-left: 0 !important;
+    width: 100% !important;
   }
+}

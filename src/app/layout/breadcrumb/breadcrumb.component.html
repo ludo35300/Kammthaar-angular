@@ -6,7 +6,7 @@
     </h4>
     <div class="float-end">
       <button class="btn btn-sm btn-alt-primary" *ngIf="controllerData" disabled>
-          Le {{ controllerData.controller_date | date: 'd MMMM yyyy à HH:mm':'-01:00':'fr' }}
+          Le {{ controllerData.controller_date | date: 'dd/MM/yyyy à HH:mm':'-01:00':'fr' }}
       </button>
       <button class="btn btn-sm btn-alt-primary etatJour" *ngIf="isServerOnline" 
         [ngbTooltip]="controllerData?.is_day ? 'Panneau actif' : 'Panneau inactif'" 

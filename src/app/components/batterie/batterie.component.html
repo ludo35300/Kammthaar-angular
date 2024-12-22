@@ -8,14 +8,17 @@
 
     <div class="row  g-4">
       <div class="col-12 col-sm-12 col-md-8 col-lg-8">
-        <app-batterie-data *ngIf="!isLoading" (labelSelected)="onLabelSelected($event)" [isServerOnline]="isServerOnline" ></app-batterie-data>
+        <app-batterie-data (labelSelected)="onLabelSelected($event)" [isServerOnline]="isServerOnline" ></app-batterie-data>
+        <app-batterie-graphique [selectedLabel]="selectedLabel"></app-batterie-graphique>
       </div>
       <div class="col-12 col-sm-12 col-md-4 col-lg-4">
-        <app-batterie-pourcentage *ngIf="!isLoading" [isServerOnline]="isServerOnline" [batteryCharge]="batteriePourcentage$"></app-batterie-pourcentage>
+        <app-batterie-pourcentage [isServerOnline]="isServerOnline" (labelSelected)="onLabelSelected($event)"></app-batterie-pourcentage>
+        <app-batterie-temperature [isServerOnline]="isServerOnline" (labelSelected)="onLabelSelected($event)"></app-batterie-temperature>
+        <app-batterie-status [isServerOnline]="isServerOnline"></app-batterie-status>
       </div>
     </div>
-    <app-batterie-graphique [selectedLabel]="selectedLabel"></app-batterie-graphique>
-    <app-batterie-parametres *ngIf="!isLoading"></app-batterie-parametres>
+    
+    <!-- <app-batterie-parametres *ngIf="!isLoading"></app-batterie-parametres> -->
 
   </div>
 </div>

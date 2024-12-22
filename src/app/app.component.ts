@@ -1,6 +1,4 @@
-import { Component } from '@angular/core';
-import { ServeurService } from './services/serveur/serveur.service';
-import { catchError, of } from 'rxjs';
+import { Component, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -8,22 +6,28 @@ import { catchError, of } from 'rxjs';
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'Kammthaar';
 
-  constructor(private serveurService: ServeurService){}
+  isSidebarOpen = true; // Par défaut, la sidebar est ouverte
 
+  ngOnInit() {
+    this.checkScreenSize(); // Vérifie la taille de l'écran au démarrage
+  }
 
-  // ngOnInit(): void {
-  //   this.serveurService.checkServerStatus().subscribe({
-  //     next: (status) => {
-  //       console.log("Statut du serveur : ", status);
-  //     },
-  //     error: (err) => {
-  //       // Empêche l'erreur 404 d'être affichée dans la console
-  //       console.log("Le serveur est inaccessible, statut : 404 (NOT FOUND)");
-  //     }
-  //   });
-  // }
+  // Écouter l'événement de redimensionnement de la fenêtre
+  @HostListener('window:resize', ['$event'])
+  
 
+  // Vérifie la taille de l'écran et met à jour la valeur de isSidebarOpen
+  checkScreenSize() {
+    if (window.innerWidth <= 1100) {
+      this.isSidebarOpen = false; // Ferme la sidebar si l'écran est petit
+    } else {
+      this.isSidebarOpen = true;  // Garde la sidebar ouverte si l'écran est plus grand
+    }
+  }
+  
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen; // Bascule la visibilité de la sidebar
+  }
 
 }

@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { faCarBattery, faCheck, faChevronDown, faDumpster, faLocationArrow, faSolarPanel, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { faBars, faCarBattery, faCheck, faChevronDown, faDumpster, faLocationArrow, faSolarPanel, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { ServeurService } from '../../services/serveur/serveur.service';
 import { TITLE } from '../../constantes';
 
@@ -9,6 +9,9 @@ import { TITLE } from '../../constantes';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
+  @Output() toggleSidebar = new EventEmitter<void>();
+  isSidebarOpen = true; // Par défaut, la sidebar est ouverte
+
   
   isServerOnline: boolean | null = null;
   title = TITLE
@@ -20,6 +23,7 @@ export class HeaderComponent {
   faSolarPanel = faSolarPanel
   faLocationArrow = faLocationArrow
   faChevronDown = faChevronDown
+  faBars = faBars
   
 
   constructor(private serveurService: ServeurService){}

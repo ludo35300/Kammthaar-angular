@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BatterieDataComponent } from './batterie-data.component';
+import { BatterieRealtimeService } from '../../../services/batterie/batterie-realtime.service';
+import { provideHttpClient } from '@angular/common/http';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 describe('BatterieDataComponent', () => {
   let component: BatterieDataComponent;
@@ -8,7 +12,12 @@ describe('BatterieDataComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BatterieDataComponent]
+      declarations: [BatterieDataComponent],
+      providers: [
+              provideHttpClient(), // Fournit HttpClient
+              BatterieRealtimeService,           // Fournit PsService
+            ],
+      imports: [FontAwesomeModule, NgbTooltipModule]
     })
     .compileComponents();
 

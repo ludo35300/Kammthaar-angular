@@ -20,6 +20,16 @@ export class PsService {
     return this.http.get<Ps>(this.serveurUrl+"/ps/last_ps_data");
   }
 
+  getAmperageData24H(): Observable<any> {
+    return this.http.get<Ps>(this.serveurUrl+"/ps/last24hAmperage");
+  }
+  getVoltageData24H(): Observable<any> {
+    return this.http.get<Ps>(this.serveurUrl+"/ps/last24hVoltage");
+  }
+  getPowerData24H(): Observable<any> {
+    return this.http.get<Ps>(this.serveurUrl+"/ps/last24hPower");
+  }
+
 
 
 }

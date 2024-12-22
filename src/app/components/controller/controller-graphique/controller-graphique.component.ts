@@ -100,28 +100,28 @@ export class ControllerGraphiqueComponent {
 
     getAmperage24h() {
       this.controllerService.getAmperage24h().subscribe({
-        next: (data) => this.handleChartData(data, 'A', 'Ampérage du controller MPPT'),
+        next: (data) => this.handleChartData(data, 'A', 'Ampérage'),
         error: (error) => this.handleError(error),
       });
     }
 
     getVoltage24h() {
       this.controllerService.getVoltage24h().subscribe({
-        next: (data) => this.handleChartData(data, 'V', 'Voltage du controller MPPT'),
+        next: (data) => this.handleChartData(data, 'V', 'Voltage'),
         error: (error) => this.handleError(error),
       });
     }
 
     getPower24h() {
       this.controllerService.getPower24h().subscribe({
-        next: (data) => this.handleChartData(data, 'W', 'Puissance du controller MPPT'),
+        next: (data) => this.handleChartData(data, 'W', 'Puissance'),
         error: (error) => this.handleError(error),
       });
     }
 
     getTemp24h() {
-      this.controllerService.getVoltage24h().subscribe({
-        next: (data) => this.handleChartData(data, '°C', 'Température du controller MPPT'),
+      this.controllerService.getTemperature24h().subscribe({
+        next: (data) => this.handleChartData(data, '°C', 'Température'),
         error: (error) => this.handleError(error),
       });
     }

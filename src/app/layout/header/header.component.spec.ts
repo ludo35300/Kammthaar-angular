@@ -1,6 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HeaderComponent } from './header.component';
+import { provideHttpClient } from '@angular/common/http';
+import { ServeurService } from '../../services/serveur/serveur.service';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -8,7 +12,12 @@ describe('HeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [HeaderComponent]
+      declarations: [HeaderComponent],
+      providers: [
+        provideHttpClient(), // Fournit HttpClient
+        ServeurService,           // Fournit PsService
+      ],
+      imports: [FontAwesomeModule, NgbTooltipModule]
     })
     .compileComponents();
 
