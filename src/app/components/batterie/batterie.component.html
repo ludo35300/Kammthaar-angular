@@ -1,10 +1,6 @@
 <div class="container-fluid">
   <div class="content">
-    <app-breadcrumb 
-      [title]="'Batterie'"
-      [controllerData]="controllerData"
-      [isServerOnline]="isServerOnline"
-    ></app-breadcrumb>
+    <app-breadcrumb [title]="'Batterie'" [controllerData]="controllerData" [isServerOnline]="isServerOnline"></app-breadcrumb>
 
     <div class="row  g-4">
       <div class="col-12 col-sm-12 col-md-8 col-lg-8">
@@ -17,8 +13,6 @@
         <app-batterie-status [isServerOnline]="isServerOnline"></app-batterie-status>
       </div>
     </div>
-    
-    <!-- <app-batterie-parametres *ngIf="!isLoading"></app-batterie-parametres> -->
 
   </div>
 </div>

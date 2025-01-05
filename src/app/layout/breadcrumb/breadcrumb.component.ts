@@ -14,6 +14,8 @@ export class BreadcrumbComponent {
   @Input() isServerOnline: boolean | null = null;
 
   
+
+  
   faSun = faSun;
   faMoon = faMoon;
 }

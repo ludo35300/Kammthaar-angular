@@ -2,18 +2,19 @@ import { Component, Input, OnInit } from '@angular/core';
 import { BatterieParametres } from '../../../modeles/batterie_parametres';
 import { ServeurService } from '../../../services/serveur/serveur.service';
 import { BatterieParametresService } from '../../../services/batterie-parametres/batterie-parametres.service';
-import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
+import { faCircleInfo, faSun } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'app-batterie-parametres',
-  templateUrl: './batterie-parametres.component.html',
-  styleUrl: './batterie-parametres.component.scss'
+  selector: 'app-parametres',
+  templateUrl: './parametres.component.html',
+  styleUrl: './parametres.component.scss'
 })
-export class BatterieParametresComponent implements OnInit{
+export class ParametresComponent implements OnInit{
   batterieParametresData: BatterieParametres | null = null;
-  isServerOnline: boolean | null = null;
+  @Input() isServerOnline: boolean | null = null;
   isLoading = true;
   faCircleInfo = faCircleInfo;
+  faSun = faSun
 
   constructor(
     private batterieParametresService: BatterieParametresService,
@@ -23,30 +24,12 @@ export class BatterieParametresComponent implements OnInit{
 
 
   ngOnInit(): void {
-
-    // Vérification immédiate de l'état du serveur pour éviter l'état "null"
-    this.serveurService.checkServerStatus().subscribe((status) => {
-      this.isServerOnline = status;
-
-      if (this.isServerOnline) {
+    // Si Kammthaar est en ligne on récupère les informations en temps réel
+    if(this.isServerOnline){
         this.getBatterieParametresRealtime();
-      } else {
+    } else {
         this.getLastBatterieParametresData();
-      }
-    });
-
-    // Suivi des changements d'état du serveur pour les mises à jour continues
-    this.serveurService.serverStatus$.subscribe((status) => {
-      if (status !== this.isServerOnline) {
-        this.isServerOnline = status;
-
-        if (this.isServerOnline) {
-          this.getBatterieParametresRealtime();
-        } else {
-          this.getLastBatterieParametresData();
-        }
-      }
-    });
+    }
 
   }
 

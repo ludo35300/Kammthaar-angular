@@ -4,14 +4,15 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { PsComponent } from './components/ps/ps.component';
 import { ControllerComponent } from './components/controller/controller.component';
 import { BatterieComponent } from './components/batterie/batterie.component';
-import { BatterieGraphiqueComponent } from './components/batterie/batterie-graphique/batterie-graphique.component';
+import { BatterieParametresComponent } from './components/batterie-parametres/batterie-parametres.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'ps', component: PsComponent },
   { path: 'controller', component: ControllerComponent },
-  { path: 'batterie', component: BatterieComponent},
+  { path: 'batterie/details', component: BatterieComponent},
+  { path: 'batterie/parametres', component: BatterieParametresComponent},
 
 ];
 

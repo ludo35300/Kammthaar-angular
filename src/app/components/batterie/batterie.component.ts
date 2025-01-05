@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { distinctUntilChanged } from 'rxjs';
 import { faCarBattery, faSun } from '@fortawesome/free-solid-svg-icons';
 import { ServeurService } from '../../services/serveur/serveur.service';
 import { ControllerService } from '../../services/controller/controller.service';
 import { Controller } from '../../modeles/controller';
-import { distinctUntilChanged } from 'rxjs';
 import { Batterie } from '../../modeles/batterie';
 
 

@@ -1,0 +1,108 @@
+<div class="row g-4 mt-4">
+    <div class="col-12">
+        <!-- Si Kammthaar est connecté -->
+        <div class="card">
+            <div class="card-body table-responsive" *ngIf="!isLoading">
+                <div *ngIf="batterieParametresData" class="table">
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <label for="batteryType">Type de batterie</label>
+                            <input id="batteryType" type="text" class="form-control" [value]="batterieParametresData.battery_type" readonly />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="batteryCapacity">Capacité</label>
+                            <input id="batteryCapacity" type="text" class="form-control" [value]="batterieParametresData.battery_capacity + ' Ah'" readonly />
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <label for="batteryCharge">Niveau de charge</label>
+                            <input id="batteryCharge" type="text" class="form-control" [value]="batterieParametresData.battery_charge + ' A'" readonly />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="batteryDischarge">Niveau de décharge</label>
+                            <input id="batteryDischarge" type="text" class="form-control" [value]="batterieParametresData.battery_discharge + ' A'" readonly />
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <label for="batteryRatedVoltage">Tension nominale</label>
+                            <input id="batteryRatedVoltage" type="text" class="form-control" [value]="batterieParametresData.battery_rated_voltage + ' V'" readonly />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="boostChargingVoltage">Tension de charge boostée</label>
+                            <input id="boostChargingVoltage" type="text" class="form-control" [value]="batterieParametresData.boost_charging_voltage + ' V'" readonly />
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <label for="boostDuration">Durée de la charge boostée</label>
+                            <input id="boostDuration" type="text" class="form-control" [value]="batterieParametresData.boost_duration + ' min'" readonly />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="boostReconnectVoltage">Tension de reconnexion après boost</label>
+                            <input id="boostReconnectVoltage" type="text" class="form-control" [value]="batterieParametresData.boost_reconnect_voltage + ' V'" readonly />
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <label for="chargingLimitVoltage">Tension limite de charge</label>
+                            <input id="chargingLimitVoltage" type="text" class="form-control" [value]="batterieParametresData.charging_limit_voltage + ' V'" readonly />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="chargingMode">Mode de charge</label>
+                            <input id="chargingMode" type="text" class="form-control" [value]="batterieParametresData.charging_mode" readonly />
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <label for="defaultLoadMode">Mode de charge par défaut</label>
+                            <input id="defaultLoadMode" type="text" class="form-control" [value]="batterieParametresData.default_load_mode" readonly />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="dischargingLimitVoltage">Tension limite de décharge</label>
+                            <input id="dischargingLimitVoltage" type="text" class="form-control" [value]="batterieParametresData.discharging_limit_voltage + ' V'" readonly />
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <label for="equalizeChargingVoltage">Tension d'égalisation</label>
+                            <input id="equalizeChargingVoltage" type="text" class="form-control" [value]="batterieParametresData.equalize_charging_voltage + ' V'" readonly />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="equalizeDuration">Durée de l'égalisation</label>
+                            <input id="equalizeDuration" type="text" class="form-control" [value]="batterieParametresData.equalize_duration + ' min'" readonly />
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <label for="floatChargingVoltage">Tension de charge flottante</label>
+                            <input id="floatChargingVoltage" type="text" class="form-control" [value]="batterieParametresData.float_charging_voltage + ' V'" readonly />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="overVoltageDisconnect">Tension maximum avant déconnexion</label>
+                            <input id="overVoltageDisconnect" type="text" class="form-control" [value]="batterieParametresData.over_voltage_disconnect + ' V'" readonly />
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <label for="overVoltageReconnect">Tension de reconnexion après surcharge</label>
+                            <input id="overVoltageReconnect" type="text" class="form-control" [value]="batterieParametresData.over_voltage_reconnect + ' V'" readonly />
+                        </div>
+                        <div class="col-md-6">
+                            <label for="ratedChargingCurrent">Courant de charge nominal</label>
+                            <input id="ratedChargingCurrent" type="text" class="form-control" [value]="batterieParametresData.rated_charging_current + ' A'" readonly />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="isLoading" class="mb-3 text-center g4">
+                <p class="loading" 
+                    [ngbTooltip]="'Chargement des données en cours...'" 
+                    placement="bottom">
+                    <fa-icon [icon]="faSun" class="fa-spin" animation="spin"></fa-icon>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

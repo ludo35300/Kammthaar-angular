@@ -39,9 +39,6 @@ export class ServeurService {
     );
     
   }
-  
-  
-
   /**
    * Récupère les informations système du serveur
    * @returns Observable<any> des données système

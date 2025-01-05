@@ -16,9 +16,7 @@ export class StatistiquesComponent {
   // Configuration des gauges
   gauges: GaugesStatistiques[] = [
       { label: 'Générés aujourd\'hui', value: 0, unit: 'kWh', max: 10 },
-      { label: 'Consommés aujourd\'hui', value: 0, unit: 'kWh', max: 10 },
-      { label: 'Généré ce mois ci', value: 0, unit: 'kWh', max: 10 },
-      { label: 'Consommé ce mois ci', value: 0, unit: 'kWh', max: 10 },
+      { label: 'Consommés aujourd\'hui', value: 0, unit: 'kWh', max: 10 }
   ];
 
   constructor(
@@ -72,7 +70,6 @@ export class StatistiquesComponent {
     this.gauges = [
       { label: 'Générés aujourd\'hui', value: data.generated_energy_today, unit: 'kWh', max: 1.5 },
       { label: 'Consommés aujourd\'hui', value: data.consumed_energy_today, unit: 'kWh', max: 1.5 },
-      // { label: 'Consommé ce mois ci', value: data.consumed_energy_month, unit: 'kWh', max: 10 },
     ];
   }
 }

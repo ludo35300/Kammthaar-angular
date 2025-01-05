@@ -66,8 +66,7 @@ export class PsComponent {
           this.controllerData = data;
           this.isLoading = false;
         },
-        error: (error) => {
-          //console.error('Erreur lors de la récupération des dernières données du controlleur MPPT:', error);
+        error: () => {
           this.isLoading = false;
         },
       });

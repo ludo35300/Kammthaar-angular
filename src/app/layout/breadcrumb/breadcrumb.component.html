@@ -1,22 +1,23 @@
 <!-- En-tête -->
 <div class="content-header d-flex align-items-center justify-content-between">
     <h4 class="content-title pt-1">
-      <!-- <fa-icon [icon]="faChart"></fa-icon> &nbsp;  -->
       <span>{{title}}</span>
     </h4>
-    <div class="float-end">
-      <button class="btn btn-sm btn-alt-primary" *ngIf="controllerData" disabled>
-          Le {{ controllerData.controller_date | date: 'dd/MM/yyyy à HH:mm':'-01:00':'fr' }}
+    <div class="float-end" >
+      <!-- Gestion du décalage horaire entre le Raspberry et le serveur  -->
+      <button class="btn btn-sm btn-alt-primary" *ngIf="controllerData && isServerOnline" disabled>
+          Le {{ controllerData.controller_date | date: 'dd/MM/yyyy à HH:mm':'GMT':'fr' }}
       </button>
-      <button class="btn btn-sm btn-alt-primary etatJour" *ngIf="isServerOnline" 
-        [ngbTooltip]="controllerData?.is_day ? 'Panneau actif' : 'Panneau inactif'" 
+      <button class="btn btn-sm btn-alt-primary" *ngIf="controllerData && !isServerOnline" disabled>
+          Le {{ controllerData.controller_date | date: 'dd/MM/yyyy à HH:mm':'GMT+1':'fr' }}
+      </button>
+
+      <button class="btn btn-sm btn-alt-primary etatJour"
+        [ngbTooltip]="controllerData?.controller_day_time ? 'Panneau actif' : 'Panneau inactif'" 
         placement="bottom">
-        <fa-icon class="ms-auto" *ngIf="controllerData?.is_day" [icon]="faSun"  data-bs-toggle="tooltip" title="Panneau solaire actif"></fa-icon>
-        <fa-icon class="ms-auto" *ngIf="controllerData?.is_night" [icon]="faMoon"  data-bs-toggle="tooltip" title="Panneau solaire inactif"></fa-icon>
+        <fa-icon class="ms-auto" *ngIf="controllerData?.controller_day_time" [icon]="faSun"  data-bs-toggle="tooltip" title="Panneau solaire actif"></fa-icon>
+        <fa-icon class="ms-auto" *ngIf="controllerData?.controller_night_time" [icon]="faMoon"  data-bs-toggle="tooltip" title="Panneau solaire inactif"></fa-icon>
       </button>
-      <!-- <button class="btn btn-sm btn-alt-primary " *ngIf="isLoading">
-        <fa-icon [icon]="faSun" class="fa-spin" animation="shake"></fa-icon>
-      </button> -->
       
     </div>
   </div>

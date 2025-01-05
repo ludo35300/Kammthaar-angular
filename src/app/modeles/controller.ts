@@ -3,8 +3,8 @@ export interface Controller {
     controller_load_power: number;
     controller_load_voltage: number;
     controller_temperature: number;
-    is_day: boolean;
-    is_night: boolean;
+    controller_day_time: boolean;
+    controller_night_time: boolean;
     controller_date: Date;
 }
 
