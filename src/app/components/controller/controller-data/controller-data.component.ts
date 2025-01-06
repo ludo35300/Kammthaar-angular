@@ -10,68 +10,28 @@ import { faBolt, faChartArea, faSun } from '@fortawesome/free-solid-svg-icons';
 })
 
 export class ControllerDataComponent {
-  @Input() isServerOnline: boolean | null = null;
   @Output() labelSelected = new EventEmitter<string>();
   isLoading = true;
 
-  controllerData: Controller | null = null;
-  lastControllerData: Controller | null = null;
+  @Input()controllerData: Controller | null = null;
 
   faSun = faSun;
   faChart = faChartArea;
   faBolt = faBolt;
 
-  // Configuration des jauges
+  // Initialisation des gauges
   gauges: GaugesController[] = [
     { label: 'Voltage', value: 0, unit: 'V', max: 55 },
     { label: 'Ampérage', value: 0, unit: 'A', max: 30 },
     { label: 'Puissance', value: 0, unit: 'W', max: 500 }
   ];
 
-  constructor(
-    private controllerService: ControllerService
-  ) {}
-
   ngOnChanges(): void {
     // Si Kammthaar est en ligne on récupère les informations en temps réel
-    if(this.isServerOnline){
-      this.getControllerRealtime();
-    // Sinon on récupère la derniere entrée enregistrée dans InfluxDB
-    }else{
-      this.getLastControllerData();
+    if(this.controllerData){
+      this.updateGauges(this.controllerData);
+      this.isLoading = false;
     }
-  }
-
-  // Récupération des infos du controller pour récupére la date
-  getControllerRealtime(){
-    this.controllerService.getControllerRealtime().subscribe({
-      next: (data) => {
-        this.controllerData = data;
-        this.updateGauges(this.controllerData);
-        this.isLoading = false;
-        this.lastControllerData = null;
-      },
-      error: (error) => {
-        console.error('Erreur lors de la récupération des données du controlleur MPPT:', error);
-        this.isLoading = false;
-      },
-    });
-  }
-
-  // On récupère les dernières données du controlleur enregistrées
-  getLastControllerData(){
-    this.controllerService.getLastController().subscribe({
-      next: (data) => {
-        this.lastControllerData = data;
-        this.updateGauges(this.lastControllerData);
-        this.isLoading = false;
-        this.controllerData = null;
-      },
-      error: (error) => {
-        console.error('Erreur lors de la récupération des dernières données du controlleur MPPT:', error);
-        this.isLoading = false;
-      },
-    });
   }
 
   // Mise à jour des jauges en fonction des données récupérées

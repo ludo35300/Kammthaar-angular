@@ -34,7 +34,9 @@ export class BatterieDataComponent {
   ngOnInit(){
       // Si Kammthaar est en ligne on récupère les informations en temps réel
       if(this.isServerOnline){
-        this.getBatterieRealtime();
+        setTimeout(() => {
+          this.getBatterieRealtime();
+        }, 1000);
       // Sinon on récupère la derniere entrée enregistrée dans InfluxDB
       }else{
         this.getLastBatterieData();

@@ -8,10 +8,9 @@ import { GaugesStatistiques, Statistiques } from '../../../modeles/statistiques'
   styleUrl: './statistiques.component.scss'
 })
 export class StatistiquesComponent {
-  @Input() isServerOnline: boolean | null = null;
   isLoading = true;
   
-  statistiquesData: Statistiques | null = null;
+  @Input() statistiquesData: Statistiques | null = null;
 
   // Configuration des gauges
   gauges: GaugesStatistiques[] = [
@@ -23,46 +22,15 @@ export class StatistiquesComponent {
     private dashboardService: DashboardService
   ){}
 
-  ngOnInit(){
-    // Si Kammthaar est en ligne on récupère les informations en temps réel
-    if(this.isServerOnline){
-      this.getStatistiquesRealtime();
-    // Sinon on récupère la derniere entrée enregistrée dans InfluxDB
-    }else{
-      this.getLastStatistiques();
+  ngOnChanges(){
+    if(this.statistiquesData){
+      this.updateGauges(this.statistiquesData);
+      this.isLoading = false;
     }
-}
-
-  // On récupère les statistiques du MPPT en temps réel
-  getStatistiquesRealtime(){
-    this.dashboardService.getStatistiquesRealtimeData().subscribe({
-      next: (data) => {
-        this.statistiquesData = data;
-        this.updateGauges(data);
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('Erreur lors de la récupération des données de statistiques:', error);
-        this.isLoading = false;
-      },
-    });
+      
   }
 
-  // On récupère les dernières statistiques enregistrées
-  getLastStatistiques(){
-    this.dashboardService.getLastStatistiques().subscribe({
-      next: (data) => {
-        this.statistiquesData = data;
-        this.updateGauges(data);
-        // this.updateStatistiquesData(data);
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('Erreur lors de la récupération des données de statistiques:', error);
-        this.isLoading = false;
-      },
-    });
-  }
+  
 
   // Mise à jour des jauges en fonction des données récupérées
   updateGauges(data: Statistiques): void {

@@ -1,19 +1,26 @@
 <div class="container-fluid">
   <div class="content">
-    <app-breadcrumb [title]="'Dashboard'" [controllerData]="controllerData" [isServerOnline]="isServerOnline"></app-breadcrumb>
-    <app-bienvenue></app-bienvenue>
-    <div class="row  g-4">
-      <div class="col-12 col-sm-12 col-md-5 col-lg-5">
-        <app-statistiques [isServerOnline]="isServerOnline"></app-statistiques>
-      </div>
-
-      <div class="col-12 col-sm-12 col-md-7 col-lg-7">
-        <app-infos-serveur *ngIf="isServerOnline" [isServerOnline]="isServerOnline" [systemInfo]="systemInfo"></app-infos-serveur>
-      </div>
-
+    <!-- Affichage de l'icône de chargement -->
+    <div class="loading-spinner" *ngIf="isLoading">
+      <fa-icon [icon]="faSun" class="fa-spin" animation="spin"></fa-icon>
+      <!-- Optionnel : Texte de chargement -->
+      <p>Chargement en cours...</p>
     </div>
-    
-    
+
+    <div *ngIf="!isLoading">
+      <app-breadcrumb *ngIf="controllerData$ | async as controllerData" [title]="'Dashboard'" [controllerData]="controllerData"></app-breadcrumb>
+      <app-bienvenue  [statistiquesData]="statistiquesData"></app-bienvenue>
+      <div class="row  g-4">
+        <div class="col-12 col-sm-12 col-md-5 col-lg-5">
+          <app-statistiques [statistiquesData]="statistiquesData"></app-statistiques>
+        </div>
+
+        <div class="col-12 col-sm-12 col-md-7 col-lg-7">
+          <app-infos-serveur *ngIf="isServerOnline" [isServerOnline]="isServerOnline" [systemInfo]="systemInfo"></app-infos-serveur>
+        </div>
+
+      </div>
+    </div>
   </div>
 </div>
 
