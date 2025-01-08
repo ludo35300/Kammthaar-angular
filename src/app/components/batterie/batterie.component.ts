@@ -19,7 +19,6 @@ export class BatterieComponent implements OnInit{
   isLoading: boolean = true;
 
   batterieData: Batterie | null = null;
-  batterieData24h: Batterie[] = [];
 
   faCarBattery = faCarBattery;
   faSun = faSun;
@@ -65,7 +64,6 @@ export class BatterieComponent implements OnInit{
             this.getLastControllerData();
             this.getLastBatterieData();  
         }
-        this.getLast24h();
       });
   }
 
@@ -100,14 +98,6 @@ export class BatterieComponent implements OnInit{
     this.batterieService.getLastBatterieData().subscribe({
       next: (data) => {
         this.batterieData = data;
-      },
-    });
-  }
-  // On récupère les dernières données du controlleur enregistrées
-  getLast24h(){
-    this.batterieService.getLast24h().subscribe({
-      next: (data) => {
-        this.batterieData24h = data;
       },
     });
   }

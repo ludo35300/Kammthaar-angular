@@ -5,5 +5,9 @@ export interface Batterie {
     battery_temp: number;
     battery_pourcent: number;
     battery_time: Date;
-    
+}
+
+export interface Amperage24h {
+    battery_amperage: number;
+    battery_time: Date;
 }

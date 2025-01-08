@@ -1,19 +1,27 @@
 <div class="container-fluid">
   <div class="content">
-    <app-breadcrumb *ngIf="controllerData$ | async as controllerData" [title]="'Batterie'" [controllerData]="controllerData" [isServerOnline]="isServerOnline"></app-breadcrumb>
-
-    <div class="row  g-4">
-      <div class="col-12 col-sm-12 col-md-8 col-lg-8">
-        <app-batterie-data (labelSelected)="onLabelSelected($event)" [batterieData]="batterieData" ></app-batterie-data>
-        <app-batterie-graphique [batterieData24h]="batterieData24h" [selectedLabel]="selectedLabel" ></app-batterie-graphique>
-      </div>
-      <div class="col-12 col-sm-12 col-md-4 col-lg-4">
-        <app-batterie-pourcentage [batterieData]="batterieData" (labelSelected)="onLabelSelected($event)"></app-batterie-pourcentage>
-        <app-batterie-temperature [batterieData]="batterieData" (labelSelected)="onLabelSelected($event)"></app-batterie-temperature>
-        <!-- <app-batterie-status [isServerOnline]="isServerOnline"></app-batterie-status> -->
-      </div>
+    <!-- Affichage de l'icône de chargement -->
+    <div class="loading-spinner" *ngIf="isLoading">
+      <fa-icon [icon]="faSun" class="fa-spin" animation="spin"></fa-icon>
+      <!-- Optionnel : Texte de chargement -->
+      <p>Chargement en cours...</p>
     </div>
 
+    <div *ngIf="!isLoading">
+      <app-breadcrumb *ngIf="controllerData$ | async as controllerData" [title]="'Batterie'" [controllerData]="controllerData" [isServerOnline]="isServerOnline"></app-breadcrumb>
+
+      <div class="row  g-4">
+        <div class="col-12 col-sm-12 col-md-8 col-lg-8">
+          <app-batterie-data (labelSelected)="onLabelSelected($event)" [batterieData]="batterieData" ></app-batterie-data>
+          <app-batterie-graphique [selectedLabel]="selectedLabel" ></app-batterie-graphique>
+        </div>
+        <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+          <app-batterie-pourcentage [batterieData]="batterieData" (labelSelected)="onLabelSelected($event)"></app-batterie-pourcentage>
+          <app-batterie-temperature [batterieData]="batterieData" (labelSelected)="onLabelSelected($event)"></app-batterie-temperature>
+          <!-- <app-batterie-status [isServerOnline]="isServerOnline"></app-batterie-status> -->
+        </div>
+      </div>
+    </div>
   </div>
 </div>
   
