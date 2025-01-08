@@ -1,5 +1,5 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
-import { BatterieRealtimeService } from '../../../services/batterie/batterie-realtime.service';
+import { BatterieService } from '../../../services/batterie/batterie.service';
 import {
   ApexAxisChartSeries,
   ApexChart,
@@ -12,6 +12,7 @@ import {
   ApexGrid,
 } from 'ng-apexcharts';
 import { faSun } from '@fortawesome/free-solid-svg-icons';
+import { Batterie } from '../../../modeles/batterie';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -33,15 +34,17 @@ export type ChartOptions = {
 })
 export class BatterieGraphiqueComponent {
   @Input() selectedLabel: string = "Pourcentage";
+  @Input() batterieData24h : Batterie[] = [];
 
   // Propriétés utilisées dans le HTML pour apx-chart
   chartSeries: ApexAxisChartSeries = [];
   chartOptions: Partial<ChartOptions> = {};
 
+
   isLoading = true;
   faSun = faSun;
 
-  constructor(private batterieService: BatterieRealtimeService) {
+  constructor(private batterieService: BatterieService) {
     // Configuration de base du graphique
     this.isLoading = true;
     this.chartOptions = {
@@ -107,19 +110,19 @@ export class BatterieGraphiqueComponent {
     if (changes['selectedLabel'] && this.selectedLabel) {
       switch (this.selectedLabel) {
         case 'Pourcentage':
-          this.getPourcent24h();
+          this.handleChartData( '%', 'Charge')
           break;
         case 'Ampérage':
-          this.getAmperage24h();
+          this.handleChartData( '%', 'Charge')
           break;
         case 'Voltage':
-          this.getVoltage24h();
+          this.handleChartData( '%', 'Charge')
           break;
         case 'Température':
-          this.getTemp24h();
+          this.handleChartData( '%', 'Charge')
           break;
         case 'Puissance':
-          this.getPower24h();
+          this.handleChartData( '%', 'Charge')
           break;
         default:
           console.error('Label inconnu:', this.selectedLabel);
@@ -130,44 +133,42 @@ export class BatterieGraphiqueComponent {
 
   getPourcent24h() {
     this.batterieService.getPourcent24h().subscribe({
-      next: (data) => this.handleChartData(data, '%', 'Charge'),
+      next: (data) => this.handleChartData( '%', 'Charge'),
       error: (error) => this.handleError(error),
     });
   }
+  // getAmperage24h() {
+  //   this.batterieService.getAmperage24h().subscribe({
+  //     next: (data) => this.handleChartData(data, 'A', 'Ampérage'),
+  //     error: (error) => this.handleError(error),
+  //   });
+  // }
+  // getVoltage24h() {
+  //   this.batterieService.getVoltage24h().subscribe({
+  //     next: (data) => this.handleChartData(data, 'V', 'Voltage'),
+  //     error: (error) => this.handleError(error),
+  //   });
+  // }
+  // getTemp24h() {
+  //   this.batterieService.getTemp24h().subscribe({
+  //     next: (data) => this.handleChartData(data, '°C', 'Température'),
+  //     error: (error) => this.handleError(error),
+  //   });
+  // }
+  // getPower24h() {
+  //   this.batterieService.getPower24h().subscribe({
+  //     next: (data) => this.handleChartData(data, 'W', 'Puissance'),
+  //     error: (error) => this.handleError(error),
+  //   });
+  // }
 
-  getAmperage24h() {
-    this.batterieService.getAmperage24h().subscribe({
-      next: (data) => this.handleChartData(data, 'A', 'Ampérage'),
-      error: (error) => this.handleError(error),
-    });
-  }
-
-  getVoltage24h() {
-    this.batterieService.getVoltage24h().subscribe({
-      next: (data) => this.handleChartData(data, 'V', 'Voltage'),
-      error: (error) => this.handleError(error),
-    });
-  }
-
-  getTemp24h() {
-    this.batterieService.getTemp24h().subscribe({
-      next: (data) => this.handleChartData(data, '°C', 'Température'),
-      error: (error) => this.handleError(error),
-    });
-  }
-
-  getPower24h() {
-    this.batterieService.getPower24h().subscribe({
-      next: (data) => this.handleChartData(data, 'W', 'Puissance'),
-      error: (error) => this.handleError(error),
-    });
-  }
-
-  handleChartData(data: any[], unit: string, title: string) {
-    const chartData = data.map((item: any) => ({
+  handleChartData( unit: string, title: string) {
+    
+    const chartData = this.batterieData24h.map((item: any) => ({
       x: new Date(item.time).getTime(),
-      y: item.value,
+      y: item.battery_pourcent.value,
     }));
+    console.log(chartData)
 
     this.chartSeries = [
       {
@@ -203,5 +204,16 @@ export class BatterieGraphiqueComponent {
   handleError(error: any) {
     console.error('Erreur lors de la récupération des données:', error);
     this.isLoading = false;
+  }
+
+  private extractData() {
+    const sortedData = this.batterieData24h
+    .map((data) => ({
+      battery_pourcent: data.battery_pourcent,
+      battery_time: data.battery_time, // Assurez-vous que `battery_time` est un objet Date
+    }))
+    .sort((a, b) => a.battery_time.getTime() - b.battery_time.getTime()); // Trier par `battery_time`
+
+  // console.log(sortedData);
   }
 }

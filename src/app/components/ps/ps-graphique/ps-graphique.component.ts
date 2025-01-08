@@ -114,6 +114,7 @@ export class PsGraphiqueComponent {
           break;
         case 'Puissance':
           this.getPower24h();
+          console.log(this.getPower24h())
           break;
         default:
           console.error('Label inconnu:', this.selectedLabel);
@@ -138,12 +139,13 @@ export class PsGraphiqueComponent {
     
   getPower24h() {
         this.psService.getPowerData24H().subscribe({
-          next: (data) => this.handleChartData(data, 'W', 'Puissance'),
-          error: (error) => this.handleError(error),
+          next: (data) => this.handleChartData(data, 'W', 'Puissance')
+          
         });
   }
 
   handleChartData(data: any[], unit: string, title: string) {
+    console.log(data)
     const chartData = data.map((item: any) => ({
           x: new Date(item.time).getTime(),
           y: item.value,
@@ -185,5 +187,7 @@ export class PsGraphiqueComponent {
         console.error('Erreur lors de la récupération des données:', error);
         this.isLoading = false;
   }
+
+  
 
 }

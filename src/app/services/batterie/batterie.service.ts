@@ -7,20 +7,21 @@ import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class BatterieRealtimeService {
+export class BatterieService {
 
   private serveurUrl = environment.apiUrl
 
   constructor(private http: HttpClient) { }
 
   getBatterieData(): Observable<Batterie> {
-    return this.http.get<Batterie>(this.serveurUrl+"/batterie/batterie_realtime");
+    return this.http.get<Batterie>(this.serveurUrl+"/batterie/realtime");
   }
-
   getLastBatterieData(): Observable<Batterie> {
-    return this.http.get<Batterie>(this.serveurUrl+'/batterie/last_batterie_data');
+    return this.http.get<Batterie>(this.serveurUrl+'/batterie/last');
   }
-
+  getLast24h(): Observable<any>{
+    return this.http.get<any>(this.serveurUrl+"/batterie/last24h")
+  }
   getPourcent24h(): Observable<any>{
     return this.http.get<any>(this.serveurUrl+"/batterie/last24hPourcent")
   }
@@ -36,7 +37,5 @@ export class BatterieRealtimeService {
   getTemp24h(): Observable<any>{
     return this.http.get<any>(this.serveurUrl+"/batterie/last24hTemp")
   }
-
-  
   
 }

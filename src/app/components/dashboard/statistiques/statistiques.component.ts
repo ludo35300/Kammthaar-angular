@@ -18,20 +18,12 @@ export class StatistiquesComponent {
       { label: 'Consommés aujourd\'hui', value: 0, unit: 'kWh', max: 10 }
   ];
 
-  constructor(
-    private dashboardService: DashboardService
-  ){}
-
   ngOnChanges(){
     if(this.statistiquesData){
       this.updateGauges(this.statistiquesData);
       this.isLoading = false;
     }
-      
   }
-
-  
-
   // Mise à jour des jauges en fonction des données récupérées
   updateGauges(data: Statistiques): void {
     if (!data) return;

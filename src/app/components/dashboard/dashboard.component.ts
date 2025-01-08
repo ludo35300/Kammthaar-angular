@@ -17,7 +17,6 @@ export class DashboardComponent implements OnInit{
   isLoading = true;
   
   controllerData$: BehaviorSubject<Controller | null> = new BehaviorSubject<Controller | null>(null);
-  // controllerData: Controller | null = null;
   statistiquesData: Statistiques | null = null;
   systemInfo: any;
 
