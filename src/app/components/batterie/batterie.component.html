@@ -12,12 +12,12 @@
 
       <div class="row  g-4">
         <div class="col-12 col-sm-12 col-md-8 col-lg-8">
-          <app-batterie-data (labelSelected)="onLabelSelected($event)" [batterieData]="batterieData" ></app-batterie-data>
+          <app-batterie-data *ngIf="batterieData$ | async as batterieData" [batterieData]="batterieData" (labelSelected)="onLabelSelected($event)" ></app-batterie-data>
           <app-batterie-graphique [selectedLabel]="selectedLabel" ></app-batterie-graphique>
         </div>
         <div class="col-12 col-sm-12 col-md-4 col-lg-4">
-          <app-batterie-pourcentage [batterieData]="batterieData" (labelSelected)="onLabelSelected($event)"></app-batterie-pourcentage>
-          <app-batterie-temperature [batterieData]="batterieData" (labelSelected)="onLabelSelected($event)"></app-batterie-temperature>
+          <app-batterie-pourcentage *ngIf="batterieData$ | async as batterieData" [batterieData]="batterieData" (labelSelected)="onLabelSelected($event)"></app-batterie-pourcentage>
+          <app-batterie-temperature *ngIf="batterieData$ | async as batterieData" [batterieData]="batterieData" (labelSelected)="onLabelSelected($event)"></app-batterie-temperature>
           <!-- <app-batterie-status [isServerOnline]="isServerOnline"></app-batterie-status> -->
         </div>
       </div>

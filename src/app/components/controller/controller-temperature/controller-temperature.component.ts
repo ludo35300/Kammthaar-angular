@@ -23,7 +23,7 @@ export class ControllerTemperatureComponent {
   ngOnChanges(){
     // Si Kammthaar est en ligne on récupère les informations en temps réel
     if(this.controllerData){
-        this.controllerTemperature = this.controllerData.controller_temperature;
+        this.controllerTemperature = this.controllerData.temperature;
         this.isLoading = false;
     }
   }

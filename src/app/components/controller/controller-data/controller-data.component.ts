@@ -38,9 +38,9 @@ export class ControllerDataComponent {
   updateGauges(data: Controller): void {
     if (!data) return;
     this.gauges = [
-      { label: 'Voltage', value: data.controller_load_voltage || 0, unit: 'V', max: 24 },
-      { label: 'Ampérage', value: data.controller_load_amperage || 0, unit: 'A', max: 30 },
-      { label: 'Puissance', value: data.controller_load_power || 0, unit: 'W', max: 100 }
+      { label: 'Voltage', value: data.voltage || 0, unit: 'V', max: 24 },
+      { label: 'Ampérage', value: data.amperage || 0, unit: 'A', max: 30 },
+      { label: 'Puissance', value: data.power || 0, unit: 'W', max: 100 }
     ];
   }
 

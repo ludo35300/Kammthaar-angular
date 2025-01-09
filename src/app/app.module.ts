@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
 import { PsComponent } from './components/ps/ps.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { HeaderComponent } from './layout/header/header.component';
@@ -68,7 +68,10 @@ import { ParametresComponent } from './components/batterie-parametres/batterie/p
     NgApexchartsModule,
     NgbTooltipModule
   ],
-  providers: [provideHttpClient(), provideAnimationsAsync()],
+  providers: [
+    provideHttpClient(), 
+    provideAnimationsAsync()
+  ],
   bootstrap: [AppComponent]
   
 })

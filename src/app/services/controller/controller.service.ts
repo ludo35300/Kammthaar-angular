@@ -17,7 +17,7 @@ export class ControllerService {
   }
 
   getLastController(): Observable<Controller> {
-    return this.http.get<Controller>(this.serveurUrl+'/controller/last_controller_data');
+    return this.http.get<Controller>(this.serveurUrl+'/controller/last');
   }
 
   getAmperage24h(): Observable<any>{

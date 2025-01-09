@@ -25,7 +25,6 @@ export class BatterieDataComponent {
   ];
 
   ngOnChanges(){
-    console.log(this.batterieData)
     if(this.batterieData){
       this.updateGauges(this.batterieData);
       this.isLoading = false;

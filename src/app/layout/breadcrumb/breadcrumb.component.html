@@ -6,17 +6,17 @@
     <div class="float-end" >
       <!-- Gestion du décalage horaire entre le Raspberry et le serveur  -->
       <button class="btn btn-sm btn-alt-primary" *ngIf="controllerData && isServerOnline" disabled>
-          Le {{ controllerData.controller_date | date: 'dd/MM/yyyy à HH:mm':'GMT':'fr' }}
+          Le {{ controllerData.date | date: 'dd/MM/yyyy à HH:mm':'GMT':'fr' }}
       </button>
       <button class="btn btn-sm btn-alt-primary" *ngIf="controllerData && !isServerOnline" disabled>
-          Le {{ controllerData.controller_date | date: 'dd/MM/yyyy à HH:mm':'GMT+1':'fr' }}
+          Le {{ controllerData.date | date: 'dd/MM/yyyy à HH:mm':'GMT+1':'fr' }}
       </button>
 
       <button class="btn btn-sm btn-alt-primary etatJour"
-        [ngbTooltip]="controllerData?.controller_day_time ? 'Panneau actif' : 'Panneau inactif'" 
+        [ngbTooltip]="controllerData?.day_time ? 'Panneau actif' : 'Panneau inactif'" 
         placement="bottom">
-        <fa-icon class="ms-auto" *ngIf="controllerData?.controller_day_time" [icon]="faSun"  data-bs-toggle="tooltip" title="Panneau solaire actif"></fa-icon>
-        <fa-icon class="ms-auto" *ngIf="controllerData?.controller_night_time" [icon]="faMoon"  data-bs-toggle="tooltip" title="Panneau solaire inactif"></fa-icon>
+        <fa-icon class="ms-auto" *ngIf="controllerData?.day_time" [icon]="faSun"  data-bs-toggle="tooltip" title="Panneau solaire actif"></fa-icon>
+        <fa-icon class="ms-auto" *ngIf="controllerData?.night_time" [icon]="faMoon"  data-bs-toggle="tooltip" title="Panneau solaire inactif"></fa-icon>
       </button>
       
     </div>

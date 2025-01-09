@@ -114,7 +114,6 @@ export class PsGraphiqueComponent {
           break;
         case 'Puissance':
           this.getPower24h();
-          console.log(this.getPower24h())
           break;
         default:
           console.error('Label inconnu:', this.selectedLabel);
@@ -145,7 +144,6 @@ export class PsGraphiqueComponent {
   }
 
   handleChartData(data: any[], unit: string, title: string) {
-    console.log(data)
     const chartData = data.map((item: any) => ({
           x: new Date(item.time).getTime(),
           y: item.value,

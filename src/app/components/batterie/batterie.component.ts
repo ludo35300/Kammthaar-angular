@@ -15,10 +15,12 @@ import { BatterieService } from '../../services/batterie/batterie.service';
 })
 export class BatterieComponent implements OnInit{
   controllerData$: BehaviorSubject<Controller | null> = new BehaviorSubject<Controller | null>(null);
-  isServerOnline: boolean | null = null;
+  batterieData$: BehaviorSubject<Batterie | null> = new BehaviorSubject<Batterie | null>(null);
+
+  isServerOnline: boolean = false;
   isLoading: boolean = true;
 
-  batterieData: Batterie | null = null;
+  
 
   faCarBattery = faCarBattery;
   faSun = faSun;
@@ -34,19 +36,9 @@ export class BatterieComponent implements OnInit{
     private batterieService: BatterieService
   ){}
 
-  // ngOnInit(): void {
-  //   this.serveurService.checkServerStatus()
-  //   .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
-  //   .subscribe((status) => {
-  //     this.isServerOnline = status;
-  //     if (this.isServerOnline) {
-  //       this.getControllerRealtime();
-  //     } else {
-  //       this.getLastControllerData();
-  //     }
-  //   });
-  // }
   ngOnInit(): void {
+    this.getLastControllerData();
+    this.getLastBatterieData();  
     this.serveurService.checkServerStatus()
       .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
       .subscribe((status) => {
@@ -60,10 +52,11 @@ export class BatterieComponent implements OnInit{
                 }, 1000);
               }
             });
-        }else {
-            this.getLastControllerData();
-            this.getLastBatterieData();  
         }
+        // }else {
+        //     this.getLastControllerData();
+        //     this.getLastBatterieData();  
+        // }
       });
   }
 
@@ -89,7 +82,7 @@ export class BatterieComponent implements OnInit{
   getBatterieRealtime(){
     this.batterieService.getBatterieData().subscribe({
       next: (data) => {
-        this.batterieData = data;
+        this.batterieData$.next(data);
       },
     });
   }
@@ -97,7 +90,7 @@ export class BatterieComponent implements OnInit{
   getLastBatterieData(){
     this.batterieService.getLastBatterieData().subscribe({
       next: (data) => {
-        this.batterieData = data;
+        this.batterieData$.next(data);
       },
     });
   }

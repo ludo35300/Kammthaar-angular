@@ -27,24 +27,23 @@ export class ServeurService {
    * @returns Observable<boolean> représentant l'état du serveur
    */
   checkServerStatus(): Observable<boolean> {
-    return this.http.get(`${this.serveurUrl}/server/status`).pipe(
-      map(() => {
-        this.serverStatus.next(true);
-        return true;
+    return this.http.get<{ status: boolean }>(`${this.serveurUrl}/serveur/status`).pipe(
+      map((response) => {
+        this.serverStatus.next(response.status);
+        return response.status;
       }),
-      catchError((err) => {
+      catchError(() => {
         this.serverStatus.next(false);
         return of(false);
       })
     );
-    
   }
   /**
    * Récupère les informations système du serveur
    * @returns Observable<any> des données système
    */
   getSystemInfo(): Observable<any> {
-    return this.http.get(this.serveurUrl+'/server/infos_server');
+    return this.http.get(this.serveurUrl+'/serveur/infos');
   }
 
 }
