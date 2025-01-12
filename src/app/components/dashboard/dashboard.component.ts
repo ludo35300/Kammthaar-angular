@@ -17,7 +17,7 @@ export class DashboardComponent implements OnInit{
   isLoading = true;
   
   controllerData$: BehaviorSubject<Controller | null> = new BehaviorSubject<Controller | null>(null);
-  statistiquesData: Statistiques | null = null;
+  statistiquesData$: BehaviorSubject<Statistiques | null> = new BehaviorSubject<Statistiques | null>(null);
   systemInfo: any;
 
   faWarning = faWarning
@@ -36,6 +36,8 @@ export class DashboardComponent implements OnInit{
   ){}
 
   ngOnInit(): void {
+    this.getLastControllerData();
+    this.getLastStatistiques();
     this.serveurService.checkServerStatus()
         .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
         .subscribe((status) => {
@@ -86,24 +88,24 @@ export class DashboardComponent implements OnInit{
       next: (data) => (this.systemInfo = data)
     });
   }
-   // Colonnes affichées dans le tableau
-   displayedColumns: string[] = ['status', 'cpu_usage', 'memory_usage', 'disk_usage', 'temperature'];
-
+  // Colonnes affichées dans le tableau
+  displayedColumns: string[] = ['status', 'cpu_usage', 'memory_usage', 'disk_usage', 'temperature'];
 
    // On récupère les statistiques du MPPT en temps réel
   getStatistiquesRealtime(){
     this.dashboardService.getStatistiquesRealtimeData().subscribe({
       next: (data) => {
-        this.statistiquesData = data;
+        this.statistiquesData$.next(data);
+        this.isLoading = false;
       }
     });
   }
-
-  // On récupère les dernières statistiques enregistrées
+  // On récupère les dernières données du controlleur enregistrées
   getLastStatistiques(){
     this.dashboardService.getLastStatistiques().subscribe({
       next: (data) => {
-        this.statistiquesData = data;
+        this.statistiquesData$.next(data);
+        this.isLoading = false;
       }
     });
   }

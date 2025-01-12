@@ -12,9 +12,6 @@ export class BreadcrumbComponent {
   @Input() controllerData: Controller | null = null;
   @Input() breadcrumbs: { label: string, url?: string }[] = [];
   @Input() isServerOnline: boolean | null = null;
-
-  
-
   
   faSun = faSun;
   faMoon = faMoon;

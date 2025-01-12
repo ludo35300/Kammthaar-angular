@@ -17,7 +17,7 @@ export class BatterieParametresService {
   }
 
   getLastBatterieParametresData(): Observable<BatterieParametres> {
-    return this.http.get<BatterieParametres>(this.serveurUrl+'/batterie_parametres/last_batterie_parametres_data');
+    return this.http.get<BatterieParametres>(this.serveurUrl+'/batterie_parametres/last');
   }
 
 }

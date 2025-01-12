@@ -17,17 +17,17 @@ export class PsService {
     return this.http.get<Ps>(this.serveurUrl+"/ps/realtime");
   }
   getLastPsData(): Observable<Ps> {
-    return this.http.get<Ps>(this.serveurUrl+"/ps/last_ps_data");
+    return this.http.get<Ps>(this.serveurUrl+"/ps/last");
   }
 
-  getAmperageData24H(): Observable<any> {
-    return this.http.get<Ps>(this.serveurUrl+"/ps/last24hAmperage");
+  getAmperage24h(): Observable<any>{
+    return this.http.get<any>(this.serveurUrl+"/ps/last/24h/amperage")
   }
-  getVoltageData24H(): Observable<any> {
-    return this.http.get<Ps>(this.serveurUrl+"/ps/last24hVoltage");
+  getVoltage24h(): Observable<any>{
+    return this.http.get<any>(this.serveurUrl+"/ps/last/24h/voltage")
   }
-  getPowerData24H(): Observable<any> {
-    return this.http.get<Ps>(this.serveurUrl+"/ps/last24hPower");
+  getPower24h(): Observable<any>{
+    return this.http.get<any>(this.serveurUrl+"/ps/last/24h/power")
   }
 
 

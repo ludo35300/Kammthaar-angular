@@ -123,21 +123,21 @@ export class PsGraphiqueComponent {
   }
 
   getAmperage24h() {
-        this.psService.getAmperageData24H().subscribe({
+        this.psService.getAmperage24h().subscribe({
           next: (data) => this.handleChartData(data, 'A', 'Ampérage'),
           error: (error) => this.handleError(error),
         });
   }
     
   getVoltage24h() {
-        this.psService.getVoltageData24H().subscribe({
+        this.psService.getVoltage24h().subscribe({
           next: (data) => this.handleChartData(data, 'V', 'Voltage'),
           error: (error) => this.handleError(error),
         });
   }
     
   getPower24h() {
-        this.psService.getPowerData24H().subscribe({
+        this.psService.getPower24h().subscribe({
           next: (data) => this.handleChartData(data, 'W', 'Puissance')
           
         });

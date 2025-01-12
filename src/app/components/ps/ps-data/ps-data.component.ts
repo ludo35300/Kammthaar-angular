@@ -37,13 +37,13 @@ export class PsDataComponent {
     this.gauges.forEach((gauge) => {
       switch (gauge.dataKey) {
         case 'voltageData':
-          gauge.value = data.ps_voltage || 0;
+          gauge.value = data.voltage || 0;
           break;
         case 'amperageData':
-          gauge.value = data.ps_amperage || 0;
+          gauge.value = data.amperage || 0;
           break;
         case 'powerData':
-          gauge.value = data.ps_power || 0;
+          gauge.value = data.power || 0;
           break;
       }
     });

@@ -3,7 +3,7 @@ import { faArrowRight, faMoon, faSolarPanel, faSun } from '@fortawesome/free-sol
 import { ServeurService } from '../../services/serveur/serveur.service';
 import { ControllerService } from '../../services/controller/controller.service';
 import { Controller } from '../../modeles/controller';
-import { distinctUntilChanged } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged } from 'rxjs';
 import { PsService } from '../../services/ps/ps.service';
 import { Ps } from '../../modeles/ps';
 
@@ -14,12 +14,12 @@ import { Ps } from '../../modeles/ps';
   styleUrl: './ps.component.scss'
 })
 export class PsComponent {
+  controllerData$: BehaviorSubject<Controller | null> = new BehaviorSubject<Controller | null>(null);
+  psData$: BehaviorSubject<Ps | null> = new BehaviorSubject<Ps | null>(null);
+
   isServerOnline: boolean | null = null;
   selectedLabel: string  = "Voltage";
   isLoading = true;
-
-  controllerData: Controller | null = null;
-  psData: Ps | null = null
   
   faSolarPanel = faSolarPanel
   faSun = faSun
@@ -38,73 +38,61 @@ export class PsComponent {
   ){}
 
   ngOnInit(): void {
+    // on charge les données hors ligne pour eviter le temps d'attente
+    this.getLastControllerData();
+    this.getLastBatterieData(); 
+
     this.serveurService.checkServerStatus()
-    .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
-    .subscribe((status) => {
-      this.isServerOnline = status;
-      if (this.isServerOnline) {
-        this.getControllerRealtime();
-        setTimeout(() => {
-          this.getPsRealtime();
-        }, 1000);
-        
-      } else {
-        this.getLastControllerData();
-        this.getLastPsData();
-      }
-    });
+      .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
+      .subscribe((status) => {
+        this.isServerOnline = status;
+        if (this.isServerOnline) {
+          this.getControllerRealtime();
+          this.controllerData$.subscribe((data) => {
+            if (data) {
+              setTimeout(() => {  // Pause de 1 seconde avant d'exécuter getStatistiquesRealtime
+                this.getBatterieRealtime()
+              }, 1000);
+            }
+          });
+        }else {
+            this.getLastControllerData();
+            this.getLastBatterieData();  
+        }
+      });
   }
 
   // Récupération des infos du controller pour récupére la date
   getControllerRealtime(){
-      this.controllerService.getControllerRealtime().subscribe({
-        next: (data) => {
-          this.controllerData = data;
-          this.isLoading = false;
-        },
-        error: (error) => {
-          //console.error('Erreur lors de la récupération des données du controlleur MPPT:', error);
-          this.isLoading = false;
-        },
-      });
+    this.controllerService.getControllerRealtime().subscribe({
+      next: (data) => {
+        this.controllerData$.next(data);
+        this.isLoading = false;
+      }
+    });
   }
   // On récupère les dernières données du controlleur enregistrées
   getLastControllerData(){
-      this.controllerService.getLastController().subscribe({
-        next: (data) => {
-          this.controllerData = data;
-          this.isLoading = false;
-        },
-        error: () => {
-          this.isLoading = false;
-        },
-      });
+    this.controllerService.getLastController().subscribe({
+      next: (data) => {
+        this.controllerData$.next(data);
+        this.isLoading = false;
+      }
+    });
   }
-
-  getPsRealtime(){
-    // On récupere les données en temps réel du panneau solaire (Voltage, Ampérage & Power)
-    if(this.isServerOnline){
-      this.psService.getPsData().subscribe({
-        next: (data) => {
-          this.psData = data;
-        },
-        error: (error) => {
-          console.error('Erreur lors de la récupération des données du PS:', error);
-          this.isLoading = false;
-        },
-      });
-    }
+  // Récupération des infos de la batterie (date, jour/nuit) en temps réel
+  getBatterieRealtime(){
+    this.psService.getPsData().subscribe({
+      next: (data) => {
+        this.psData$.next(data);
+      },
+    });
   }
-
-  // On récupère les dernières statistiques enregistrées
-  getLastPsData(){
+  // On récupère les dernières données du controlleur enregistrées
+  getLastBatterieData(){
     this.psService.getLastPsData().subscribe({
       next: (data) => {
-        this.psData = data;
-      },
-      error: (error) => {
-        console.error('Erreur lors de la récupération des données de statistiques:', error);
-        this.isLoading = false;
+        this.psData$.next(data);
       },
     });
   }

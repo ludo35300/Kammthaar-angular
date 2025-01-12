@@ -15,25 +15,21 @@ export class ControllerService {
   getControllerRealtime(): Observable<Controller> {
     return this.http.get<Controller>(this.serveurUrl+'/controller/realtime');
   }
-
   getLastController(): Observable<Controller> {
     return this.http.get<Controller>(this.serveurUrl+'/controller/last');
   }
-
+  
   getAmperage24h(): Observable<any>{
-    return this.http.get<any>(this.serveurUrl+"/controller/last24hAmperage")
+    return this.http.get<any>(this.serveurUrl+"/controller/last/24h/amperage")
   }
-
   getVoltage24h(): Observable<any>{
-    return this.http.get<any>(this.serveurUrl+"/controller/last24hVoltage")
+    return this.http.get<any>(this.serveurUrl+"/controller/last/24h/voltage")
   }
-
   getPower24h(): Observable<any>{
-    return this.http.get<any>(this.serveurUrl+"/controller/last24hPower")
+    return this.http.get<any>(this.serveurUrl+"/controller/last/24h/power")
   }
-
   getTemperature24h(): Observable<any>{
-    return this.http.get<any>(this.serveurUrl+"/controller/last24hTemperature")
+    return this.http.get<any>(this.serveurUrl+"/controller/last/24h/temperature")
   }
   
 }

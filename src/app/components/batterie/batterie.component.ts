@@ -20,8 +20,6 @@ export class BatterieComponent implements OnInit{
   isServerOnline: boolean = false;
   isLoading: boolean = true;
 
-  
-
   faCarBattery = faCarBattery;
   faSun = faSun;
   selectedLabel: string  = "Pourcentage";
@@ -37,26 +35,27 @@ export class BatterieComponent implements OnInit{
   ){}
 
   ngOnInit(): void {
+    // on charge les données hors ligne pour eviter le temps d'attente
     this.getLastControllerData();
-    this.getLastBatterieData();  
+    this.getLastBatterieData(); 
+
     this.serveurService.checkServerStatus()
       .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
       .subscribe((status) => {
         this.isServerOnline = status;
         if (this.isServerOnline) {
-            this.getControllerRealtime();
-            this.controllerData$.subscribe((data) => {
-              if (data) {
-                setTimeout(() => {  // Pause de 1 seconde avant d'exécuter getStatistiquesRealtime
+          this.getControllerRealtime();
+          this.controllerData$.subscribe((data) => {
+            if (data) {
+              setTimeout(() => {  // Pause de 1 seconde avant d'exécuter getStatistiquesRealtime
                 this.getBatterieRealtime()
-                }, 1000);
-              }
-            });
+              }, 1000);
+            }
+          });
+        }else {
+            this.getLastControllerData();
+            this.getLastBatterieData();  
         }
-        // }else {
-        //     this.getLastControllerData();
-        //     this.getLastBatterieData();  
-        // }
       });
   }
 

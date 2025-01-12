@@ -14,8 +14,8 @@ export class ServeurService {
   serverStatus$ = this.serverStatus.asObservable();
   
   constructor(private http: HttpClient){
-    // On vérifie toutes les 30 secondes
-    interval(30000).subscribe(() => {
+    // On vérifie toutes les 60 secondes
+    interval(60000).subscribe(() => {
       this.checkServerStatus().subscribe((status) => {
         this.serverStatus.next(status);
       });

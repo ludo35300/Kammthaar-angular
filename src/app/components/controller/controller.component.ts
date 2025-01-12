@@ -3,7 +3,7 @@ import { Controller } from '../../modeles/controller';
 import { ControllerService } from '../../services/controller/controller.service';
 import { faSun, faMoon, faDumpster, faArrowRight  } from '@fortawesome/free-solid-svg-icons';
 import { ServeurService } from '../../services/serveur/serveur.service';
-import { distinctUntilChanged } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged } from 'rxjs';
 
 
 @Component({
@@ -12,9 +12,10 @@ import { distinctUntilChanged } from 'rxjs';
   styleUrl: './controller.component.scss'
 })
 export class ControllerComponent {
-  isServerOnline: boolean | null = null;
+  controllerData$: BehaviorSubject<Controller | null> = new BehaviorSubject<Controller | null>(null);
+
+  isServerOnline: boolean = false;
   selectedLabel: string | null = "Puissance";
-  controllerData: Controller | null = null;
 
   isLoading = true;
 
@@ -35,6 +36,8 @@ export class ControllerComponent {
     ){}
   
     ngOnInit(): void {
+      // on charge les données hors ligne pour eviter le temps d'attente
+      this.getLastControllerData();
       this.serveurService.checkServerStatus()
       .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
       .subscribe((status) => {
@@ -48,31 +51,23 @@ export class ControllerComponent {
     }
   
     // Récupération des infos du controller pour récupére la date
-    getControllerRealtime(){
-        this.controllerService.getControllerRealtime().subscribe({
-          next: (data) => {
-            this.controllerData = data;
-            this.isLoading = false;
-          },
-          error: (error) => {
-            //console.error('Erreur lors de la récupération des données du controlleur MPPT:', error);
-            this.isLoading = false;
-          },
-        });
-    }
-    // On récupère les dernières données du controlleur enregistrées
-    getLastControllerData(){
-        this.controllerService.getLastController().subscribe({
-          next: (data) => {
-            this.controllerData = data;
-            this.isLoading = false;
-          },
-          error: (error) => {
-            //console.error('Erreur lors de la récupération des dernières données du controlleur MPPT:', error);
-            this.isLoading = false;
-          },
-        });
-    }
+  getControllerRealtime(){
+    this.controllerService.getControllerRealtime().subscribe({
+      next: (data) => {
+        this.controllerData$.next(data);
+        this.isLoading = false;
+      }
+    });
+  }
+  // On récupère les dernières données du controlleur enregistrées
+  getLastControllerData(){
+    this.controllerService.getLastController().subscribe({
+      next: (data) => {
+        this.controllerData$.next(data);
+        this.isLoading = false;
+      }
+    });
+  }
 
     
 }
