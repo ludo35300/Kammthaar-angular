@@ -13,11 +13,11 @@ export class BatterieParametresService {
   constructor(private http: HttpClient) { }
 
   getBatterieParametresData(): Observable<BatterieParametres> {
-    return this.http.get<BatterieParametres>(this.serveurUrl+'/batterie_parametres/realtime');
+    return this.http.get<BatterieParametres>(this.serveurUrl+'/batterie/parametres/realtime');
   }
 
   getLastBatterieParametresData(): Observable<BatterieParametres> {
-    return this.http.get<BatterieParametres>(this.serveurUrl+'/batterie_parametres/last_batterie_parametres_data');
+    return this.http.get<BatterieParametres>(this.serveurUrl+'/batterie/parametres/last');
   }
 
 }

@@ -11,9 +11,9 @@ export class BreadcrumbComponent {
   @Input() title: string = 'Page Title';
   @Input() controllerData: Controller | null = null;
   @Input() breadcrumbs: { label: string, url?: string }[] = [];
-  @Input() isServerOnline: boolean | null = null;
-
+  @Input() isServerOnline: boolean = false;
   
   faSun = faSun;
   faMoon = faMoon;
+  
 }

@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Gauge, Ps } from '../../../modeles/ps';
-import { PsService } from '../../../services/ps/ps.service';
 import { faArrowRight, faBolt, faChartArea, faSun } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -9,17 +8,14 @@ import { faArrowRight, faBolt, faChartArea, faSun } from '@fortawesome/free-soli
   styleUrl: './ps-data.component.scss'
 })
 export class PsDataComponent {
-  @Input() isServerOnline: boolean | null = null;
   @Output() labelSelected = new EventEmitter<string>();
+  @Input() psData: Ps | null = null;
   isLoading = true;
-
-  psData: Ps | null = null;
 
   faArrowRight = faArrowRight;
   faSun = faSun;
   faBolt = faBolt;
   faChart = faChartArea;
-
 
   // Configuration des jauges
   gauges: Gauge[] = [
@@ -28,52 +24,11 @@ export class PsDataComponent {
     { label: 'Puissance', value: 0, unit: 'W', max: 500, dataKey: 'powerData', chartData: null }
   ];
 
-  constructor(
-    private psService: PsService
-  ){}
-
   ngOnChanges(): void {
-    // Si Kammthaar est en ligne on récupère les informations en temps réel
-    if(this.isServerOnline){
-      this.getPsRealtime();
-    // Sinon on récupère la derniere entrée enregistrée dans InfluxDB
-    }else{
-      this.getLastPsData();
+    if(this.psData){
+      this.updateGauges(this.psData);
+      this.isLoading = false;
     }
-  }
-    
-
-  
-  getPsRealtime(){
-    // On récupere les données en temps réel du panneau solaire (Voltage, Ampérage & Power)
-    if(this.isServerOnline){
-      this.psService.getPsData().subscribe({
-        next: (data) => {
-          this.psData = data;
-          this.updateGauges(data)
-          this.isLoading = false;
-        },
-        error: (error) => {
-          console.error('Erreur lors de la récupération des données du PS:', error);
-          this.isLoading = false;
-        },
-      });
-    }
-  }
-
-  // On récupère les dernières statistiques enregistrées
-  getLastPsData(){
-    this.psService.getLastPsData().subscribe({
-      next: (data) => {
-        this.psData = data;
-        this.updateGauges(data);
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('Erreur lors de la récupération des données de statistiques:', error);
-        this.isLoading = false;
-      },
-    });
   }
 
   // Mise à jour des jauges en fonction des données récupérées
@@ -82,13 +37,13 @@ export class PsDataComponent {
     this.gauges.forEach((gauge) => {
       switch (gauge.dataKey) {
         case 'voltageData':
-          gauge.value = data.ps_voltage || 0;
+          gauge.value = data.voltage || 0;
           break;
         case 'amperageData':
-          gauge.value = data.ps_amperage || 0;
+          gauge.value = data.amperage || 0;
           break;
         case 'powerData':
-          gauge.value = data.ps_power || 0;
+          gauge.value = data.power || 0;
           break;
       }
     });
@@ -98,6 +53,5 @@ export class PsDataComponent {
   onViewGraph(label: string) {
     this.labelSelected.emit(label);
   }
-    
 
 }

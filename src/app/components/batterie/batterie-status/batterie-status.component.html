@@ -79,7 +79,10 @@
         <div class="col-12">
             <!-- Contenu texte -->
             <div class="card-body text-center">
-                <a class="custom-link btn btn-alt-primary" >
+                <a routerLink="/batterie/parametres"
+                    [routerLinkActive]="['is-active']"  
+                    class="custom-link btn btn-alt-primary" 
+                >
                     <fa-icon [icon]="faCog"></fa-icon> &nbsp;Paramètres de la Batterie
                 </a>
             </div>

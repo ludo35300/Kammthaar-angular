@@ -1,27 +1,26 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BatterieDataComponent } from './batterie-data.component';
 import { provideHttpClient } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { BatterieParametresComponent } from '../batterie-parametres.component';
 import { BatterieService } from '../../../services/batterie/batterie.service';
 
-describe('BatterieDataComponent', () => {
-  let component: BatterieDataComponent;
-  let fixture: ComponentFixture<BatterieDataComponent>;
+describe('BatterieParametresComponent', () => {
+  let component: BatterieParametresComponent;
+  let fixture: ComponentFixture<BatterieParametresComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BatterieDataComponent],
+      declarations: [BatterieParametresComponent],
       providers: [
               provideHttpClient(), // Fournit HttpClient
               BatterieService,           // Fournit PsService
             ],
-      imports: [FontAwesomeModule, NgbTooltipModule]
+      imports:[FontAwesomeModule]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(BatterieDataComponent);
+    fixture = TestBed.createComponent(BatterieParametresComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

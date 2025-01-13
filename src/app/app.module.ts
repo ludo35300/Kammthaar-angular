@@ -13,7 +13,6 @@ import { ControllerComponent } from './components/controller/controller.componen
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BatterieComponent } from './components/batterie/batterie.component';
 import { NgApexchartsModule } from "ng-apexcharts";
-import { BatterieParametresComponent } from './components/batterie/batterie-parametres/batterie-parametres.component';
 import { BatterieDataComponent } from './components/batterie/batterie-data/batterie-data.component';
 import { ControllerDataComponent } from './components/controller/controller-data/controller-data.component';
 import { PsDataComponent } from './components/ps/ps-data/ps-data.component';
@@ -31,6 +30,9 @@ import { BatterieStatusComponent } from './components/batterie/batterie-status/b
 import { BatterieTemperatureComponent } from './components/batterie/batterie-temperature/batterie-temperature.component';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { ControllerTemperatureComponent } from './components/controller/controller-temperature/controller-temperature.component';
+import { BatterieParametresComponent } from './components/batterie-parametres/batterie-parametres.component';
+import { ParametresComponent } from './components/batterie-parametres/batterie/parametres.component';
+import { ConsommationComponent } from './components/consommation/consommation.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,6 @@ import { ControllerTemperatureComponent } from './components/controller/controll
     DashboardComponent,
     ControllerComponent,
     BatterieComponent,
-    BatterieParametresComponent,
     BatterieDataComponent,
     ControllerDataComponent,
     PsDataComponent,
@@ -56,6 +57,9 @@ import { ControllerTemperatureComponent } from './components/controller/controll
     BatterieTemperatureComponent,
     SidebarComponent,
     ControllerTemperatureComponent,
+    BatterieParametresComponent,
+    ParametresComponent,
+    ConsommationComponent
   ],
   imports: [
     NgOptimizedImage,
@@ -64,10 +68,12 @@ import { ControllerTemperatureComponent } from './components/controller/controll
     NgxGaugeModule,
     FontAwesomeModule,
     NgApexchartsModule,
-    NgbTooltipModule,
-    
+    NgbTooltipModule
   ],
-  providers: [provideHttpClient(), provideAnimationsAsync()],
+  providers: [
+    provideHttpClient(), 
+    provideAnimationsAsync()
+  ],
   bootstrap: [AppComponent]
   
 })

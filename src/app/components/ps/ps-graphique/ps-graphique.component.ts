@@ -100,64 +100,63 @@ export class PsGraphiqueComponent {
           }
         },
       };
-    }
+  }
 
-    ngOnChanges(changes: SimpleChanges): void {
-        this.isLoading = true;
-    
-        if (changes['selectedLabel'] && this.selectedLabel) {
-          switch (this.selectedLabel) {
-            case 'Ampérage':
-              this.getAmperage24h();
-              break;
-            case 'Voltage':
-              this.getVoltage24h();
-              break;
-            case 'Puissance':
-              this.getPower24h();
-              break;
-            default:
-              console.error('Label inconnu:', this.selectedLabel);
-              this.isLoading = false;
-          }
-        }
+  ngOnChanges(changes: SimpleChanges): void {
+    this.isLoading = true;
+    if (changes['selectedLabel'] && this.selectedLabel) {
+      switch (this.selectedLabel) {
+        case 'Ampérage':
+          this.getAmperage24h();
+          break;
+        case 'Voltage':
+          this.getVoltage24h();
+          break;
+        case 'Puissance':
+          this.getPower24h();
+          break;
+        default:
+          console.error('Label inconnu:', this.selectedLabel);
+        this.isLoading = false;
       }
+    }
+  }
 
-      getAmperage24h() {
-        this.psService.getAmperageData24H().subscribe({
+  getAmperage24h() {
+        this.psService.getAmperage24h().subscribe({
           next: (data) => this.handleChartData(data, 'A', 'Ampérage'),
           error: (error) => this.handleError(error),
         });
-      }
+  }
     
-      getVoltage24h() {
-        this.psService.getVoltageData24H().subscribe({
+  getVoltage24h() {
+        this.psService.getVoltage24h().subscribe({
           next: (data) => this.handleChartData(data, 'V', 'Voltage'),
           error: (error) => this.handleError(error),
         });
-      }
+  }
     
-      getPower24h() {
-        this.psService.getPowerData24H().subscribe({
-          next: (data) => this.handleChartData(data, 'W', 'Puissance'),
-          error: (error) => this.handleError(error),
+  getPower24h() {
+        this.psService.getPower24h().subscribe({
+          next: (data) => this.handleChartData(data, 'W', 'Puissance')
+          
         });
-      }
+  }
 
-      handleChartData(data: any[], unit: string, title: string) {
-        const chartData = data.map((item: any) => ({
+  handleChartData(data: any[], unit: string, title: string) {
+    const chartData = data.map((item: any) => ({
           x: new Date(item.time).getTime(),
           y: item.value,
-        }));
+    }));
     
-        this.chartSeries = [
-          {
-            name: title,
-            data: chartData,
-          },
-        ];
+    this.chartSeries = [
+      {
+        name: title,
+        data: chartData,
+      },
+    ];
     
-        this.chartOptions = {
+    this.chartOptions = {
           ...this.chartOptions,
           apexTooltip: {
             ...this.chartOptions.apexTooltip,
@@ -175,15 +174,18 @@ export class PsGraphiqueComponent {
               color:  '#5A5A5A'
             },
           },
-        };
-        this.isLoading = false;
+    };
+
+    this.isLoading = false;
     
         
-      }
+  }
     
-      handleError(error: any) {
+  handleError(error: any) {
         console.error('Erreur lors de la récupération des données:', error);
         this.isLoading = false;
-      }
+  }
+
+  
 
 }

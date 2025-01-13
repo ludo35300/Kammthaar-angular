@@ -1,8 +1,8 @@
 export interface Ps {
-    ps_voltage: number;
-    ps_amperage: number;
-    ps_power: number;
-    ps_date: Date;
+    voltage: number;
+    amperage: number;
+    power: number;
+    date: Date;
 }
 
 export interface Gauge{

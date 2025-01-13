@@ -9,17 +9,19 @@ import { environment } from '../../../environments/environment';
 export class ServeurService {
 
   private serveurUrl = environment.apiUrl
-  private serverStatus = new BehaviorSubject<boolean | null>(null); // État initial
+  private serverStatus = new BehaviorSubject<boolean>(false); // État initial
    // Observable pour écouter l'état
   serverStatus$ = this.serverStatus.asObservable();
   
   constructor(private http: HttpClient){
-    // On vérifie toutes les 30 secondes
-    interval(30000).subscribe(() => {
-      this.checkServerStatus().subscribe((status) => {
-        this.serverStatus.next(status);
-      });
+    // On vérifie toutes les 60 secondes
+    interval(60000).subscribe(() => {
+      this.checkServerStatus().subscribe();
     });
+  }
+
+  getServerStatus(): Observable<boolean> {
+    return this.serverStatus.asObservable();
   }
 
   /**
@@ -27,27 +29,28 @@ export class ServeurService {
    * @returns Observable<boolean> représentant l'état du serveur
    */
   checkServerStatus(): Observable<boolean> {
-    return this.http.get(`${this.serveurUrl}/server/status`).pipe(
-      map(() => {
-        this.serverStatus.next(true);
-        return true;
+    return this.http.get<{ status: boolean }>(`${this.serveurUrl}/serveur/status`).pipe(
+      map((response) => {
+        const status = response.status;
+        if (this.serverStatus.value !== status) { // Évite d'émettre si le statut est le même
+          this.serverStatus.next(status);
+        }
+        return status;
       }),
-      catchError((err) => {
-        this.serverStatus.next(false);
+      catchError(() => {
+        if (this.serverStatus.value !== false) { // Évite d'émettre si déjà à `false`
+          this.serverStatus.next(false);
+        }
         return of(false);
       })
     );
-    
   }
-  
-  
-
   /**
    * Récupère les informations système du serveur
    * @returns Observable<any> des données système
    */
   getSystemInfo(): Observable<any> {
-    return this.http.get(this.serveurUrl+'/server/infos_server');
+    return this.http.get(this.serveurUrl+'/serveur/infos');
   }
 
 }

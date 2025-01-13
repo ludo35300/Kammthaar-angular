@@ -1,18 +1,18 @@
 import { TestBed } from '@angular/core/testing';
-import { BatterieRealtimeService } from './batterie-realtime.service';
+import { BatterieService } from './batterie.service';
 import { provideHttpClient } from '@angular/common/http';
 
 describe('BatterieRealtimeService', () => {
-  let service: BatterieRealtimeService;
+  let service: BatterieService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         provideHttpClient(),
-        BatterieRealtimeService
+        BatterieService
       ],
     });
-    service = TestBed.inject(BatterieRealtimeService);
+    service = TestBed.inject(BatterieService);
   });
 
   it('should be created', () => {

@@ -1,5 +1,5 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
-import { BatterieRealtimeService } from '../../../services/batterie/batterie-realtime.service';
+import { BatterieService } from '../../../services/batterie/batterie.service';
 import {
   ApexAxisChartSeries,
   ApexChart,
@@ -12,6 +12,7 @@ import {
   ApexGrid,
 } from 'ng-apexcharts';
 import { faSun } from '@fortawesome/free-solid-svg-icons';
+import { Batterie } from '../../../modeles/batterie';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -33,6 +34,7 @@ export type ChartOptions = {
 })
 export class BatterieGraphiqueComponent {
   @Input() selectedLabel: string = "Pourcentage";
+  @Input() batterieData24h : Batterie[] = [];
 
   // Propriétés utilisées dans le HTML pour apx-chart
   chartSeries: ApexAxisChartSeries = [];
@@ -41,7 +43,7 @@ export class BatterieGraphiqueComponent {
   isLoading = true;
   faSun = faSun;
 
-  constructor(private batterieService: BatterieRealtimeService) {
+  constructor(private batterieService: BatterieService) {
     // Configuration de base du graphique
     this.isLoading = true;
     this.chartOptions = {

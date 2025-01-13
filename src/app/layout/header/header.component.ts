@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { faBars, faCarBattery, faCheck, faChevronDown, faDumpster, faLocationArrow, faSolarPanel, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { ServeurService } from '../../services/serveur/serveur.service';
 import { TITLE } from '../../constantes';
+import { distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -10,10 +11,8 @@ import { TITLE } from '../../constantes';
 })
 export class HeaderComponent {
   @Output() toggleSidebar = new EventEmitter<void>();
+  @Input() isServerOnline: boolean | null = null;
   isSidebarOpen = true; // Par défaut, la sidebar est ouverte
-
-  
-  isServerOnline: boolean | null = null;
   title = TITLE
   faCheck = faCheck
   faXmark = faXmark
@@ -24,16 +23,19 @@ export class HeaderComponent {
   faLocationArrow = faLocationArrow
   faChevronDown = faChevronDown
   faBars = faBars
-  
 
-  constructor(private serveurService: ServeurService){}
+  constructor(
+    private serveurService: ServeurService
+  ){}
 
-  ngOnInit() {
-    // Vérification si le serveur est connecté à Internet ou pas
-    this.serveurService.serverStatus$.subscribe((status) => {
-      if (status !== this.isServerOnline) {
-         this.isServerOnline = status;
-      }
-    });
+  ngOnInit(): void {
+    this.serveurService.getServerStatus()
+      .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
+      .subscribe((status) => {
+          this.isServerOnline = status;
+      });
   }
+  
 }
+
+

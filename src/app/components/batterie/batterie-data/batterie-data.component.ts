@@ -1,19 +1,16 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Batterie } from '../../../modeles/batterie';
-import { BatterieRealtimeService } from '../../../services/batterie/batterie-realtime.service';
 import { faBolt, faCarBattery, faChartArea, faSun } from '@fortawesome/free-solid-svg-icons';
+import { BatterieService } from '../../../services/batterie/batterie.service';
 @Component({
   selector: 'app-batterie-data',
   templateUrl: './batterie-data.component.html',
   styleUrl: './batterie-data.component.scss'
 })
 export class BatterieDataComponent {
-  @Input() isServerOnline!: boolean | null;
+  @Input() batterieData: Batterie | null = null;
   @Output() labelSelected = new EventEmitter<string>();
   isLoading = true;
-
-  batterieData: Batterie | null = null;
-  lastBatterieData: Batterie | null = null;
 
   faCarBattery = faCarBattery
   faBolt = faBolt
@@ -27,56 +24,12 @@ export class BatterieDataComponent {
     { label: 'Puissance', value: 0, unit: 'W', max: 500 },
   ];
 
-  constructor(
-    private batterieService: BatterieRealtimeService
-  ){}
-
-  ngOnInit(){
-      // Si Kammthaar est en ligne on récupère les informations en temps réel
-      if(this.isServerOnline){
-        this.getBatterieRealtime();
-      // Sinon on récupère la derniere entrée enregistrée dans InfluxDB
-      }else{
-        this.getLastBatterieData();
-      }
-  }
-
-    
-
-  // Récupération des infos de la batterie (date, jour/nuit) en temps réel
-  getBatterieRealtime(){
-    if(this.isServerOnline){
-      this.batterieService.getBatterieData().subscribe({
-        next: (data) => {
-          this.batterieData = data;
-          this.updateGauges(data);
-          this.isLoading = false;
-        },
-        error: (error) => {
-          console.error('Erreur lors de la récupération des données la batterie:', error);
-          this.isLoading = false;
-        },
-      });
+  ngOnChanges(){
+    if(this.batterieData){
+      this.updateGauges(this.batterieData);
+      this.isLoading = false;
     }
   }
-  
-  // On récupère les dernières données du controlleur enregistrées
-  getLastBatterieData(){
-    if(!this.isServerOnline){
-      this.batterieService.getLastBatterieData().subscribe({
-        next: (data) => {
-          this.batterieData = data;
-          this.updateGauges(data);
-          this.isLoading = false;
-        },
-        error: (error) => {
-          console.error('Erreur lors de la récupération des dernières données de la batterie:', error);
-          this.isLoading = false;
-        },
-      });
-    }
-  }
-
 
   // Mise à jour des jauges en fonction des données récupérées
   updateGauges(data: Batterie): void {

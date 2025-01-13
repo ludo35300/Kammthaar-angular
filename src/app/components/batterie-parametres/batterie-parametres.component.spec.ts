@@ -1,9 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BatterieParametresComponent } from './batterie-parametres.component';
-import { BatterieRealtimeService } from '../../../services/batterie/batterie-realtime.service';
+import { ServeurService } from '../../services/serveur/serveur.service';
 import { provideHttpClient } from '@angular/common/http';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 describe('BatterieParametresComponent', () => {
   let component: BatterieParametresComponent;
@@ -13,10 +12,9 @@ describe('BatterieParametresComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [BatterieParametresComponent],
       providers: [
-              provideHttpClient(), // Fournit HttpClient
-              BatterieRealtimeService,           // Fournit PsService
-            ],
-      imports:[FontAwesomeModule]
+        provideHttpClient(), // Fournit HttpClient
+        ServeurService,           // Fournit PsService
+      ],
     })
     .compileComponents();
 

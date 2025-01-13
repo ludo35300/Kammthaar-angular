@@ -7,36 +7,33 @@ import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class BatterieRealtimeService {
+export class BatterieService {
 
   private serveurUrl = environment.apiUrl
 
   constructor(private http: HttpClient) { }
 
   getBatterieData(): Observable<Batterie> {
-    return this.http.get<Batterie>(this.serveurUrl+"/batterie/batterie_realtime");
+    return this.http.get<Batterie>(this.serveurUrl+"/batterie/realtime");
   }
-
   getLastBatterieData(): Observable<Batterie> {
-    return this.http.get<Batterie>(this.serveurUrl+'/batterie/last_batterie_data');
+    return this.http.get<Batterie>(this.serveurUrl+'/batterie/last');
   }
-
+  
   getPourcent24h(): Observable<any>{
-    return this.http.get<any>(this.serveurUrl+"/batterie/last24hPourcent")
+    return this.http.get<any>(this.serveurUrl+"/batterie/last/24h/battery_pourcent")
   }
   getAmperage24h(): Observable<any>{
-    return this.http.get<any>(this.serveurUrl+"/batterie/last24hAmperage")
+    return this.http.get<any>(this.serveurUrl+"/batterie/last/24h/battery_amperage")
   }
   getVoltage24h(): Observable<any>{
-    return this.http.get<any>(this.serveurUrl+"/batterie/last24hVoltage")
+    return this.http.get<any>(this.serveurUrl+"/batterie/last/24h/battery_voltage")
   }
   getPower24h(): Observable<any>{
-    return this.http.get<any>(this.serveurUrl+"/batterie/last24hPower")
+    return this.http.get<any>(this.serveurUrl+"/batterie/last/24h/battery_power")
   }
   getTemp24h(): Observable<any>{
-    return this.http.get<any>(this.serveurUrl+"/batterie/last24hTemp")
+    return this.http.get<any>(this.serveurUrl+"/batterie/last/24h/battery_temp")
   }
-
-  
   
 }
