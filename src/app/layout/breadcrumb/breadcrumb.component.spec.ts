@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { BreadcrumbComponent } from './breadcrumb.component';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 describe('BreadcrumbComponent', () => {
   let component: BreadcrumbComponent;
@@ -8,6 +8,7 @@ describe('BreadcrumbComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [NgbTooltipModule],
       declarations: [BreadcrumbComponent]
     })
     .compileComponents();
