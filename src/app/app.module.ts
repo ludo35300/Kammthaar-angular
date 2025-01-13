@@ -32,7 +32,7 @@ import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { ControllerTemperatureComponent } from './components/controller/controller-temperature/controller-temperature.component';
 import { BatterieParametresComponent } from './components/batterie-parametres/batterie-parametres.component';
 import { ParametresComponent } from './components/batterie-parametres/batterie/parametres.component';
-import { AdjustTimePipe } from './pipes/adjust-time.pipe';
+import { ConsommationComponent } from './components/consommation/consommation.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +59,7 @@ import { AdjustTimePipe } from './pipes/adjust-time.pipe';
     ControllerTemperatureComponent,
     BatterieParametresComponent,
     ParametresComponent,
-    AdjustTimePipe
+    ConsommationComponent
   ],
   imports: [
     NgOptimizedImage,

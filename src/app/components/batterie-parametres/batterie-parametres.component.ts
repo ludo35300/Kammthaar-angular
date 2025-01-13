@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BehaviorSubject, distinctUntilChanged } from 'rxjs';
+import { BehaviorSubject, concatMap, distinctUntilChanged, map, Observable, timer } from 'rxjs';
 import { ControllerService } from '../../services/controller/controller.service';
 import { ServeurService } from '../../services/serveur/serveur.service';
 import { Controller } from '../../modeles/controller';
@@ -15,7 +15,7 @@ export class BatterieParametresComponent {
   controllerData$: BehaviorSubject<Controller | null> = new BehaviorSubject<Controller | null>(null);
   batterieParametresData$: BehaviorSubject<BatterieParametres | null> = new BehaviorSubject<BatterieParametres | null>(null);
 
-  isServerOnline: boolean | null = null;
+  isServerOnline: boolean = false;
   isLoading: boolean = true;
 
   controllerData: Controller | null = null;
@@ -24,40 +24,48 @@ export class BatterieParametresComponent {
       private serveurService: ServeurService,
       private controllerService: ControllerService,
       private batterieParametresService: BatterieParametresService
-    ){}
+  ){}
 
-    ngOnInit(): void {
-      this.getLastControllerData();
-      this.getLastBatterieParametresData();
+  ngOnInit(): void {
+    this.getLastControllerData();
+    this.getLastBatterieParametresData();
       
-      this.serveurService.checkServerStatus()
-        .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
-        .subscribe((status) => {
-          this.isServerOnline = status;
-          if (this.isServerOnline) {
-            this.getControllerRealtime();
-            this.controllerData$.subscribe((data) => {
-              if (data) {
-                setTimeout(() => {  // Pause de 1 seconde avant d'exécuter getStatistiquesRealtime
-                  this.getBatterieParametresRealtime()
-                }, 1000);
-              }
-            });
-          }else {
-              this.getLastControllerData();
-              this.getLastBatterieParametresData();  
-          }
-        });
-    }
+    this.serveurService.checkServerStatus()
+      .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
+      .subscribe((status) => {
+        this.isServerOnline = status;
+        if (this.isServerOnline) {
+          this.fetchRealtimeData();
+        }else {
+            this.getLastControllerData();
+            this.getLastBatterieParametresData();  
+        }
+      });
+  }
+  // Requêtes en temps réel avec une pause de 1 seconde entre elles
+  fetchRealtimeData() {
+    const realtimeRequests = [
+      () => this.getControllerRealtime(),
+      () => this.getBatterieParametresRealtime()
+    ];
+      
+    realtimeRequests.reduce((chain, request) => {
+      return chain.pipe(
+        concatMap(() => request()), // Exécuter chaque requête séquentiellement
+        concatMap(() => timer(1000)) // Ajouter une pause de 1 seconde
+      );
+    }, timer(0)).subscribe();
+  }
   
-    // Récupération des infos du controller pour récupére la date
-  getControllerRealtime(){
-    this.controllerService.getControllerRealtime().subscribe({
-      next: (data) => {
-        this.controllerData$.next(data);
+  // Récupération des infos du controller pour récupére la date
+  getControllerRealtime(): Observable<Controller> {
+    return this.controllerService.getControllerRealtime().pipe(
+      map((data) => {
+        this.controllerData$.next(data); // Mettre à jour via BehaviorSubject
         this.isLoading = false;
-      }
-    });
+        return data;
+      })
+    );
   }
   // On récupère les dernières données du controlleur enregistrées
   getLastControllerData(){
@@ -68,14 +76,14 @@ export class BatterieParametresComponent {
       }
     });
   }
-
-    // Récupération des infos de la batterie (date, jour/nuit) en temps réel
-  getBatterieParametresRealtime(){
-    this.batterieParametresService.getBatterieParametresData().subscribe({
-      next: (data) => {
-        this.batterieParametresData$.next(data);
-      },
-    });
+  
+  getBatterieParametresRealtime(): Observable<BatterieParametres> {
+    return this.batterieParametresService.getBatterieParametresData().pipe(
+      map((data) => {
+        this.batterieParametresData$.next(data); // Mettre à jour via BehaviorSubject
+        return data;
+      })
+    );
   }
   // On récupère les dernières données du controlleur enregistrées
   getLastBatterieParametresData(){

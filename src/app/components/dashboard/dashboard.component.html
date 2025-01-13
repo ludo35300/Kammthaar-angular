@@ -8,7 +8,7 @@
     </div>
 
     <div *ngIf="!isLoading">
-      <app-breadcrumb *ngIf="controllerData$ | async as controllerData" [title]="'Dashboard'" [controllerData]="controllerData"></app-breadcrumb>
+      <app-breadcrumb *ngIf="controllerData$ | async as controllerData" [title]="'Dashboard'" [controllerData]="controllerData" [isServerOnline]="isServerOnline"></app-breadcrumb>
       <app-bienvenue  *ngIf="statistiquesData$ | async as statistiquesData" [statistiquesData]="statistiquesData"></app-bienvenue>
       <div class="row  g-4">
         

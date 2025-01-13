@@ -54,31 +54,30 @@ export class BatterieComponent implements OnInit{
   }
 
   // Requêtes en temps réel avec une pause de 1 seconde entre elles
-    fetchRealtimeData() {
-      const realtimeRequests = [
-        () => this.getControllerRealtime(),
-        () => this.getBatterieRealtime(),
-        () => this.getStatusRealtime()
-      ];
+  fetchRealtimeData() {
+    const realtimeRequests = [
+      () => this.getControllerRealtime(),
+      () => this.getBatterieRealtime(),
+      () => this.getStatusRealtime()
+    ];
   
-      realtimeRequests.reduce((chain, request) => {
-        return chain.pipe(
-          concatMap(() => request()), // Exécuter chaque requête séquentiellement
-          concatMap(() => timer(1000)) // Ajouter une pause de 1 seconde
-        );
-      }, timer(0)).subscribe();
-    }
+    realtimeRequests.reduce((chain, request) => {
+      return chain.pipe(
+        concatMap(() => request()), // Exécuter chaque requête séquentiellement
+        concatMap(() => timer(1000)) // Ajouter une pause de 1 seconde
+      );
+    }, timer(0)).subscribe();
+  }
 
   // Récupération des infos du controller pour récupére la date
-  
   getControllerRealtime(): Observable<Controller> {
-      return this.controllerService.getControllerRealtime().pipe(
-        map((data) => {
-          this.controllerData$.next(data); // Mettre à jour via BehaviorSubject
-          this.isLoading = false;
-          return data;
-        })
-      );
+    return this.controllerService.getControllerRealtime().pipe(
+      map((data) => {
+        this.controllerData$.next(data); // Mettre à jour via BehaviorSubject
+        this.isLoading = false;
+        return data;
+      })
+    );
   }
   // On récupère les dernières données du controlleur enregistrées
   getLastControllerData(){

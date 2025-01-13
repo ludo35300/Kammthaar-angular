@@ -14,7 +14,7 @@ import { Raspberry } from '../../modeles/server_infos';
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements OnInit{
-  isServerOnline: boolean | null = null;
+  isServerOnline: boolean = false;
   isLoading = true;
   
   controllerData$: BehaviorSubject<Controller | null> = new BehaviorSubject<Controller | null>(null);
@@ -43,6 +43,7 @@ export class DashboardComponent implements OnInit{
     this.serveurService.getServerStatus()
         .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
         .subscribe((status) => {
+          
           this.isServerOnline = status;
           if (this.isServerOnline) {
             this.fetchRealtimeData();

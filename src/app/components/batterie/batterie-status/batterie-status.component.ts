@@ -49,11 +49,11 @@ export class BatterieStatusComponent {
     switch (status.toUpperCase()) {
       case 'NORMAL':
         return 'badge bg-success';
-      case 'OVERVOLT':
-      case 'OVER TEMP':
+      case 'OVER_VOLT':
+      case 'OVER_TEMP':
       case 'LOW TEMP':
         return 'badge bg-warning';
-      case 'UNDERVOLT':
+      case 'UNDER_VOLTAGE':
       case 'LOW VOLT DISCONNECT':
       case 'FAULT':
         return 'badge bg-danger';

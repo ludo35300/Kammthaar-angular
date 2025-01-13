@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { faCheck, faXmark, faUser, faCarBattery, faDumpster, faSolarPanel, faLocationArrow, faChevronDown, faBars, faChevronRight, faInfoCircle, faCogs } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faXmark, faUser, faCarBattery, faDumpster, faSolarPanel, faLocationArrow, faChevronDown, faBars, faChevronRight, faInfoCircle, faCogs, faPlugCircleMinus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-sidebar',
@@ -19,6 +19,7 @@ export class SidebarComponent {
   faDumpster = faDumpster
   faSolarPanel = faSolarPanel
   faLocationArrow = faLocationArrow
+  faPlugCircleMinus = faPlugCircleMinus
   faChevronDown = faChevronDown
   faBars = faBars
   faInfoCircle = faInfoCircle
