@@ -17,6 +17,6 @@ export class DashboardService {
   }
 
   getLastStatistiques(): Observable<Statistiques> {
-    return this.http.get<Statistiques>(this.serveurUrl+'/statistiques/last_statistiques');
+    return this.http.get<Statistiques>(this.serveurUrl+'/statistiques/last');
   }
 }

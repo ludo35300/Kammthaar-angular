@@ -7,7 +7,3 @@ export interface Batterie {
     battery_time: Date;
 }
 
-export interface Amperage24h {
-    battery_amperage: number;
-    battery_time: Date;
-}

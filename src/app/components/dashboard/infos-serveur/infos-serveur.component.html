@@ -7,12 +7,10 @@
                 <!-- Contenu texte -->
                   <div class="card-body">
   
-                    <h5>
-                        Informations du serveur
-                    </h5>
+                    <h5>Informations du Raspberry Pi</h5>
                     
                     <p *ngIf="isServerOnline" class="system-infos">
-                        Le serveur est connecté
+                        Le Raspberry est connecté
                         <fa-icon [icon]="faCheck" class="float-end text-success"></fa-icon> 
                     </p>
                     <p *ngIf="!isServerOnline" class="system-infos">

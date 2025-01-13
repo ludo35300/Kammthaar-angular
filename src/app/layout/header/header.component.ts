@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { faBars, faCarBattery, faCheck, faChevronDown, faDumpster, faLocationArrow, faSolarPanel, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { ServeurService } from '../../services/serveur/serveur.service';
 import { TITLE } from '../../constantes';
+import { distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -22,5 +23,19 @@ export class HeaderComponent {
   faLocationArrow = faLocationArrow
   faChevronDown = faChevronDown
   faBars = faBars
+
+  constructor(
+    private serveurService: ServeurService
+  ){}
+
+  ngOnInit(): void {
+    this.serveurService.getServerStatus()
+      .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
+      .subscribe((status) => {
+          this.isServerOnline = status;
+      });
+  }
   
 }
+
+

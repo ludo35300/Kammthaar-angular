@@ -11,12 +11,13 @@
       <app-breadcrumb *ngIf="controllerData$ | async as controllerData" [title]="'Dashboard'" [controllerData]="controllerData"></app-breadcrumb>
       <app-bienvenue  *ngIf="statistiquesData$ | async as statistiquesData" [statistiquesData]="statistiquesData"></app-bienvenue>
       <div class="row  g-4">
+        
         <div class="col-12 col-sm-12 col-md-5 col-lg-5">
           <app-statistiques *ngIf="statistiquesData$ | async as statistiquesData" [statistiquesData]="statistiquesData"></app-statistiques>
         </div>
 
         <div class="col-12 col-sm-12 col-md-7 col-lg-7">
-          <app-infos-serveur *ngIf="isServerOnline" [isServerOnline]="isServerOnline" [systemInfo]="systemInfo"></app-infos-serveur>
+          <app-infos-serveur *ngIf="systemInfo$ | async as systemInfo" [isServerOnline]="isServerOnline" [systemInfo]="systemInfo"></app-infos-serveur>
         </div>
 
       </div>

@@ -27,6 +27,9 @@ export class BatterieParametresComponent {
     ){}
 
     ngOnInit(): void {
+      this.getLastControllerData();
+      this.getLastBatterieParametresData();
+      
       this.serveurService.checkServerStatus()
         .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
         .subscribe((status) => {

@@ -10,8 +10,7 @@ import { BatterieStatusService } from '../../../services/batterie-status/batteri
   styleUrl: './batterie-status.component.scss'
 })
 export class BatterieStatusComponent {
-  @Input() isServerOnline!: boolean | null;
-  batterieStatusData: BatterieStatus | null = null;
+  @Input() batterieStatusData: BatterieStatus | null = null;
 
   isLoading = true;
 
@@ -19,51 +18,14 @@ export class BatterieStatusComponent {
   faSun = faSun;
   faCog = faCog;
 
-  constructor(
-      private batterieStatusService: BatterieStatusService
-  ){}
-
-  ngOnInit(){
-      // Si Kammthaar est en ligne on récupère les informations en temps réel
-      if(this.isServerOnline){
-        this.getBatterieStatusRealtime();
-      // Sinon on récupère la derniere entrée enregistrée dans InfluxDB
-      }else{
-        this.getLastBatterieStatusData();
-      }
-  }
-
-  getBatterieStatusRealtime(){
-    if(this.isServerOnline){
-      this.batterieStatusService.getBatterieStatusData().subscribe({
-        next: (data) => {
-          this.batterieStatusData = data;
-          this.isLoading = false;
-        },
-        error: (error) => {
-          console.error('Erreur lors de la récupération des données la batterie:', error);
-          this.isLoading = false;
-        },
-      });
+  
+  ngOnChanges(){
+    if(this.batterieStatusData){
+      this.isLoading = false;
     }
   }
   
-  // On récupère les dernières données du controlleur enregistrées
-  getLastBatterieStatusData(){
-    if(!this.isServerOnline){
-      this.batterieStatusService.getLastBatterieStatusData().subscribe({
-        next: (data) => {
-          this.batterieStatusData = data;
-          this.isLoading = false;
-        },
-        error: (error) => {
-          console.error('Erreur lors de la récupération des données de statistiques:', error);
-          this.isLoading = false;
-        },
-      });
-    }
-  }
-
+  
 
   getTemperature(status: string | null): string {
     if (!status) {

@@ -23,22 +23,17 @@ export class ControllerComponent {
   faMoon = faMoon
   faDumpster = faDumpster
   faArrowRight = faArrowRight
+  
+  constructor(
+    private serveurService: ServeurService,
+    private controllerService: ControllerService
+  ){}
+  
+  ngOnInit(): void {
+    // on charge les données hors ligne pour eviter le temps d'attente
+    this.getLastControllerData();
 
-  
-
-  onLabelSelected(label: string) {
-      this.selectedLabel = label; // Mettre à jour le label pour transmettre au graphique
-    }
-  
-    constructor(
-      private serveurService: ServeurService,
-      private controllerService: ControllerService
-    ){}
-  
-    ngOnInit(): void {
-      // on charge les données hors ligne pour eviter le temps d'attente
-      this.getLastControllerData();
-      this.serveurService.checkServerStatus()
+    this.serveurService.checkServerStatus()
       .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
       .subscribe((status) => {
         this.isServerOnline = status;
@@ -48,7 +43,7 @@ export class ControllerComponent {
           this.getLastControllerData();
         }
       });
-    }
+  }
   
     // Récupération des infos du controller pour récupére la date
   getControllerRealtime(){
@@ -69,5 +64,8 @@ export class ControllerComponent {
     });
   }
 
+  onLabelSelected(label: string) {
+    this.selectedLabel = label; // Mettre à jour le label pour transmettre au graphique
+  }
     
 }

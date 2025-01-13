@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 import { PsComponent } from './components/ps/ps.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { HeaderComponent } from './layout/header/header.component';
@@ -32,6 +32,7 @@ import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { ControllerTemperatureComponent } from './components/controller/controller-temperature/controller-temperature.component';
 import { BatterieParametresComponent } from './components/batterie-parametres/batterie-parametres.component';
 import { ParametresComponent } from './components/batterie-parametres/batterie/parametres.component';
+import { AdjustTimePipe } from './pipes/adjust-time.pipe';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { ParametresComponent } from './components/batterie-parametres/batterie/p
     SidebarComponent,
     ControllerTemperatureComponent,
     BatterieParametresComponent,
-    ParametresComponent
+    ParametresComponent,
+    AdjustTimePipe
   ],
   imports: [
     NgOptimizedImage,

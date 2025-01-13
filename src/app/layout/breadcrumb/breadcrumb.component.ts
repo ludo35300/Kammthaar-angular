@@ -15,4 +15,11 @@ export class BreadcrumbComponent {
   
   faSun = faSun;
   faMoon = faMoon;
+  ngOnChanges() {
+    if(this.controllerData){
+      console.log(this.controllerData.date);
+    }
+    
+  }
+  
 }

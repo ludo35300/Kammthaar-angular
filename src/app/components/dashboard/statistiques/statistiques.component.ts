@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { DashboardService } from '../../../services/dashboard/dashboard.service';
 import { GaugesStatistiques, Statistiques } from '../../../modeles/statistiques';
 
 @Component({
