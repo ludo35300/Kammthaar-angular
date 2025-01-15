@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ControllerGraphiqueComponent } from './controller-graphique.component';
+import { ControllerGraphiqueComponent } from './consommation-graphique.component';
 import { ControllerService } from '../../../services/controller/controller.service';
 import { provideHttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';

@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ConsommationComponent } from './consommation.component';
 import { provideHttpClient } from '@angular/common/http';
 import { ServeurService } from '../../services/serveur/serveur.service';
-import { ControllerGraphiqueComponent } from '../controller/controller-graphique/controller-graphique.component';
+import { ControllerGraphiqueComponent } from './consommation-graphique/consommation-graphique.component';
 import { BreadcrumbComponent } from '../../layout/breadcrumb/breadcrumb.component';
 
 describe('ConsommationComponent', () => {

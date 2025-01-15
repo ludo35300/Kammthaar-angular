@@ -1,12 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Controller, GaugesController } from '../../../modeles/controller';
-import { ControllerService } from '../../../services/controller/controller.service';
 import { faBolt, faChartArea, faSun } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'app-controller-data',
-  templateUrl: './controller-data.component.html',
-  styleUrl: './controller-data.component.scss'
+  selector: 'app-consommation-data',
+  templateUrl: './consommation-data.component.html',
+  styleUrl: './consommation-data.component.scss'
 })
 
 export class ControllerDataComponent {

@@ -6,7 +6,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { provideHttpClient } from '@angular/common/http';
 import { ServeurService } from '../../services/serveur/serveur.service';
 import { BreadcrumbComponent } from '../../layout/breadcrumb/breadcrumb.component';
-import { ControllerGraphiqueComponent } from './controller-graphique/controller-graphique.component';
+import { ControllerGraphiqueComponent } from '../consommation/consommation-graphique/consommation-graphique.component';
 import { ControllerTemperatureComponent } from './controller-temperature/controller-temperature.component';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 

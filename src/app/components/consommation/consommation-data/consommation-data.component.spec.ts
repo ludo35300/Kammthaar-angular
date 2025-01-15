@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ControllerDataComponent } from './controller-data.component';
+import { ControllerDataComponent } from './consommation-data.component';
 import { ControllerService } from '../../../services/controller/controller.service';
 import { provideHttpClient } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';

@@ -5,9 +5,9 @@ import { faSun } from '@fortawesome/free-solid-svg-icons';
 import { ControllerService } from '../../../services/controller/controller.service';
 
 @Component({
-  selector: 'app-controller-graphique',
-  templateUrl: './controller-graphique.component.html',
-  styleUrl: './controller-graphique.component.scss'
+  selector: 'app-consommation-graphique',
+  templateUrl: './consommation-graphique.component.html',
+  styleUrl: './consommation-graphique.component.scss'
 })
 export class ControllerGraphiqueComponent {
   @Input() selectedLabel: string | null = null;
