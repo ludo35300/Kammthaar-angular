@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { GaugesStatistiques, Statistiques } from '../../../modeles/statistiques';
+import { EnergyStatistics } from '../../../modeles/energyStatistics';
 
 @Component({
   selector: 'app-statistiques',
@@ -9,26 +9,26 @@ import { GaugesStatistiques, Statistiques } from '../../../modeles/statistiques'
 export class StatistiquesComponent {
   isLoading = true;
   
-  @Input() statistiquesData: Statistiques | null = null;
+  @Input() energyStatistics: EnergyStatistics | null = null;
 
   // Configuration des gauges
-  gauges: GaugesStatistiques[] = [
+  gauges= [
       { label: 'Générés aujourd\'hui', value: 0, unit: 'kWh', max: 10 },
       { label: 'Consommés aujourd\'hui', value: 0, unit: 'kWh', max: 10 }
   ];
 
   ngOnChanges(){
-    if(this.statistiquesData){
-      this.updateGauges(this.statistiquesData);
+    if(this.energyStatistics){
+      this.updateGauges(this.energyStatistics);
       this.isLoading = false;
     }
   }
   // Mise à jour des jauges en fonction des données récupérées
-  updateGauges(data: Statistiques): void {
+  updateGauges(data: EnergyStatistics): void {
     if (!data) return;
     this.gauges = [
-      { label: 'Générés aujourd\'hui', value: data.generated_energy_today, unit: 'kWh', max: 1.5 },
-      { label: 'Consommés aujourd\'hui', value: data.consumed_energy_today, unit: 'kWh', max: 1.5 },
+      { label: 'Générés aujourd\'hui', value: data.generated_today, unit: 'kWh', max: 1.5 },
+      { label: 'Consommés aujourd\'hui', value: data.consumed_today, unit: 'kWh', max: 1.5 },
     ];
   }
 }

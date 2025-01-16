@@ -15,8 +15,8 @@
                                 placement="bottom"
                             >Résistance interne:</span>
 
-                            <span class="ms-auto {{ batterieStatusData?.battery_inner_resistence_abnormal ? 'badge bg-danger' : 'badge bg-success' }}">
-                                {{ batterieStatusData?.battery_inner_resistence_abnormal ? 'Anormale' : 'Normale' }}
+                            <span class="ms-auto {{ batteryStatus?.status?.battery_inner_resistence_abnormal ? 'badge bg-danger' : 'badge bg-success' }}">
+                                {{ batteryStatus?.status?.battery_inner_resistence_abnormal ? 'Anormale' : 'Normale' }}
                             </span>
                         </div>
                         <!-- Status de la température de la batterie -->
@@ -28,8 +28,8 @@
                             >
                                 Température :
                             </span>
-                            <span class="ms-auto p-2 {{ getBadgeClass(batterieStatusData?.temperature_warning_status || '') }}">
-                                {{ getTemperature(batterieStatusData?.temperature_warning_status || null)}}
+                            <span class="ms-auto p-2 {{ getBadgeClass(batteryStatus?.status?.temperature_warning_status || '') }}">
+                                {{ getTemperature(batteryStatus?.status?.temperature_warning_status || null)}}
                             </span>
                         </div>
                         <div class="status-item d-flex align-items-center mb-3">
@@ -41,9 +41,9 @@
                                 Identification de tension :
                             </span>
                             <span
-                                class="ms-auto {{ batterieStatusData?.wrong_identifaction_for_rated_voltage ? 'badge bg-danger' : 'badge bg-success' }}"
+                                class="ms-auto {{ batteryStatus?.status?.wrong_identifaction_for_rated_voltage ? 'badge bg-danger' : 'badge bg-success' }}"
                             >
-                                {{ batterieStatusData?.wrong_identifaction_for_rated_voltage ? 'Erreur' : 'Correcte' }}
+                                {{ batteryStatus?.status?.wrong_identifaction_for_rated_voltage ? 'Anormale' : 'Correcte' }}
                             </span>
                         </div>
                         <div class="status-item d-flex align-items-center mb-3">
@@ -53,8 +53,8 @@
                                 placement="bottom"
                             >   
                                 État de la batterie:</span>
-                            <span class="ms-auto {{ getBadgeClass(batterieStatusData?.battery_status || '') }}">
-                                {{ getStatus(batterieStatusData?.battery_status || null)}}
+                            <span class="ms-auto {{ getBadgeClass(batteryStatus?.status?.battery_status || '') }}">
+                                {{ getStatus(batteryStatus?.status?.battery_status || null)}}
                             </span>
                         </div>
                     </div>
@@ -81,9 +81,9 @@
             <div class="card-body text-center">
                 <a routerLink="/batterie/parametres"
                     [routerLinkActive]="['is-active']"  
-                    class="custom-link btn btn-alt-primary" 
+                    class="custom-link btn " 
                 >
-                    <fa-icon [icon]="faCog"></fa-icon> &nbsp;Paramètres de la Batterie
+                    <fa-icon [icon]="faCog"></fa-icon> &nbsp;Paramètres
                 </a>
             </div>
         </div>

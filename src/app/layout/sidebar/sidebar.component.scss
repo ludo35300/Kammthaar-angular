@@ -2,7 +2,7 @@
     width: 250px;
     min-height: 100vh;
     transition: all 0.3s ease;
-    background-color: #F8F9FA;
+    background-color: #1A2537;
   
     &.collapsed {
       width: 0;
@@ -16,7 +16,7 @@
       li {
         a {
           display: block;
-          color:  #5A5A5A;
+          color:  #b4bccb;
           padding: 10px 15px;
           margin:10px;
           text-decoration: none;
@@ -24,7 +24,16 @@
           border-radius: 10px;
   
           &:hover {
-            background-color: #F0EFFF;
+            background-color: #212A49;
+            color: #F8F9FA;
+          }
+          &:focus {
+            background-color: #1B263B;
+            color: #F8F9FA;
+          }
+          &:active {
+            background-color: #58648f;
+            color: #F8F9FA;
           }
           &.is-active{
             background-color: #635BFF;

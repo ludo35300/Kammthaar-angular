@@ -1,56 +1,29 @@
 <div class="sidebar" [ngClass]="{ collapsed: !isOpen }">
     <ul class="list-unstyled pt-4">
       <li>
-        <a routerLink="/dashboard" [routerLinkActive]="['is-active']" class="d-flex align-items-center px-3 py-2">
-          <fa-icon [icon]="faLocationArrow" class="me-3"></fa-icon> &nbsp; Dashboard
+        <a routerLink="/dashboard" [routerLinkActive]="['is-active']" class="d-flex align-items-center px-3 py-2" (click)="closeSidebar()" >
+          <fa-icon [icon]="faLocationArrow" class="me-3"></fa-icon>Dashboard
         </a>
       </li>
       <li>
-        <a routerLink="/ps" [routerLinkActive]="['is-active']" class="d-flex align-items-center px-3 py-2">
-          <fa-icon [icon]="faSolarPanel" class="me-3"></fa-icon> &nbsp; Panneau solaire
+        <a routerLink="/ps" [routerLinkActive]="['is-active']" class="d-flex align-items-center px-3 py-2" (click)="closeSidebar()">
+          <fa-icon [icon]="faSolarPanel" class="me-3"></fa-icon>Panneau solaire
         </a>
       </li>
       <li>
-        <a routerLink="/consommation" [routerLinkActive]="['is-active']"class="d-flex align-items-center px-3 py-2">
-          <fa-icon [icon]="faPlugCircleMinus"  class="me-3"></fa-icon> &nbsp; Consommation
+        <a routerLink="/consommation" [routerLinkActive]="['is-active']"class="d-flex align-items-center px-3 py-2" (click)="closeSidebar()">
+          <fa-icon [icon]="faPlugCircleMinus"  class="me-3"></fa-icon>Consommation
         </a>
       </li>
       <li>
-        <a routerLink="/controller" [routerLinkActive]="['is-active']"class="d-flex align-items-center px-3 py-2">
-          <fa-icon [icon]="faDumpster"  class="me-3"></fa-icon> &nbsp; Contrôleur MPPT
+        <a routerLink="/controller" [routerLinkActive]="['is-active']"class="d-flex align-items-center px-3 py-2" (click)="closeSidebar()">
+          <fa-icon [icon]="faDumpster"  class="me-3"></fa-icon>Contrôleur MPPT
         </a>
       </li>
       <li>
-        <a
-          (click)="toggleBatteryDropdown()"
-          class="d-flex align-items-center px-3 py-2"
-          [ngClass]="{ 'is-active': isBatteryOpen }"
-          style="cursor: pointer;"
-        >
-          <fa-icon [icon]="faCarBattery" class="me-3"></fa-icon> &nbsp; Batterie
-          <fa-icon [icon]="isBatteryOpen ? faChevronDown : faChevronRight" class="ms-auto"></fa-icon>
+        <a routerLink="/batterie/details" [routerLinkActive]="['is-active']"class="d-flex align-items-center px-3 py-2" (click)="closeSidebar()">
+        <fa-icon [icon]="faDumpster"  class="me-3"></fa-icon>Batterie
         </a>
-        <!-- Sous-menu -->
-        <ul class="list-unstyled ps-4" *ngIf="isBatteryOpen">
-          <li>
-            <a
-              routerLink="/batterie/details"
-              [routerLinkActive]="['is-active']"
-              class="d-flex align-items-center px-3 py-2"
-            >
-              <fa-icon [icon]="faInfoCircle" class="me-3"></fa-icon> &nbsp; Détails
-            </a>
-          </li>
-          <li>
-            <a
-              routerLink="/batterie/parametres"
-              [routerLinkActive]="['is-active']"
-              class="d-flex align-items-center px-3 py-2"
-            >
-              <fa-icon [icon]="faCogs" class="me-3"></fa-icon> &nbsp; Paramètres
-            </a>
-          </li>
-        </ul>
       </li>
       <li>
         <hr class="sidebar-divider" />

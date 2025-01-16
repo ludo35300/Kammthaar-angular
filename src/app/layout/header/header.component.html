@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <!-- Bouton Sidebar -->
     <button
-      class="btn btn-alt-secondary me-3"
+      class="btn btn-header me-3"
       type="button"
       (click)="toggleSidebar.emit()"
     >
@@ -19,7 +19,7 @@
     <div class="d-flex ms-auto align-items-center">
       <!-- Bouton Serveur -->
       <button
-        class="btn btn-alt-secondary me-3"
+        class="btn btn-header me-3"
         [ngbTooltip]="isServerOnline ? 'Serveur connecté' : 'Serveur hors ligne'"
         placement="bottom"
       >
@@ -29,13 +29,13 @@
       <!-- Profil -->
       <div class="dropdown">
         <button
-          class="btn btn-alt-secondary dropdown-toggle"
+          class="btn btn-profil dropdown-toggle"
           id="profileDropdown"
           data-bs-toggle="dropdown"
           aria-expanded="false"
         >
-          <fa-icon [icon]="faUser"></fa-icon>
-          <span class="d-none d-lg-inline">Profil</span>
+          <fa-icon [icon]="faUser"></fa-icon>&nbsp;
+          <span class="d-none d-lg-inline">Profil &nbsp;</span>
         </button>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
           <li><a class="dropdown-item" href="#">Mon compte</a></li>

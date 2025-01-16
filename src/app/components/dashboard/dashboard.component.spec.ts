@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DashboardComponent } from './dashboard.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { provideHttpClient } from '@angular/common/http';
-import { ControllerService } from '../../services/controller/controller.service';
+import { ControllerDataService } from '../../services/controllerData/controller-data.service';
 import { ServeurService } from '../../services/serveur/serveur.service';
 import { BreadcrumbComponent } from '../../layout/breadcrumb/breadcrumb.component';
 import { BienvenueComponent } from './bienvenue/bienvenue.component';
@@ -19,7 +19,7 @@ describe('DashboardComponent', () => {
       declarations: [DashboardComponent, BreadcrumbComponent, BienvenueComponent, StatistiquesComponent],
       providers: [
                     provideHttpClient(), // Fournit HttpClient
-                    ControllerService,
+                    ControllerDataService,
                     ServeurService
                   ],
       imports: [FontAwesomeModule, NgxGaugeModule]

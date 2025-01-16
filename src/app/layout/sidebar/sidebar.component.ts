@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { faCheck, faXmark, faUser, faCarBattery, faDumpster, faSolarPanel, faLocationArrow, faChevronDown, faBars, faChevronRight, faInfoCircle, faCogs, faPlugCircleMinus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -8,9 +8,8 @@ import { faCheck, faXmark, faUser, faCarBattery, faDumpster, faSolarPanel, faLoc
 })
 export class SidebarComponent {
   @Input() isOpen: boolean = true; // Permet de gérer l'état ouvert/fermé
-
-  isBatteryOpen = false; // Contrôle si le sous-menu Batterie est ouvert ou non
-
+  @Output() toggleSidebar = new EventEmitter<void>();
+  
   faChevronRight = faChevronRight;
   faCheck = faCheck
   faXmark = faXmark
@@ -25,8 +24,12 @@ export class SidebarComponent {
   faInfoCircle = faInfoCircle
   faCogs = faCogs
 
-  toggleBatteryDropdown(): void {
-    this.isBatteryOpen = !this.isBatteryOpen;
+  closeSidebar(): void {
+    if (window.innerWidth <= 1100) {
+      // Se ferme uniquement si l'écran est petit (mobile/tablette)
+      this.isOpen = false;
+      this.toggleSidebar.emit()
+    }
   }
 
 }

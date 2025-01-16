@@ -8,17 +8,23 @@
     </div>
 
     <div *ngIf="!isLoading">
-      <app-breadcrumb *ngIf="controllerData$ | async as controllerData" [title]="'Batterie'" [controllerData]="controllerData" [isServerOnline]="isServerOnline"></app-breadcrumb>
-
+      <ng-container *ngIf="combinedData$ | async as data">
+        <app-breadcrumb 
+          [title]="'Batterie'" 
+          [controllerData]="data.controllerData"
+          [dailyStatistics]="data.dailyStatistics"
+          [isServerOnline]="isServerOnline">
+        </app-breadcrumb>
+      </ng-container>
       <div class="row  g-4">
         <div class="col-12 col-sm-12 col-md-8 col-lg-8">
-          <app-batterie-data *ngIf="batterieData$ | async as batterieData" [batterieData]="batterieData" (labelSelected)="onLabelSelected($event)" ></app-batterie-data>
+          <app-batterie-data *ngIf="batteryStatus$ | async as batteryStatus" [batteryStatus]="batteryStatus" (labelSelected)="onLabelSelected($event)" ></app-batterie-data>
           <app-batterie-graphique [selectedLabel]="selectedLabel" ></app-batterie-graphique>
         </div>
         <div class="col-12 col-sm-12 col-md-4 col-lg-4">
-          <app-batterie-pourcentage *ngIf="batterieData$ | async as batterieData" [batterieData]="batterieData" (labelSelected)="onLabelSelected($event)"></app-batterie-pourcentage>
-          <app-batterie-temperature *ngIf="batterieData$ | async as batterieData" [batterieData]="batterieData" (labelSelected)="onLabelSelected($event)"></app-batterie-temperature>
-          <app-batterie-status *ngIf="batterieStatusData$ | async as batterieStatusData" [batterieStatusData]="batterieStatusData" ></app-batterie-status>
+          <app-batterie-pourcentage *ngIf="batteryStatus$ | async as batteryStatus" [batteryStatus]="batteryStatus" (labelSelected)="onLabelSelected($event)"></app-batterie-pourcentage>
+          <app-batterie-temperature *ngIf="batteryStatus$ | async as batteryStatus" [batteryStatus]="batteryStatus" (labelSelected)="onLabelSelected($event)"></app-batterie-temperature>
+          <app-batterie-status *ngIf="batteryStatus$ | async as batteryStatus" [batteryStatus]="batteryStatus" ></app-batterie-status>
         </div>
       </div>
     </div>

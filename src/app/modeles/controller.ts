@@ -1,16 +1,6 @@
 export interface Controller {
-    amperage: number;
-    power: number;
-    voltage: number;
+    current_device_time: Date;
+    device_over_temperature: boolean;
     temperature: number;
-    day_time: boolean;
-    night_time: boolean;
     date: Date;
-}
-
-export interface GaugesController{
-    label: string;
-    value: number;
-    unit: string;
-    max: number;
 }

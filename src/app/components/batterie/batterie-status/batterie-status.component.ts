@@ -1,8 +1,7 @@
 import { Component, Input } from '@angular/core';
-import { BatterieStatus } from '../../../modeles/batterie-status';
 import { faCog, faHeartPulse, faSun } from '@fortawesome/free-solid-svg-icons';
-import { BatteryStatus, TemperatureStatus } from '../../../enums';
-import { BatterieStatusService } from '../../../services/batterie-status/batterie-status.service';
+import { BatteryStatusEnum, TemperatureStatus } from '../../../enums';
+import { BatteryStatus } from '../../../modeles/batteryStatus';
 
 @Component({
   selector: 'app-batterie-status',
@@ -10,7 +9,7 @@ import { BatterieStatusService } from '../../../services/batterie-status/batteri
   styleUrl: './batterie-status.component.scss'
 })
 export class BatterieStatusComponent {
-  @Input() batterieStatusData: BatterieStatus | null = null;
+  @Input() batteryStatus: BatteryStatus | null = null;
 
   isLoading = true;
 
@@ -20,7 +19,7 @@ export class BatterieStatusComponent {
 
   
   ngOnChanges(){
-    if(this.batterieStatusData){
+    if(this.batteryStatus){
       this.isLoading = false;
     }
   }
@@ -40,8 +39,8 @@ export class BatterieStatusComponent {
       return 'Inconnu';
     }
     // Convertir la clé pour matcher avec l'enum (case insensitive)
-    const formattedKey = status.replace(' ', '_').toUpperCase() as keyof typeof BatteryStatus;
-    return BatteryStatus[formattedKey] || 'Inconnu';
+    const formattedKey = status.replace(' ', '_').toUpperCase() as keyof typeof BatteryStatusEnum;
+    return BatteryStatusEnum[formattedKey] || 'Inconnu';
   }
 
   // Méthode pour obtenir la classe CSS du badge selon l'état

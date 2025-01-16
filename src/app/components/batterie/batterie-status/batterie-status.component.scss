@@ -2,12 +2,10 @@
 
 
 .status-batterie{
-    background-color: #DDDBFF;
-    color: #5a5a5a;
+  background-color: #253662;
+  color: #DDE0E3;
     
-    [placement="bottom"] {
-        cursor: pointer;
-      }
+    
 }
 h5 {
     font-size: 18px;
@@ -40,11 +38,15 @@ h5 {
   }
 
   
-a{
-  color: #635BFF !important;
-  border: none;
-  background-color: #fff !important;
-  border-radius: 10px;
+
+.btn{
+  background-color: #635BFF !important;
+  color: rgba(255, 255, 255, .8)  !important;
+
+}
+.btn:hover{
+  background-color: #212A49 !important;
+  color: rgba(255, 255, 255, .8)  !important;
 }
 
 

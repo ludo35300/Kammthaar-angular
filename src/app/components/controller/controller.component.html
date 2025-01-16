@@ -1,15 +1,20 @@
-<div class="container-fluid">
-  <div class="content">
-    <app-breadcrumb *ngIf="controllerData$ | async as controllerData" [title]="'Données du controleur MPPT'" [controllerData]="controllerData" [isServerOnline]="isServerOnline"></app-breadcrumb>
 
+    <ng-container *ngIf="combinedData$ | async as data">
+      <app-breadcrumb 
+        [title]="'Controlleur MPPT'" 
+        [controllerData]="data.controllerData"
+        [dailyStatistics]="data.dailyStatistics"
+        [isServerOnline]="isServerOnline">
+      </app-breadcrumb>
+    </ng-container>
     <div class="row  g-4">
-      <div class="col-12 col-sm-12 col-md-8 col-lg-8">
-        <app-controller-data *ngIf="controllerData$ | async as controllerData" [controllerData]="controllerData" (labelSelected)="onLabelSelected($event)"></app-controller-data>
-        <app-controller-graphique [selectedLabel]="selectedLabel"></app-controller-graphique>
+      <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+        <app-charging *ngIf="chargingEquipmentStatus$ | async as chargingEquipmentStatus" [chargingEquipmentStatus]="chargingEquipmentStatus"></app-charging>
+        <app-charging-errors *ngIf="chargingEquipmentStatus$ | async as chargingEquipmentStatus" [chargingEquipmentStatus]="chargingEquipmentStatus"></app-charging-errors>
       </div>
-      <div class="col-12 col-sm-12 col-md-4 col-lg-4">
-        <app-controller-temperature *ngIf="controllerData$ | async as controllerData" [controllerData]="controllerData" (labelSelected)="onLabelSelected($event)"></app-controller-temperature>
+      <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+        <app-discharging *ngIf="dischargingEquipmentStatus$ | async as dischargingEquipmentStatus" [dischargingEquipmentStatus]="dischargingEquipmentStatus"></app-discharging>
+        <app-discharging-errors *ngIf="dischargingEquipmentStatus$ | async as dischargingEquipmentStatus" [dischargingEquipmentStatus]="dischargingEquipmentStatus"></app-discharging-errors>
+        <!-- <app-controller-temperature *ngIf="controllerData$ | async as controllerData" [controllerData]="controllerData" (labelSelected)="onLabelSelected($event)"></app-controller-temperature> -->
       </div>
     </div>
-  </div>
-</div>

@@ -1,0 +1,50 @@
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        <div class="card-header">
+            Charge
+        </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                Status de l'équipement: 
+                <span class="float-end">
+                    <fa-icon 
+                        [icon]="faCheck" 
+                        class="float-end text-success" 
+                        *ngIf="chargingEquipmentStatus?.running"
+                        [ngbTooltip]="'En fonctionnement'">
+                    </fa-icon>
+                    <fa-icon 
+                        [icon]="faXmark" 
+                        class="float-end text-danger" 
+                        *ngIf="!chargingEquipmentStatus?.running"
+                        [ngbTooltip]="'En veille'">
+                    </fa-icon> 
+                </span>
+            </li>
+            <li class="list-group-item">
+                Status de la charge: 
+                <span class="float-end">
+                    {{getChargingStatus(chargingEquipmentStatus?.charging_status || null)}} &nbsp;
+                    <fa-icon 
+                        [icon]="faInfoCircle" 
+                        class="float-end text-success" 
+                        [ngbTooltip]="getDescriptionChargingStatus(chargingEquipmentStatus?.charging_status || null)" 
+                        placement="bottom">
+                    </fa-icon>
+                </span>
+            </li>
+            <li class="list-group-item">
+                Tension d'entrée: 
+                <span class="float-end">
+                    {{getVoltageStatus(chargingEquipmentStatus?.input_voltage_status || null)}} &nbsp;
+                    <fa-icon 
+                            [icon]="faInfoCircle" 
+                            class="float-end text-success" 
+                            [ngbTooltip]="getDescriptionVoltageStatus(chargingEquipmentStatus?.input_voltage_status || null)" 
+                            placement="bottom">
+                    </fa-icon>
+                </span>
+            </li>
+          </ul>
+    </div>
+</div>

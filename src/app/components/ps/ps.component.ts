@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { faArrowRight, faMoon, faSolarPanel, faSun } from '@fortawesome/free-solid-svg-icons';
 import { ServeurService } from '../../services/serveur/serveur.service';
-import { ControllerService } from '../../services/controller/controller.service';
 import { Controller } from '../../modeles/controller';
-import { BehaviorSubject, concatMap, distinctUntilChanged, map, Observable, timer } from 'rxjs';
-import { PsService } from '../../services/ps/ps.service';
-import { Ps } from '../../modeles/ps';
+import { BehaviorSubject, combineLatest, concatMap, distinctUntilChanged, map, Observable, timer } from 'rxjs';
+import { DailyStatistics } from '../../modeles/dailyStatistics';
+import { DailyStatisticsService } from '../../services/dailyStatistics/daily-statistics.service';
+import { SolarDataService } from '../../services/solarData/solar-data.service';
+import { SolarData } from '../../modeles/solarData';
+import { ControllerDataService } from '../../services/controllerData/controller-data.service';
 
 
 @Component({
@@ -15,7 +17,10 @@ import { Ps } from '../../modeles/ps';
 })
 export class PsComponent {
   controllerData$: BehaviorSubject<Controller | null> = new BehaviorSubject<Controller | null>(null);
-  psData$: BehaviorSubject<Ps | null> = new BehaviorSubject<Ps | null>(null);
+  dailyStatistics$: BehaviorSubject<DailyStatistics | null> = new BehaviorSubject<DailyStatistics | null>(null);
+  combinedData$!: Observable<{ controllerData: Controller | null; dailyStatistics: DailyStatistics | null }>;   // Observable combiné
+
+  solarData$: BehaviorSubject<SolarData | null> = new BehaviorSubject<SolarData | null>(null);
 
   isServerOnline: boolean = false;
   selectedLabel: string  = "Voltage";
@@ -33,14 +38,21 @@ export class PsComponent {
 
   constructor(
     private serveurService: ServeurService,
-    private controllerService: ControllerService,
-    private psService: PsService
+    private controllerDataService: ControllerDataService,
+    private dailyStatisticsService: DailyStatisticsService,
+    private solarDataService: SolarDataService
   ){}
 
   ngOnInit(): void {
     // on charge les données hors ligne pour eviter le temps d'attente
     this.getLastControllerData();
-    this.getLastPsData(); 
+    this.getDailyStatisticsLast();
+    this.getSolarDataLast(); 
+
+    // Initialisation de combinedData$
+    this.combinedData$ = combineLatest([this.controllerData$, this.dailyStatistics$]).pipe(
+      map(([controllerData, dailyStatistics]) => ({ controllerData, dailyStatistics }))
+    );
 
     this.serveurService.checkServerStatus()
       .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
@@ -50,7 +62,8 @@ export class PsComponent {
           this.fetchRealtimeData();
         }else {
             this.getLastControllerData();
-            this.getLastPsData();  
+            this.getDailyStatisticsLast();
+            this.getSolarDataLast();  
         }
       });
   }
@@ -58,7 +71,8 @@ export class PsComponent {
     fetchRealtimeData() {
       const realtimeRequests = [
         () => this.getControllerRealtime(),
-        () => this.getPsRealtime()
+        () => this.getDailyStatisticsRealtime(),
+        () => this.getSolarDataRealtime()
       ];
     
       realtimeRequests.reduce((chain, request) => {
@@ -69,38 +83,59 @@ export class PsComponent {
       }, timer(0)).subscribe();
     }
 
-  // Récupération des infos du controller pour récupére la date
+// Récupération des infos pour le breadcrumb
   getControllerRealtime(): Observable<Controller> {
-    return this.controllerService.getControllerRealtime().pipe(
-      map((data) => {
-        this.controllerData$.next(data); // Mettre à jour via BehaviorSubject
-        this.isLoading = false;
-        return data;
-      })
-    );
-    }
-  // On récupère les dernières données du controlleur enregistrées
-  getLastControllerData(){
-    this.controllerService.getLastController().subscribe({
-      next: (data) => {
-        this.controllerData$.next(data);
-        this.isLoading = false;
-      }
-    });
-  }
-  getPsRealtime(): Observable<Ps> {
-      return this.psService.getPsData().pipe(
+      return this.controllerDataService.getControllerDataRealtime().pipe(
         map((data) => {
-          this.psData$.next(data); // Mettre à jour via BehaviorSubject
+          this.controllerData$.next(data); // Mettre à jour via BehaviorSubject
+          this.isLoading = false;
+          return data;
+        })
+      );
+    }
+  
+    // On récupère les dernières données du controller enregistrées
+    getLastControllerData() {
+      this.controllerDataService.getControllerDataLast().subscribe({
+        next: (data) => {
+          this.controllerData$.next(data); // Mise à jour via BehaviorSubject
+          this.isLoading = false;
+        }
+      });
+    }
+  
+    getDailyStatisticsRealtime(): Observable<DailyStatistics> {
+      return this.dailyStatisticsService.getDailyStatisticsRealtime().pipe(
+        map((data) => {
+          this.dailyStatistics$.next(data); // Mettre à jour via BehaviorSubject
+          this.isLoading = false;
+          return data;
+        })
+      );
+    }
+  
+    // On récupère les dernières données du controller enregistrées
+    getDailyStatisticsLast() {
+      this.dailyStatisticsService.getDailyStatisticsLast().subscribe({
+        next: (data) => {
+          this.dailyStatistics$.next(data); // Mise à jour via BehaviorSubject
+          this.isLoading = false;
+        }
+      });
+    }
+  getSolarDataRealtime(): Observable<SolarData> {
+      return this.solarDataService.getSolarDataRealtime().pipe(
+        map((data) => {
+          this.solarData$.next(data); // Mettre à jour via BehaviorSubject
           return data;
         })
       );
     }
   // On récupère les dernières données du controlleur enregistrées
-  getLastPsData(){
-    this.psService.getLastPsData().subscribe({
+  getSolarDataLast(){
+    this.solarDataService.getSolarDataLast().subscribe({
       next: (data) => {
-        this.psData$.next(data);
+        this.solarData$.next(data);
       },
     });
   }

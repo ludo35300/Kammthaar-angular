@@ -1,19 +1,55 @@
 nav.navbar {
     height: 56px;
     z-index: 1050; /* Plus haut que la sidebar */
-    color: #5A5A5A;
+    background-color: #1A2537 !important;
+    color: rgba(255, 255, 255, .85);
+    padding-right:2rem;
   }
 h1{
   font-size: 1rem;
 }
+.btn-header{
+  color: rgba(255, 255, 255, .85);
+  border-radius: 50%;
+}
+.btn-header:hover{
+  color: #3B3E91;
+  
+  background-color: #29305F;
 
+}
 .navbar-brand{
   font-weight: 200;
+  color: rgba(255, 255, 255, .85);
   img{
     border-radius: 50%;
     height: 35px;
   }
 
+}
+
+.btn-profil{
+  border:none;
+  background-color: #1A2537;
+  color:  rgba(255, 255, 255, .85);
+}
+.btn-profil:hover{
+  background-color: #29305F;
+}
+.btn-profil:active{
+  background-color: #1A2537;
+}
+.dropdown-menu{
+  background-color: #1A2537;
+  border:none;
+}
+.dropdown-item{
+  color:  rgba(255, 255, 255, .85);
+  padding: 1rem 2rem;
+}
+.dropdown-item:hover{
+  background-color: #1A2537;
+  color:  #6058FF;
 }
   
   

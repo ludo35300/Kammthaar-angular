@@ -1,17 +1,22 @@
 
 .card{
-    color: #5a5a5a;
-}
-
-
-h5 {
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 20px;
+    color: #DDE0E3;
+    background: linear-gradient(180deg, #f8c20a1f 0, #f8c20a08);
+    box-shadow:0px 11px 14px -7px rgba(0, 0, 0, .2), 0px 23px 36px 3px rgba(0, 0, 0, .14), 0px 9px 44px 8px rgba(0, 0, 0, .12);
+    h5 {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px;
+    }
+    a{
+      border: none;
+      background-color: #1A2537 !important;
+      color: #F8C20A;
+      &:hover{
+        background-color: #F8C20A !important;
+        color: #1A2537 !important;
+      }
+    }
   }
-  a{
-    color: #FF6C96 !important;
-    border: none;
-    background-color: #FFCCDB !important;
-    border-radius: 10px;
-}
+    
+  

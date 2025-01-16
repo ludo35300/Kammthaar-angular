@@ -1,0 +1,17 @@
+<div class="card shadow-sm border-0 mt-4">
+    <div class="card-body">
+        <div class="card-header">
+            Erreurs de charge
+        </div>
+        <ul class="list-group list-group-flush">
+            
+            <li class="list-group-item" *ngFor="let error of chargingEquipmentStatus?.errors | keyvalue">
+                <span class="fw-bold">{{ error.key | chargingErrors }}</span>: 
+                <span class="float-end" [class.text-success]="!error.value" [class.text-danger]="error.value">
+                  {{ error.value ? 'Erreur détectée' : 'Normal' }}
+                </span>
+            </li>
+        </ul>
+
+    </div>
+</div>

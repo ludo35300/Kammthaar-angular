@@ -5,12 +5,14 @@
   <!-- Sidebar + Contenu -->
   <div class="d-flex">
     <!-- Sidebar -->
-    <app-sidebar [isOpen]="isSidebarOpen" [ngClass]="{ 'sidebar-open': isSidebarOpen, 'sidebar-closed': !isSidebarOpen }"></app-sidebar>
+    <app-sidebar [isOpen]="isSidebarOpen" [ngClass]="{ 'sidebar-open': isSidebarOpen, 'sidebar-closed': !isSidebarOpen }" (toggleSidebar)="toggleSidebar()"></app-sidebar>
 
     <!-- Contenu principal -->
     <div class="content-wrapper flex-grow-1" [ngClass]="{ 'sidebar-open': isSidebarOpen, 'sidebar-closed': !isSidebarOpen }">
-      <main class="main-content p-4">
+      <main class="main-content">
+        
         <router-outlet></router-outlet>
+          
       </main>
     </div>
   </div>

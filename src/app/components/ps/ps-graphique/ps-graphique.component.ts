@@ -11,7 +11,7 @@ import {
   ApexGrid,
 } from 'ng-apexcharts';
 import { faSun } from '@fortawesome/free-solid-svg-icons';
-import { PsService } from '../../../services/ps/ps.service';
+import { SolarDataService } from '../../../services/solarData/solar-data.service';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -42,7 +42,7 @@ export class PsGraphiqueComponent {
   chartSeries: ApexAxisChartSeries = [];
   chartOptions: Partial<ChartOptions> = {};
 
-  constructor(private psService: PsService) {
+  constructor(private solarDataService: SolarDataService) {
       // Configuration de base du graphique
       this.isLoading = true;
       this.chartOptions = {
@@ -61,12 +61,16 @@ export class PsGraphiqueComponent {
             show: false, // Masque les ticks (lignes courtes)
           },
         },
+        yaxis: {
+          labels: {
+            style: {
+              colors: '#ffffffd9',
+            }
+          },
+        },
         stroke: {
           curve: 'smooth',
           width: 2,
-        },
-        grid: {
-          show: false
         },
         dataLabels: {
           enabled: false,
@@ -123,21 +127,21 @@ export class PsGraphiqueComponent {
   }
 
   getAmperage24h() {
-        this.psService.getAmperage24h().subscribe({
+        this.solarDataService.getAmperage24h().subscribe({
           next: (data) => this.handleChartData(data, 'A', 'Ampérage'),
           error: (error) => this.handleError(error),
         });
   }
     
   getVoltage24h() {
-        this.psService.getVoltage24h().subscribe({
+        this.solarDataService.getVoltage24h().subscribe({
           next: (data) => this.handleChartData(data, 'V', 'Voltage'),
           error: (error) => this.handleError(error),
         });
   }
     
   getPower24h() {
-        this.psService.getPower24h().subscribe({
+        this.solarDataService.getPower24h().subscribe({
           next: (data) => this.handleChartData(data, 'W', 'Puissance')
           
         });
@@ -164,6 +168,18 @@ export class PsGraphiqueComponent {
               formatter: (val: number) => `${val} ${unit}`,
             },
           },
+          ...this.chartOptions,
+          yaxis: {
+            ...this.chartOptions.yaxis,
+            labels:{
+              style: {
+                colors: '#ffffffd9',
+              },
+              formatter: (value: number) => {
+                return `${value} ${unit}`; 
+              },
+            }
+          },
           title: {
             text: title+' sur 24 heures',
             margin: 10,
@@ -171,7 +187,7 @@ export class PsGraphiqueComponent {
               fontSize:  '14px',
               fontWeight:  '400',
               fontFamily:  "Manrope",
-              color:  '#5A5A5A'
+              color:  '#ffffffd9'
             },
           },
     };

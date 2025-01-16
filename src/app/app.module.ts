@@ -14,10 +14,10 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BatterieComponent } from './components/batterie/batterie.component';
 import { NgApexchartsModule } from "ng-apexcharts";
 import { BatterieDataComponent } from './components/batterie/batterie-data/batterie-data.component';
-import { ControllerDataComponent } from './components/controller/controller-data/controller-data.component';
+import { ControllerDataComponent } from './components/consommation/consommation-data/consommation-data.component';
 import { PsDataComponent } from './components/ps/ps-data/ps-data.component';
 import { NgOptimizedImage } from '@angular/common';
-import { ControllerGraphiqueComponent } from './components/controller/controller-graphique/controller-graphique.component';
+import { ControllerGraphiqueComponent } from './components/consommation/consommation-graphique/consommation-graphique.component';
 import { PsGraphiqueComponent } from './components/ps/ps-graphique/ps-graphique.component';
 import { BatterieGraphiqueComponent } from './components/batterie/batterie-graphique/batterie-graphique.component';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
@@ -33,6 +33,12 @@ import { ControllerTemperatureComponent } from './components/controller/controll
 import { BatterieParametresComponent } from './components/batterie-parametres/batterie-parametres.component';
 import { ParametresComponent } from './components/batterie-parametres/batterie/parametres.component';
 import { ConsommationComponent } from './components/consommation/consommation.component';
+import { ChargingComponent } from './components/controller/charging/charging.component';
+import { DischargingComponent } from './components/controller/discharging/discharging.component';
+import { DischargingErrorsComponent } from './components/controller/discharging/discharging-errors/discharging-errors.component';
+import { ChargingErrorsComponent } from './components/controller/charging/charging-errors/charging-errors.component';
+import { ChargingErrorsPipe } from './pipes/charging-errors.pipe';
+import { DischargingErrorsPipe } from './pipes/discharging-errors.pipe';
 
 @NgModule({
   declarations: [
@@ -59,7 +65,13 @@ import { ConsommationComponent } from './components/consommation/consommation.co
     ControllerTemperatureComponent,
     BatterieParametresComponent,
     ParametresComponent,
-    ConsommationComponent
+    ConsommationComponent,
+    ChargingComponent,
+    DischargingComponent,
+    DischargingErrorsComponent,
+    ChargingErrorsComponent,
+    ChargingErrorsPipe,
+    DischargingErrorsPipe
   ],
   imports: [
     NgOptimizedImage,
