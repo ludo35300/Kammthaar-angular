@@ -1,0 +1,52 @@
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        <div class="card-header">
+            Décharge
+        </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                Status de l'équipement: 
+                <span class="float-end">
+                    <fa-icon 
+                        [icon]="faCheck" 
+                        class="float-end text-success" 
+                        *ngIf="dischargingEquipmentStatus?.running"
+                        [ngbTooltip]="'En fonctionnement'">
+                    </fa-icon>
+                    <fa-icon 
+                        [icon]="faXmark" 
+                        class="float-end text-danger" 
+                        *ngIf="!dischargingEquipmentStatus?.running"
+                        [ngbTooltip]="'En veille'">
+                    </fa-icon> 
+                </span>
+            </li>
+            <!-- <li class="list-group-item">Status de la charge: <span class="float-end">{{getChargingStatus(chargingEquipmentStatus?.charging_status || null)}}</span></li>
+        -->
+        <li class="list-group-item">
+            Puissance de sortie: 
+            <span class="float-end">
+                {{getDischargingStatus(dischargingEquipmentStatus?.output_power_load || null)}} &nbsp;
+                <fa-icon 
+                        [icon]="faInfoCircle" 
+                        class="float-end text-success" 
+                        [ngbTooltip]="getDescriptionDischargingStatus(dischargingEquipmentStatus?.output_power_load || null)" 
+                        placement="bottom">
+                </fa-icon>
+            </span>
+        </li>
+            <li class="list-group-item">
+                Tension d'entrée: 
+                <span class="float-end">
+                    {{getVoltageStatus(dischargingEquipmentStatus?.input_voltage_status || null)}} &nbsp;
+                    <fa-icon 
+                            [icon]="faInfoCircle" 
+                            class="float-end text-success" 
+                            [ngbTooltip]="getDescriptionVoltageStatus(dischargingEquipmentStatus?.input_voltage_status || null)" 
+                            placement="bottom">
+                    </fa-icon>
+                </span>
+            </li>
+          </ul>
+    </div>
+</div>

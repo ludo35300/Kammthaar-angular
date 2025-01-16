@@ -33,6 +33,12 @@ import { ControllerTemperatureComponent } from './components/controller/controll
 import { BatterieParametresComponent } from './components/batterie-parametres/batterie-parametres.component';
 import { ParametresComponent } from './components/batterie-parametres/batterie/parametres.component';
 import { ConsommationComponent } from './components/consommation/consommation.component';
+import { ChargingComponent } from './components/controller/charging/charging.component';
+import { DischargingComponent } from './components/controller/discharging/discharging.component';
+import { DischargingErrorsComponent } from './components/controller/discharging/discharging-errors/discharging-errors.component';
+import { ChargingErrorsComponent } from './components/controller/charging/charging-errors/charging-errors.component';
+import { ChargingErrorsPipe } from './pipes/charging-errors.pipe';
+import { DischargingErrorsPipe } from './pipes/discharging-errors.pipe';
 
 @NgModule({
   declarations: [
@@ -59,7 +65,13 @@ import { ConsommationComponent } from './components/consommation/consommation.co
     ControllerTemperatureComponent,
     BatterieParametresComponent,
     ParametresComponent,
-    ConsommationComponent
+    ConsommationComponent,
+    ChargingComponent,
+    DischargingComponent,
+    DischargingErrorsComponent,
+    ChargingErrorsComponent,
+    ChargingErrorsPipe,
+    DischargingErrorsPipe
   ],
   imports: [
     NgOptimizedImage,

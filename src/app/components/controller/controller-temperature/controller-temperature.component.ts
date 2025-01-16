@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { faTemperatureThreeQuarters, faChartArea, faSun } from '@fortawesome/free-solid-svg-icons';
 import { Controller } from '../../../modeles/controller';
-import { ControllerService } from '../../../services/controller/controller.service';
 
 
 @Component({

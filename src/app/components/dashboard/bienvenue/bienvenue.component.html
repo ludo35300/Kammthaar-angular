@@ -1,6 +1,5 @@
-<div class="row g-4 mt-4">
-    <div class="col-12">
-        <div class="card welcome-card shadow-sm border-0">
+
+        <div class="card shadow-sm border-0 mt-4">
             <div class="row g-0">
               <!-- Contenu texte -->
               <div class="col-sm-6 col-md-6 col-lg-8">
@@ -10,10 +9,10 @@
                     Bienvenue {{nom}}
                   </p>
                   <p class="card-title mb-3"><fa-icon [icon]="faChargingStation"></fa-icon>&nbsp; 
-                    Généré ce mois ci: {{ statistiquesData?.generated_energy_month }} kWh
+                    Généré ce mois ci: {{ energyStatistics?.generated_this_month }} kWh
                   </p>
                   <p class="card-title mb-3"><fa-icon [icon]="faChargingStation"></fa-icon>&nbsp; 
-                    Consommé ce mois ci: {{ statistiquesData?.consumed_energy_month }} kWh
+                    Consommé ce mois ci: {{ energyStatistics?.consumed_this_month }} kWh
                   </p>
                   
                 </div>
@@ -31,5 +30,3 @@
             </div>
             
         </div>
-    </div>
-</div>

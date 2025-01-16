@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { faChartArea, faSun, faTemperatureThreeQuarters } from '@fortawesome/free-solid-svg-icons';
-import { Batterie } from '../../../modeles/batterie';
+import { BatteryStatus } from '../../../modeles/batteryStatus';
 
 @Component({
   selector: 'app-batterie-temperature',
@@ -8,7 +8,7 @@ import { Batterie } from '../../../modeles/batterie';
   styleUrl: './batterie-temperature.component.scss'
 })
 export class BatterieTemperatureComponent {
-  @Input() batterieData: Batterie | null = null;
+  @Input() batteryStatus: BatteryStatus | null = null;
   @Output() labelSelected = new EventEmitter<string>();
   isLoading = true;
 
@@ -19,8 +19,8 @@ export class BatterieTemperatureComponent {
   faSun = faSun;
   
   ngOnChanges(){
-    if(this.batterieData){
-      this.batterieTemperature = this.batterieData.battery_temp;
+    if(this.batteryStatus){
+      this.batterieTemperature = this.batteryStatus.temperature;
       this.isLoading = false;
     }
   }

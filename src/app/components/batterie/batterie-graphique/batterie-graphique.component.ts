@@ -1,5 +1,4 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
-import { BatterieService } from '../../../services/batterie/batterie.service';
 import {
   ApexAxisChartSeries,
   ApexChart,
@@ -12,7 +11,8 @@ import {
   ApexGrid,
 } from 'ng-apexcharts';
 import { faSun } from '@fortawesome/free-solid-svg-icons';
-import { Batterie } from '../../../modeles/batterie';
+import { BatteryStatus } from '../../../modeles/batteryStatus';
+import { BatteryStatusService } from '../../../services/batteryStatus/battery-status.service';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -34,7 +34,7 @@ export type ChartOptions = {
 })
 export class BatterieGraphiqueComponent {
   @Input() selectedLabel: string = "Pourcentage";
-  @Input() batterieData24h : Batterie[] = [];
+  @Input() batterieData24h : BatteryStatus[] = [];
 
   // Propriétés utilisées dans le HTML pour apx-chart
   chartSeries: ApexAxisChartSeries = [];
@@ -43,7 +43,7 @@ export class BatterieGraphiqueComponent {
   isLoading = true;
   faSun = faSun;
 
-  constructor(private batterieService: BatterieService) {
+  constructor(private batteryStatusService: BatteryStatusService) {
     // Configuration de base du graphique
     this.isLoading = true;
     this.chartOptions = {
@@ -51,7 +51,7 @@ export class BatterieGraphiqueComponent {
         type: 'area',
         height: 350,
         zoom: {
-          enabled: false,
+          enabled: true,
         },
       },
       xaxis: {
@@ -131,35 +131,35 @@ export class BatterieGraphiqueComponent {
   }
 
   getPourcent24h() {
-    this.batterieService.getPourcent24h().subscribe({
+    this.batteryStatusService.getPourcent24h().subscribe({
       next: (data) => this.handleChartData(data, '%', 'Charge'),
       error: (error) => this.handleError(error),
     });
   }
 
   getAmperage24h() {
-    this.batterieService.getAmperage24h().subscribe({
+    this.batteryStatusService.getAmperage24h().subscribe({
       next: (data) => this.handleChartData(data, 'A', 'Ampérage'),
       error: (error) => this.handleError(error),
     });
   }
 
   getVoltage24h() {
-    this.batterieService.getVoltage24h().subscribe({
+    this.batteryStatusService.getVoltage24h().subscribe({
       next: (data) => this.handleChartData(data, 'V', 'Voltage'),
       error: (error) => this.handleError(error),
     });
   }
 
   getTemp24h() {
-    this.batterieService.getTemp24h().subscribe({
+    this.batteryStatusService.getTemp24h().subscribe({
       next: (data) => this.handleChartData(data, '°C', 'Température'),
       error: (error) => this.handleError(error),
     });
   }
 
   getPower24h() {
-    this.batterieService.getPower24h().subscribe({
+    this.batteryStatusService.getPower24h().subscribe({
       next: (data) => this.handleChartData(data, 'W', 'Puissance'),
       error: (error) => this.handleError(error),
     });
@@ -186,6 +186,18 @@ export class BatterieGraphiqueComponent {
           formatter: (val: number) => `${val} ${unit}`,
         },
       },
+      ...this.chartOptions,
+          yaxis: {
+            ...this.chartOptions.yaxis,
+            labels:{
+              style: {
+                colors: '#ffffffd9',
+              },
+              formatter: (value: number) => {
+                return `${value}${unit}`; 
+              },
+            }
+          },
       title: {
         text: title+' sur 24 heures',
         margin: 10,
@@ -193,7 +205,7 @@ export class BatterieGraphiqueComponent {
           fontSize:  '14px',
           fontWeight:  '400',
           fontFamily:  "Manrope",
-          color:  '#5A5A5A'
+          color:  '#ffffffd9'
         },
       },
     };

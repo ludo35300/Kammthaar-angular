@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { faCarBattery, faChartArea, faSun } from '@fortawesome/free-solid-svg-icons';
-import { Batterie } from '../../../modeles/batterie';
+import { BatteryStatus } from '../../../modeles/batteryStatus';
 
 @Component({
   selector: 'app-batterie-pourcentage',
@@ -8,7 +8,7 @@ import { Batterie } from '../../../modeles/batterie';
   styleUrl: './batterie-pourcentage.component.scss'
 })
 export class BatteriePourcentageComponent {
-  @Input() batterieData: Batterie | null = null;
+  @Input() batteryStatus: BatteryStatus | null = null;
   @Output() labelSelected = new EventEmitter<string>();
   isLoading = true;
 
@@ -19,8 +19,8 @@ export class BatteriePourcentageComponent {
   faSun = faSun;
 
   ngOnChanges(){
-    if(this.batterieData){
-      this.currentCharge = this.batterieData.battery_pourcent;
+    if(this.batteryStatus){
+      this.currentCharge = this.batteryStatus.state_of_charge;
       this.isLoading = false;
     }
   }

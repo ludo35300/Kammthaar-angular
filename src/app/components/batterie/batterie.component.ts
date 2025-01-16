@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject, concatMap, distinctUntilChanged, map, Observable, timer } from 'rxjs';
+import { BehaviorSubject, combineLatest, concatMap, distinctUntilChanged, map, Observable, timer } from 'rxjs';
 import { faCarBattery, faSun } from '@fortawesome/free-solid-svg-icons';
 import { ServeurService } from '../../services/serveur/serveur.service';
-import { ControllerService } from '../../services/controller/controller.service';
-import { BatterieService } from '../../services/batterie/batterie.service';
-import { BatterieStatusService } from '../../services/batterie-status/batterie-status.service';
 import { Controller } from '../../modeles/controller';
-import { Batterie } from '../../modeles/batterie';
-import { BatterieStatus } from '../../modeles/batterie-status';
+import { DailyStatistics } from '../../modeles/dailyStatistics';
+import { DailyStatisticsService } from '../../services/dailyStatistics/daily-statistics.service';
+import { BatteryStatusService } from '../../services/batteryStatus/battery-status.service';
+import { BatteryStatus } from '../../modeles/batteryStatus';
+import { ControllerDataService } from '../../services/controllerData/controller-data.service';
 
 
 @Component({
@@ -17,8 +17,10 @@ import { BatterieStatus } from '../../modeles/batterie-status';
 })
 export class BatterieComponent implements OnInit{
   controllerData$: BehaviorSubject<Controller | null> = new BehaviorSubject<Controller | null>(null);
-  batterieData$: BehaviorSubject<Batterie | null> = new BehaviorSubject<Batterie | null>(null);
-  batterieStatusData$: BehaviorSubject<BatterieStatus | null> = new BehaviorSubject<BatterieStatus | null>(null);
+  dailyStatistics$: BehaviorSubject<DailyStatistics | null> = new BehaviorSubject<DailyStatistics | null>(null);
+  combinedData$!: Observable<{ controllerData: Controller | null; dailyStatistics: DailyStatistics | null }>;   // Observable combiné
+  
+  batteryStatus$: BehaviorSubject<BatteryStatus | null> = new BehaviorSubject<BatteryStatus | null>(null);
 
   isServerOnline: boolean = false;
   isLoading: boolean = true;
@@ -29,15 +31,20 @@ export class BatterieComponent implements OnInit{
 
   constructor(
     private serveurService: ServeurService,
-    private controllerService: ControllerService,
-    private batterieService: BatterieService,
-    private batterieStatusService: BatterieStatusService
+    private controllerDataService: ControllerDataService,
+    private dailyStatisticsService: DailyStatisticsService,
+    private batteryStatusService: BatteryStatusService
   ){}
 
   ngOnInit(): void {
     this.getLastControllerData();
-    this.getLastBatterieData();
-    this.getLastStatusData();
+    this.getDailyStatisticsLast();
+    this.getBatterieStatusLast();
+
+    // Initialisation de combinedData$
+    this.combinedData$ = combineLatest([this.controllerData$, this.dailyStatistics$]).pipe(
+      map(([controllerData, dailyStatistics]) => ({ controllerData, dailyStatistics }))
+    );
     
     this.serveurService.getServerStatus()
       .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
@@ -47,8 +54,9 @@ export class BatterieComponent implements OnInit{
           this.fetchRealtimeData();
         }else {
             this.getLastControllerData();
-            this.getLastBatterieData(); 
-            this.getLastStatusData();
+            this.getDailyStatisticsLast();
+
+            this.getBatterieStatusLast(); 
         }
       });
   }
@@ -57,8 +65,9 @@ export class BatterieComponent implements OnInit{
   fetchRealtimeData() {
     const realtimeRequests = [
       () => this.getControllerRealtime(),
-      () => this.getBatterieRealtime(),
-      () => this.getStatusRealtime()
+      () => this.getDailyStatisticsRealtime(),
+
+      () => this.getBatterieStatusRealtime(),
     ];
   
     realtimeRequests.reduce((chain, request) => {
@@ -71,7 +80,7 @@ export class BatterieComponent implements OnInit{
 
   // Récupération des infos du controller pour récupére la date
   getControllerRealtime(): Observable<Controller> {
-    return this.controllerService.getControllerRealtime().pipe(
+    return this.controllerDataService.getControllerDataRealtime().pipe(
       map((data) => {
         this.controllerData$.next(data); // Mettre à jour via BehaviorSubject
         this.isLoading = false;
@@ -81,46 +90,48 @@ export class BatterieComponent implements OnInit{
   }
   // On récupère les dernières données du controlleur enregistrées
   getLastControllerData(){
-    this.controllerService.getLastController().subscribe({
+    this.controllerDataService.getControllerDataLast().subscribe({
       next: (data) => {
         this.controllerData$.next(data);
         this.isLoading = false;
       }
     });
   }
-
-  getBatterieRealtime(): Observable<Batterie> {
-    return this.batterieService.getBatterieData().pipe(
+  getDailyStatisticsRealtime(): Observable<DailyStatistics> {
+    return this.dailyStatisticsService.getDailyStatisticsRealtime().pipe(
       map((data) => {
-        this.batterieData$.next(data); // Mettre à jour via BehaviorSubject
+        this.dailyStatistics$.next(data); // Mettre à jour via BehaviorSubject
         this.isLoading = false;
         return data;
       })
     );
   }
-  // On récupère les dernières données du controlleur enregistrées
-  getLastBatterieData(){
-    this.batterieService.getLastBatterieData().subscribe({
+  
+  // On récupère les dernières données du controller enregistrées
+  getDailyStatisticsLast() {
+    this.dailyStatisticsService.getDailyStatisticsLast().subscribe({
       next: (data) => {
-        this.batterieData$.next(data);
-      },
+        this.dailyStatistics$.next(data); // Mise à jour via BehaviorSubject
+        this.isLoading = false;
+      }
     });
   }
-  getStatusRealtime(): Observable<BatterieStatus> {
-    return this.batterieStatusService.getBatterieStatusData().pipe(
+
+  getBatterieStatusRealtime(): Observable<BatteryStatus> {
+    return this.batteryStatusService.getBatteryStatusRealtime().pipe(
       map((data) => {
-        this.batterieStatusData$.next(data); // Mettre à jour via BehaviorSubject
+        this.batteryStatus$.next(data); // Mettre à jour via BehaviorSubject
         this.isLoading = false;
         return data;
       })
     );
   }
   // On récupère les dernières données du controlleur enregistrées
-  getLastStatusData(){
-    this.batterieStatusService.getLastBatterieStatusData().subscribe({
+  getBatterieStatusLast(){
+    this.batteryStatusService.getBatteryStatusLast().subscribe({
       next: (data) => {
-        this.batterieStatusData$.next(data);
-      }
+        this.batteryStatus$.next(data);
+      },
     });
   }
 

@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { BehaviorSubject, concatMap, distinctUntilChanged, map, Observable, timer } from 'rxjs';
-import { ControllerService } from '../../services/controller/controller.service';
 import { ServeurService } from '../../services/serveur/serveur.service';
 import { Controller } from '../../modeles/controller';
 import { BatterieParametres } from '../../modeles/batterie_parametres';
 import { BatterieParametresService } from '../../services/batterie-parametres/batterie-parametres.service';
+import { ControllerDataService } from '../../services/controllerData/controller-data.service';
 
 @Component({
   selector: 'app-batterie-parametres',
@@ -22,7 +22,7 @@ export class BatterieParametresComponent {
 
   constructor(
       private serveurService: ServeurService,
-      private controllerService: ControllerService,
+      private controllerDataService: ControllerDataService,
       private batterieParametresService: BatterieParametresService
   ){}
 
@@ -59,7 +59,7 @@ export class BatterieParametresComponent {
   
   // Récupération des infos du controller pour récupére la date
   getControllerRealtime(): Observable<Controller> {
-    return this.controllerService.getControllerRealtime().pipe(
+    return this.controllerDataService.getControllerDataRealtime().pipe(
       map((data) => {
         this.controllerData$.next(data); // Mettre à jour via BehaviorSubject
         this.isLoading = false;
@@ -69,7 +69,7 @@ export class BatterieParametresComponent {
   }
   // On récupère les dernières données du controlleur enregistrées
   getLastControllerData(){
-    this.controllerService.getLastController().subscribe({
+    this.controllerDataService.getControllerDataLast().subscribe({
       next: (data) => {
         this.controllerData$.next(data);
         this.isLoading = false;

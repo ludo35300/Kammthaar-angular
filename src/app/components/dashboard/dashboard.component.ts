@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { faArrowRight, faChartLine, faCheck, faMoon, faSun, faWarning } from '@fortawesome/free-solid-svg-icons';
-import { ControllerService } from '../../services/controller/controller.service';
 import { Controller } from '../../modeles/controller';
 import { ServeurService } from '../../services/serveur/serveur.service';
-import { BehaviorSubject, concatMap, distinctUntilChanged, map, Observable, timer } from 'rxjs';
-import { DashboardService } from '../../services/dashboard/dashboard.service';
-import { Statistiques } from '../../modeles/statistiques';
+import { BehaviorSubject, combineLatest, concatMap, distinctUntilChanged, map, Observable, timer } from 'rxjs';
 import { Raspberry } from '../../modeles/server_infos';
+import { DailyStatistics } from '../../modeles/dailyStatistics';
+import { DailyStatisticsService } from '../../services/dailyStatistics/daily-statistics.service';
+import { EnergyStatisticsService } from '../../services/energyStatistics/energy-statistics.service';
+import { EnergyStatistics } from '../../modeles/energyStatistics';
+import { ControllerDataService } from '../../services/controllerData/controller-data.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,8 +20,14 @@ export class DashboardComponent implements OnInit{
   isLoading = true;
   
   controllerData$: BehaviorSubject<Controller | null> = new BehaviorSubject<Controller | null>(null);
-  statistiquesData$: BehaviorSubject<Statistiques | null> = new BehaviorSubject<Statistiques | null>(null);
+  dailyStatistics$: BehaviorSubject<DailyStatistics | null> = new BehaviorSubject<DailyStatistics | null>(null);
+  combinedData$!: Observable<{ controllerData: Controller | null; dailyStatistics: DailyStatistics | null }>;   // Observable combiné
+
+  energyStatistics$: BehaviorSubject<EnergyStatistics | null> = new BehaviorSubject<EnergyStatistics | null>(null);
+
   systemInfo$: BehaviorSubject<Raspberry | null> = new BehaviorSubject<Raspberry | null>(null);
+
+  
 
   faWarning = faWarning
   faArrowRight = faArrowRight
@@ -31,14 +39,20 @@ export class DashboardComponent implements OnInit{
 
   constructor(
     private serveurService: ServeurService,
-    private controllerService: ControllerService,
-    private dashboardService: DashboardService
-    
+    private controllerDataService: ControllerDataService,
+    private dailyStatisticsService: DailyStatisticsService,
+    private energyStatisticsService: EnergyStatisticsService    
   ){}
 
   ngOnInit(): void {
     this.getLastControllerData();
-    this.getLastStatistiques();
+    this.getDailyStatisticsLast();
+    this.getEnergyStatisticsLast();
+
+    // Initialisation de combinedData$
+    this.combinedData$ = combineLatest([this.controllerData$, this.dailyStatistics$]).pipe(
+      map(([controllerData, dailyStatistics]) => ({ controllerData, dailyStatistics }))
+    );
 
     this.serveurService.getServerStatus()
         .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
@@ -50,7 +64,8 @@ export class DashboardComponent implements OnInit{
             this.getInfosServeur();
           } else {
             this.getLastControllerData();
-            this.getLastStatistiques();
+            this.getDailyStatisticsLast();
+            this.getEnergyStatisticsLast();
           }
         });
   }
@@ -59,7 +74,8 @@ export class DashboardComponent implements OnInit{
   fetchRealtimeData() {
     const realtimeRequests = [
       () => this.getControllerRealtime(),
-      () => this.getStatistiquesRealtime(),
+      () => this.getDailyStatisticsRealtime(),
+      () => this.getEnergyStatisticsRealtime()
     ];
 
     realtimeRequests.reduce((chain, request) => {
@@ -71,7 +87,7 @@ export class DashboardComponent implements OnInit{
   }
   
   getControllerRealtime(): Observable<Controller> {
-    return this.controllerService.getControllerRealtime().pipe(
+    return this.controllerDataService.getControllerDataRealtime().pipe(
       map((data) => {
         this.controllerData$.next(data); // Mettre à jour via BehaviorSubject
         this.isLoading = false;
@@ -82,9 +98,50 @@ export class DashboardComponent implements OnInit{
 
   // On récupère les dernières données du controller enregistrées
   getLastControllerData() {
-    this.controllerService.getLastController().subscribe({
+    this.controllerDataService.getControllerDataLast().subscribe({
       next: (data) => {
         this.controllerData$.next(data); // Mise à jour via BehaviorSubject
+        this.isLoading = false;
+      }
+    });
+  }
+
+  getDailyStatisticsRealtime(): Observable<DailyStatistics> {
+    return this.dailyStatisticsService.getDailyStatisticsRealtime().pipe(
+      map((data) => {
+        this.dailyStatistics$.next(data); // Mettre à jour via BehaviorSubject
+        this.isLoading = false;
+        return data;
+      })
+    );
+  }
+
+  // On récupère les dernières données du controller enregistrées
+  getDailyStatisticsLast() {
+    this.dailyStatisticsService.getDailyStatisticsLast().subscribe({
+      next: (data) => {
+        this.dailyStatistics$.next(data); // Mise à jour via BehaviorSubject
+        this.isLoading = false;
+      }
+    });
+  }
+
+
+  getEnergyStatisticsRealtime(): Observable<EnergyStatistics> {
+    return this.energyStatisticsService.getEnergyStatisticsRealtime().pipe(
+      map((data) => {
+        this.energyStatistics$.next(data); // Mettre à jour via BehaviorSubject
+        this.isLoading = false;
+        return data;
+      })
+    );
+  }
+
+  // On récupère les dernières données du controller enregistrées
+  getEnergyStatisticsLast() {
+    this.energyStatisticsService.getEnergyStatisticsLast().subscribe({
+      next: (data) => {
+        this.energyStatistics$.next(data); // Mise à jour via BehaviorSubject
         this.isLoading = false;
       }
     });
@@ -93,26 +150,6 @@ export class DashboardComponent implements OnInit{
   getInfosServeur(){ 
     this.serveurService.getSystemInfo().subscribe({
       next: (data) => (this.systemInfo$.next(data))
-    });
-  }
-
-  
-  getStatistiquesRealtime(): Observable<Statistiques> {
-    return this.dashboardService.getStatistiquesRealtimeData().pipe(
-      map((data) => {
-        this.statistiquesData$.next(data); // Mettre à jour via BehaviorSubject
-        this.isLoading = false;
-        return data;
-      })
-    );
-  }
-  // On récupère les dernières données du controlleur enregistrées
-  getLastStatistiques(){
-    this.dashboardService.getLastStatistiques().subscribe({
-      next: (data) => {
-        this.statistiquesData$.next(data);
-        this.isLoading = false;
-      }
     });
   }
 }

@@ -1,17 +1,22 @@
-
 .card{
-    color: #5a5a5a;
-}
-
-
-h5 {
+  color: rgba(255, 255, 255, .8);
+  background: linear-gradient(180deg, #ff66921f 0, #ff669208);
+  h5 {
     font-size: 14px;
     font-weight: 400;
     line-height: 20px;
   }
   a{
-    color: #FF6C96 !important;
-    border: none;
-    background-color: #FFCCDB !important;
-    border-radius: 10px;
+      color: #D3597D !important;
+      border: none;
+      background-color: #1A2537 !important;
+      border-radius: 10px;
+  }
+  a:hover{
+    color: #1A2537 !important;
+    background-color: #D3597D !important;
+  }
 }
+
+
+

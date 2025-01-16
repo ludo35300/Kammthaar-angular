@@ -1,17 +1,20 @@
 
 .card{
-    color: #5a5a5a;
-}
+  background: linear-gradient(180deg, #36c76c1f 0, #36c76c08);;
+  color: #DDE0E3;
 
-
-h5 {
+  h5 {
     font-size: 14px;
     font-weight: 400;
     line-height: 20px;
   }
   a{
-    color: #FF6C96 !important;
     border: none;
-    background-color: #FFCCDB !important;
-    border-radius: 10px;
+    background-color: #1A2537 !important;
+    color: #36C76C;
+    &:hover{
+      background-color: #36C76C !important;
+      color: #1A2537 !important;
+    }
+  }
 }

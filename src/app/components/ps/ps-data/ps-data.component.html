@@ -1,7 +1,7 @@
 <!-- Gauges -->
 <div class="row g-4">
   <div class="col-12 col-sm-6 col-md-4 col-lg-4" *ngFor="let gauge of gauges">
-    <div class="card shadow-sm border-0">
+    <div class="card shadow-sm border-0 warning-gt">
       
       <div class="card-body">
         <div class="row mb-2">
@@ -14,7 +14,7 @@
               placement="left"
               href="javascript:void(0)"
               (click)="onViewGraph(gauge.label)"
-              class="custom-link btn btn-alt-primary float-end"
+              class="custom-link btn float-end"
             ><fa-icon [icon]="faChart"></fa-icon></a>
           </div>
       </div>
@@ -25,7 +25,7 @@
           [size]="120"
           [value]="gauge.value"
           [append]="gauge.unit"
-          [foregroundColor]="'#FF6C96'"
+          [foregroundColor]="'#F8C20A'"
           [max]="gauge.max"
           cap="round"
         ></ngx-gauge>

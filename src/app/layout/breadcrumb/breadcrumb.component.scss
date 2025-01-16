@@ -1,23 +1,24 @@
 .content-header {
-    background: #fff;
+    background: #1A2537;
+    margin: 20px 0;
+    margin-bottom: 40px;
     padding: 0.75rem 1rem;
     border-radius: 8px;
-
-    box-shadow: 0 2px 4px -1px #afb6c933 !important;
+    box-shadow:0 2px 4px -1px #afb6c933 !important;
   
     h4 {
       font-weight: 600;
       font-size: 1.2rem;
-      color: #5a5a5a;
+      color: rgba(255, 255, 255, .8);
     }
     button{
-        color: #635bff !important;
-        background-color: #dddbff !important;
-}
-    
+      border: none;
+      color: rgba(255, 255, 255, .8);
+      background-color: #635bff !important;
+    }
     .etatJour{
         margin-left: 10px;
     }
     
-  }
+}
   

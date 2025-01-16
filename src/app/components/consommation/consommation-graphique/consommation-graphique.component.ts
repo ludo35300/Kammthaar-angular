@@ -2,7 +2,7 @@ import { Component, Input, SimpleChanges } from '@angular/core';
 import { ApexAxisChartSeries } from 'ng-apexcharts';
 import { ChartOptions } from '../../batterie/batterie-graphique/batterie-graphique.component';
 import { faSun } from '@fortawesome/free-solid-svg-icons';
-import { ControllerService } from '../../../services/controller/controller.service';
+import { LoadDataService } from '../../../services/loadData/load-data.service';
 
 @Component({
   selector: 'app-consommation-graphique',
@@ -19,7 +19,7 @@ export class ControllerGraphiqueComponent {
   isLoading = true;
   faSun = faSun;
 
-  constructor(private controllerService: ControllerService) {
+  constructor(private loadDataService: LoadDataService) {
       // Configuration de base du graphique
       this.chartOptions = {
         chart: {
@@ -28,9 +28,22 @@ export class ControllerGraphiqueComponent {
           zoom: {
             enabled: false,
           },
+          
         },
         xaxis: {
-          type: 'datetime', // Permet de traiter les timestamps en millisecondes
+          labels: {
+            show: false, // Masquer les étiquettes de l'axe Y
+          },
+          axisTicks: {
+            show: false, // Masque les ticks (lignes courtes)
+          },
+        },
+        yaxis: {
+          labels: {
+            style: {
+              colors: '#ffffffd9',
+            }
+          },
         },
         stroke: {
           curve: 'smooth',
@@ -67,9 +80,11 @@ export class ControllerGraphiqueComponent {
             },
           }
         },
+        
         title: {
           text: 'Graphique du controlleur MPPT',
           align: 'center',
+          
         },
       };
     }
@@ -85,9 +100,6 @@ export class ControllerGraphiqueComponent {
             case 'Voltage':
               this.getVoltage24h();
               break;
-            case 'Température':
-              this.getTemp24h();
-              break;
             case 'Puissance':
               this.getPower24h();
               break;
@@ -99,29 +111,22 @@ export class ControllerGraphiqueComponent {
     }
 
     getAmperage24h() {
-      this.controllerService.getAmperage24h().subscribe({
+      this.loadDataService.getAmperage24h().subscribe({
         next: (data) => this.handleChartData(data, 'A', 'Ampérage'),
         error: (error) => this.handleError(error),
       });
     }
 
     getVoltage24h() {
-      this.controllerService.getVoltage24h().subscribe({
+      this.loadDataService.getVoltage24h().subscribe({
         next: (data) => this.handleChartData(data, 'V', 'Voltage'),
         error: (error) => this.handleError(error),
       });
     }
 
     getPower24h() {
-      this.controllerService.getPower24h().subscribe({
+      this.loadDataService.getPower24h().subscribe({
         next: (data) => this.handleChartData(data, 'W', 'Puissance'),
-        error: (error) => this.handleError(error),
-      });
-    }
-
-    getTemp24h() {
-      this.controllerService.getTemperature24h().subscribe({
-        next: (data) => this.handleChartData(data, '°C', 'Température'),
         error: (error) => this.handleError(error),
       });
     }
@@ -145,11 +150,29 @@ export class ControllerGraphiqueComponent {
           ...this.chartOptions.apexTooltip,
           y: {
             formatter: (val: number) => `${val} ${unit}`,
+            
           },
+        },
+        ...this.chartOptions,
+        yaxis: {
+          ...this.chartOptions.yaxis,
+          labels:{
+            style: {
+              colors: '#ffffffd9',
+            },
+            formatter: (value: number) => {
+              return `${value} ${unit}`; 
+            },
+          }
         },
         title: {
           text: title+' sur 24 heures',
-          align: 'center',
+          style: {
+            fontSize:  '14px',
+            fontWeight:  '400',
+            fontFamily:  "Manrope",
+            color:  '#ffffffd9'
+          },
         },
       };
   
