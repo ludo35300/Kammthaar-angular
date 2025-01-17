@@ -1,14 +1,17 @@
 /* Style pour le conteneur de la carte */
 .card {
-    border: none;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+    background: #1A2537;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    box-shadow:0 2px 4px -1px #afb6c933 !important;
+    color: rgba(255, 255, 255, .8);
 }
 
 /* Style des inputs */
 input.form-control {
-    background-color: #f8f9fa;  /* Fond clair pour les champs */
-    border: 2px solid #ccc; /* Bordure grise */
+    background-color: #1A2537;
+    color: #6c757d;
+    border: 1px solid #ccc; /* Bordure grise */
     border-radius: 8px;  /* Coins arrondis */
     font-size: 1rem;  /* Taille de la police */
     padding: 0.8rem 1rem;  /* Espacement intérieur */
@@ -18,14 +21,13 @@ input.form-control {
 
 /* Style du label */
 input.form-control:focus {
-    border-color: #007bff;  /* Bordure bleue lorsque l'input est actif */
+    border-color: #ff6692;  /* Bordure bleue lorsque l'input est actif */
     box-shadow: 0 0 10px rgba(0, 123, 255, 0.3); /* Légère ombre bleue */
-    background-color: #ffffff;  /* Fond blanc au focus */
 }
 
 /* Effet de transition des labels */
 input.form-control::placeholder {
-    color: #6c757d; /* Couleur des placeholders */
+    color: #fff; /* Couleur des placeholders */
     opacity: 1;  /* Assurer que le placeholder soit bien visible */
 }
 
@@ -40,10 +42,10 @@ input.form-control::placeholder {
 
 /* Style des labels */
 label {
-    font-weight: 500;
-    color: #495057;  /* Couleur de texte pour les labels */
+    font-weight: 400;
+    color: #fff;  /* Couleur de texte pour les labels */
     margin-bottom: 0.5rem;
-    font-size: 1rem;
+    font-size: 14px;
     display: block;
 }
 
@@ -55,25 +57,3 @@ label {
     margin-left: 0.5rem;
 }
 
-/* Ajout d'un effet d'ombrage */
-.card-body {
-    background-color: #ffffff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.card-header {
-    background-color: #f1f1f1;
-    border-bottom: 2px solid #eee;
-    padding: 1.5rem;
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #495057;
-}
-
-/* Ajout de bordures arrondies pour la carte */
-.card {
-    border-radius: 10px;
-    overflow: hidden;
-}

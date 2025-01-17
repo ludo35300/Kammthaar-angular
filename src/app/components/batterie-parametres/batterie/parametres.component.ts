@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { BatterieParametres } from '../../../modeles/batterie_parametres';
+import { BatterieParametres } from '../../../modeles/batteryParameters';
 import { faCircleInfo, faSun } from '@fortawesome/free-solid-svg-icons';
 
 @Component({

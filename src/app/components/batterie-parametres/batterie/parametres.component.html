@@ -1,9 +1,6 @@
-<div class="row g-4 mt-4">
-    <div class="col-12">
-        <!-- Si Kammthaar est connecté -->
-        <div class="card">
-            <div class="card-body table-responsive" *ngIf="!isLoading">
-                <div *ngIf="batterieParametresData" class="table">
+
+<div class="card">
+    <div class="card-body" *ngIf="!isLoading && batterieParametresData">
                     <div class="row mb-2">
                         <div class="col-md-6">
                             <label for="batteryType">Type de batterie</label>
@@ -89,20 +86,19 @@
                             <label for="overVoltageReconnect">Tension de reconnexion après surcharge</label>
                             <input id="overVoltageReconnect" type="text" class="form-control" [value]="batterieParametresData.over_voltage_reconnect + ' V'" readonly />
                         </div>
-                        <div class="col-md-6">
-                            <label for="ratedChargingCurrent">Courant de charge nominal</label>
-                            <input id="ratedChargingCurrent" type="text" class="form-control" [value]="batterieParametresData.rated_charging_current + ' A'" readonly />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div *ngIf="isLoading" class="mb-3 text-center g4">
-                <p class="loading" 
-                    [ngbTooltip]="'Chargement des données en cours...'" 
-                    placement="bottom">
-                    <fa-icon [icon]="faSun" class="fa-spin" animation="spin"></fa-icon>
-                </p>
+            <div class="col-md-6">
+                <label for="ratedChargingCurrent">Courant de charge nominal</label>
+                <input id="ratedChargingCurrent" type="text" class="form-control" [value]="batterieParametresData.rated_charging_current + ' A'" readonly />
             </div>
         </div>
+    </div>
+
+
+    <div *ngIf="isLoading" class="mb-3 text-center g4">
+        <p class="loading" 
+        [ngbTooltip]="'Chargement des données en cours...'" 
+        placement="bottom">
+            <fa-icon [icon]="faSun" class="fa-spin" animation="spin"></fa-icon>
+        </p>
     </div>
 </div>

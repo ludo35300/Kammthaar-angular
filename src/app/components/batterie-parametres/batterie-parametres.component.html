@@ -1,13 +1,15 @@
-<div class="container-fluid">
-    <div class="content">
-      <app-breadcrumb *ngIf="controllerData$ | async as controllerData" [title]="'Paramètres de la batterie'" [controllerData]="controllerData" [isServerOnline]="isServerOnline"></app-breadcrumb>
-  
-      <div class="row  g-4">
-        <div class="col-md-12 ">
+
+      <ng-container *ngIf="combinedData$ | async as data">
+        <app-breadcrumb 
+          [title]="'Paramètres de la batterie'" 
+          [controllerData]="data.controllerData"
+          [dailyStatistics]="data.dailyStatistics"
+          [isServerOnline]="isServerOnline">
+        </app-breadcrumb>
+      </ng-container>
+      <div class="row g-4">
+        <div class="col-12 ">
             <app-parametres *ngIf="batterieParametresData$ | async as batterieParametresData" [batterieParametresData]="batterieParametresData"></app-parametres>
         </div>
       </div>
       
-  
-    </div>
-  </div>
