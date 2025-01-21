@@ -1,13 +1,26 @@
-/* Style pour le conteneur de la carte */
+
 .card {
+    max-width: 800px;
     background: #1A2537;
     padding: 0.75rem 1rem;
     border-radius: 8px;
     box-shadow:0 2px 4px -1px #afb6c933 !important;
     color: rgba(255, 255, 255, .8);
-}
+    p{
+        color:#635BFF;
+        font-size: 20px;
+    }
 
-/* Style des inputs */
+    h4{
+        color: #fff;
+    }
+    .image{
+        border-left: solid #333F55 1px;
+      }
+}
+      
+  
+    /* Style des inputs */
 input.form-control {
     background-color: #1A2537;
     color: #6c757d;
@@ -20,7 +33,8 @@ input.form-control {
 }
 
 /* Style du label */
-input.form-control:focus {
+input:focus {
+    // color: #635BFF;
     border-color: #ff6692;  /* Bordure bleue lorsque l'input est actif */
     box-shadow: 0 0 10px rgba(0, 123, 255, 0.3); /* Légère ombre bleue */
 }
@@ -30,16 +44,6 @@ input.form-control::placeholder {
     color: #fff; /* Couleur des placeholders */
     opacity: 1;  /* Assurer que le placeholder soit bien visible */
 }
-
-/* Style des colonnes et alignement */
-.row {
-    margin-bottom: 1rem;
-}
-
-.col-md-6 {
-    margin-bottom: 1.5rem;  /* Espace entre les champs */
-}
-
 /* Style des labels */
 label {
     font-weight: 400;
@@ -48,12 +52,11 @@ label {
     font-size: 14px;
     display: block;
 }
-
-/* Tooltip personnalisé */
-.fa-info-circle {
-    color: #007bff; /* Couleur du tooltip */
-    cursor: pointer;
-    font-size: 1.2rem;
-    margin-left: 0.5rem;
+.btn{
+    background-color: #635BFF;
+    color: white;
 }
-
+.btn:hover{
+    background-color: #6F68FF;
+}
+      

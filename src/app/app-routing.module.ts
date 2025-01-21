@@ -6,6 +6,8 @@ import { ControllerComponent } from './components/controller/controller.componen
 import { BatterieComponent } from './components/batterie/batterie.component';
 import { BatterieParametresComponent } from './components/batterie-parametres/batterie-parametres.component';
 import { ConsommationComponent } from './components/consommation/consommation.component';
+import { LoginComponent } from './components/login/login.component';
+import { AproposComponent } from './components/apropos/apropos.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -15,6 +17,8 @@ const routes: Routes = [
   { path: 'consommation', component: ConsommationComponent },
   { path: 'batterie/details', component: BatterieComponent},
   { path: 'batterie/parametres', component: BatterieParametresComponent},
+  { path: 'login', component: LoginComponent},
+  { path: 'apropos', component: AproposComponent},
 
 ];
 

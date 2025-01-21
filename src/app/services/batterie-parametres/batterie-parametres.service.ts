@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BatterieParametres } from '../../modeles/batterie_parametres';
+import { BatterieParametres } from '../../modeles/batteryParameters';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -13,11 +13,11 @@ export class BatterieParametresService {
   constructor(private http: HttpClient) { }
 
   getBatterieParametresData(): Observable<BatterieParametres> {
-    return this.http.get<BatterieParametres>(this.serveurUrl+'/batterie/parametres/realtime');
+    return this.http.get<BatterieParametres>(this.serveurUrl+'/battery/parameters/realtime');
   }
 
   getLastBatterieParametresData(): Observable<BatterieParametres> {
-    return this.http.get<BatterieParametres>(this.serveurUrl+'/batterie/parametres/last');
+    return this.http.get<BatterieParametres>(this.serveurUrl+'/battery/parameters/last');
   }
 
 }

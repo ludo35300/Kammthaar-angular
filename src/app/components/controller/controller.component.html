@@ -7,7 +7,7 @@
         [isServerOnline]="isServerOnline">
       </app-breadcrumb>
     </ng-container>
-    <div class="row  g-4">
+    <div class="row g-4">
       <div class="col-12 col-sm-12 col-md-6 col-lg-6">
         <app-charging *ngIf="chargingEquipmentStatus$ | async as chargingEquipmentStatus" [chargingEquipmentStatus]="chargingEquipmentStatus"></app-charging>
         <app-charging-errors *ngIf="chargingEquipmentStatus$ | async as chargingEquipmentStatus" [chargingEquipmentStatus]="chargingEquipmentStatus"></app-charging-errors>

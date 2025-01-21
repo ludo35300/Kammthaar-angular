@@ -11,13 +11,15 @@
                         [icon]="faCheck" 
                         class="float-end text-success" 
                         *ngIf="chargingEquipmentStatus?.running"
-                        [ngbTooltip]="'En fonctionnement'">
+                        [ngbTooltip]="'En fonctionnement'"
+                        placement="left">
                     </fa-icon>
                     <fa-icon 
                         [icon]="faXmark" 
                         class="float-end text-danger" 
                         *ngIf="!chargingEquipmentStatus?.running"
-                        [ngbTooltip]="'En veille'">
+                        [ngbTooltip]="'En veille'"
+                        placement="left">
                     </fa-icon> 
                 </span>
             </li>
@@ -29,7 +31,7 @@
                         [icon]="faInfoCircle" 
                         class="float-end text-success" 
                         [ngbTooltip]="getDescriptionChargingStatus(chargingEquipmentStatus?.charging_status || null)" 
-                        placement="bottom">
+                        placement="left">
                     </fa-icon>
                 </span>
             </li>
@@ -38,10 +40,10 @@
                 <span class="float-end">
                     {{getVoltageStatus(chargingEquipmentStatus?.input_voltage_status || null)}} &nbsp;
                     <fa-icon 
-                            [icon]="faInfoCircle" 
-                            class="float-end text-success" 
-                            [ngbTooltip]="getDescriptionVoltageStatus(chargingEquipmentStatus?.input_voltage_status || null)" 
-                            placement="bottom">
+                        [icon]="faInfoCircle" 
+                        class="float-end text-success" 
+                        [ngbTooltip]="getDescriptionVoltageStatus(chargingEquipmentStatus?.input_voltage_status || null)" 
+                        placement="left">
                     </fa-icon>
                 </span>
             </li>

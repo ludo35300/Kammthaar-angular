@@ -39,6 +39,8 @@ import { DischargingErrorsComponent } from './components/controller/discharging/
 import { ChargingErrorsComponent } from './components/controller/charging/charging-errors/charging-errors.component';
 import { ChargingErrorsPipe } from './pipes/charging-errors.pipe';
 import { DischargingErrorsPipe } from './pipes/discharging-errors.pipe';
+import { LoginComponent } from './components/login/login.component';
+import { AproposComponent } from './components/apropos/apropos.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +73,9 @@ import { DischargingErrorsPipe } from './pipes/discharging-errors.pipe';
     DischargingErrorsComponent,
     ChargingErrorsComponent,
     ChargingErrorsPipe,
-    DischargingErrorsPipe
+    DischargingErrorsPipe,
+    LoginComponent,
+    AproposComponent
   ],
   imports: [
     NgOptimizedImage,
