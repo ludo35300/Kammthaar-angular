@@ -28,6 +28,8 @@
 
       <!-- Profil -->
       <div class="dropdown">
+
+
         <button
           class="btn btn-profil dropdown-toggle"
           id="profileDropdown"
@@ -38,8 +40,8 @@
           <span class="d-none d-lg-inline">Profil &nbsp;</span>
         </button>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-          <li><a class="dropdown-item" href="#">Mon compte</a></li>
-          <li><a class="dropdown-item" href="#">Déconnexion</a></li>
+          <li><a routerLink="/login" class="dropdown-item" [routerLinkActive]="['is-active']">Se connecter</a></li>
+          <!-- <li><a class="dropdown-item" href="#">Déconnexion</a></li> -->
         </ul>
       </div>
     </div>

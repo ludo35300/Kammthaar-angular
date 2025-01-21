@@ -1,5 +1,5 @@
-<div class="sidebar" [ngClass]="{ collapsed: !isOpen }">
-    <ul class="list-unstyled pt-4">
+<div class="sidebar  d-flex flex-column" [ngClass]="{ collapsed: !isOpen }">
+  <ul class="list-unstyled pt-4 flex-grow-1">
       <li>
         <a routerLink="/dashboard" [routerLinkActive]="['is-active']" class="d-flex align-items-center px-3 py-2" (click)="closeSidebar()" >
           <fa-icon [icon]="faLocationArrow" class="me-3"></fa-icon>Dashboard
@@ -21,15 +21,21 @@
         </a>
       </li>
       <li>
-        <a routerLink="/batterie/details" [routerLinkActive]="['is-active']"class="d-flex align-items-center px-3 py-2" (click)="closeSidebar()">
+        <a routerLink="/batterie/details" [routerLinkActive]="['is-active']" class="d-flex align-items-center px-3 py-2" (click)="closeSidebar()">
         <fa-icon [icon]="faDumpster"  class="me-3"></fa-icon>Batterie
         </a>
       </li>
       <li>
         <hr class="sidebar-divider" />
       </li>
+  </ul>
 
-      
-    </ul>
-  </div>
+  <ul class="list-unstyled mb-3">
+    <li>
+      <a routerLink="/apropos" [routerLinkActive]="['is-active']" class="d-flex align-items-center px-3 py-2" (click)="closeSidebar()">
+        <fa-icon [icon]="faDumpster"  class="me-3"></fa-icon>A propos
+      </a>
+    </li>
+  </ul>
+</div>
   

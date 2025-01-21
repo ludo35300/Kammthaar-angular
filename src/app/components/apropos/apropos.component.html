@@ -1,0 +1,78 @@
+<ng-container>
+    <app-breadcrumb 
+      [title]="'A propos de Kammthaar'" 
+      [controllerData]="null"
+      [dailyStatistics]="null"
+      [isServerOnline]="false">
+    </app-breadcrumb>
+  </ng-container>
+
+  <div class="row g-4">
+    <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+        <div class="card project-card">
+            <img class="card-img-top" src="../../../assets/kammthaar.png" alt="Projet Kammthaar">
+            <div class="card-body">
+              <h5 class="card-title">Le projet</h5>
+              <p class="card-text">
+                Kammthaar est un projet d'application de gestion d'énergie solaire conçu pour les systèmes embarqués tels qu'un camion aménagé.  
+                Ce projet se concentre sur l'optimisation de l'utilisation de l'énergie solaire tout en garantissant une accessibilité aux données, même dans des environnements où la connectivité est limitée.  
+              </p>
+              <h5>Objectif</h5>
+              <p>
+                Kammthaar vise à fournir une solution complète et efficace permettant :  
+                - La surveillance et l'analyse en temps réel des performances du système solaire.  
+                - L'enregistrement et la gestion des données pour un usage immédiat ou ultérieur.  
+                - Une utilisation flexible grâce à des scénarios de connectivité en ligne et hors ligne.
+              </p>
+            </div>
+          </div>
+        </div>
+      
+        <!-- Section Fonctionnalités principales -->
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6">
+          <div class="card project-card">
+            <div class="card-body">
+              <h5 class="card-title fonctionnalites">Fonctionnalités principales</h5>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  <h6>Récupération des données en temps réel</h6>
+                  <p>
+                    Les données, telles que la tension, le courant, la puissance des panneaux solaires, ainsi que l'état de charge des batteries, 
+                    sont récupérées directement depuis le contrôleur MPPT via Modbus RTU, grâce au Raspberry Pi 5.
+                  </p>
+                </li>
+                <li class="list-group-item">
+                  <h6>Gestion des données</h6>
+                  <p>
+                    Les données sont principalement stockées dans une base de données InfluxDB distante.  
+                    En cas d'absence de connexion réseau, elles sont temporairement sauvegardées dans un fichier JSON sur le Raspberry Pi 
+                    puis synchronisées automatiquement dès qu'une connexion est rétablie.
+                  </p>
+                </li>
+                <li class="list-group-item">
+                  <h6>Statistiques détaillées</h6>
+                  <p>
+                    Les statistiques sont directement extraites du contrôleur MPPT, permettant une analyse précise des performances sans nécessiter de calculs complexes sur le backend.
+                  </p>
+                </li>
+                <li class="list-group-item">
+                  <h6>Visualisation des données</h6>
+                  <p>
+                    L'application Angular offre une interface utilisateur intuitive pour afficher les données en temps réel et consulter les statistiques historiques, 
+                    garantissant une expérience utilisateur fluide et réactive.
+                  </p>
+                </li>
+                <li class="list-group-item">
+                  <h6>Conception robuste</h6>
+                  <p>
+                    - Le Raspberry Pi exécute un backend Flask qui agit comme un collecteur de données locales.    <br/>
+                    - Un backend Flask sur un serveur distant centralise les communications entre Angular, InfluxDB et le backend Flask du Raspberry Pi si ce dernier est en ligne.  <br/>
+                    - La base de données InfluxDB est utilisée pour gérer efficacement les séries temporelles, permettant une gestion optimale des données historiques et en temps réel.    <br/>
+                    Cette approche garantit une séparation claire des responsabilités et une sécurité renforcée, car Angular ne communique jamais directement avec le Raspberry Pi.
+                  </p>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>

@@ -1,23 +1,36 @@
 <!-- En-tête -->
 <div class="content-header d-flex align-items-center justify-content-between ">
-    <h4 class="content-title pt-1">
-      <span>{{title}}</span>
-    </h4>
-    <div class="float-end" >
-      <!-- Gestion du décalage horaire entre le Raspberry et le serveur  -->
-      <button class="btn  btn-alt-primary" *ngIf="controllerData && isServerOnline" [ngbTooltip]="'Données en temps réel'" >
-          Le {{ controllerData.current_device_time | date: 'dd/MM/yyyy à HH:mm':'GMT':'fr' }}
-      </button>
-      <button class="btn btn-alt-primary" *ngIf="controllerData && !isServerOnline" [ngbTooltip]="'Dernières données enregistrées à'">
-          Le {{ controllerData.date | date: 'dd/MM/yyyy à HH:mm':'GMT+1':'fr' }}
-      </button>
+  <h4 class="content-title pt-1">{{title}}</h4>
 
-      <button class="btn btn-alt-primary etatJour"
-        [ngbTooltip]="dailyStatistics?.day_time ? 'Panneau actif' : 'Panneau inactif'" 
+  <div class="float-end  d-flex align-items-center" >
+      <div class="d-none d-md-block">
+        <!-- Gestion du décalage horaire entre le Raspberry et le serveur  -->
+        <button class="btn  btn-alt-primary" *ngIf="controllerData && isServerOnline" [ngbTooltip]="'Données en temps réel'" placement="bottom">
+          Le {{ controllerData.current_device_time | date: 'dd/MM/yyyy à HH:mm':'GMT':'fr' }}
+        </button>
+        <button class="btn btn-alt-primary" *ngIf="controllerData && !isServerOnline" [ngbTooltip]="'Dernières données enregistrées à'" placement="bottom">
+            Le {{ controllerData.date | date: 'dd/MM/yyyy à HH:mm':'GMT+1':'fr' }}
+        </button>
+      </div>
+      <div class="d-md-none">
+        <button 
+          class="btn btn-alt-primary" 
+          *ngIf="controllerData" 
+          [ngbTooltip]="
+            isServerOnline 
+              ? 'Données en temps réel au ' + (controllerData.current_device_time | date: 'dd/MM/yyyy à HH:mm':'GMT':'fr') 
+              : 'Dernières données enregistrées le : ' + (controllerData.date | date: 'dd/MM/yyyy à HH:mm':'GMT+1':'fr')
+            " 
+          placement="bottom">
+          <fa-icon class="ms-auto" [icon]="faClock" ></fa-icon>
+        </button>
+      </div>
+
+      <button class="btn btn-alt-primary etatJour" *ngIf="dailyStatistics"
+        [ngbTooltip]="dailyStatistics.day_time ? 'Panneau actif' : 'Panneau inactif'" 
         placement="bottom">
         <fa-icon class="ms-auto" *ngIf="dailyStatistics?.day_time" [icon]="faSun" ></fa-icon>
         <fa-icon class="ms-auto" *ngIf="dailyStatistics?.night_time" [icon]="faMoon" ></fa-icon>
       </button>
-      
-    </div>
   </div>
+</div>

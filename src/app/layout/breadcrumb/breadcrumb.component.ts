@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Controller } from '../../modeles/controller';
-import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
+import { faClock, faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 import { DailyStatistics } from '../../modeles/dailyStatistics';
 
 @Component({
@@ -18,6 +18,7 @@ export class BreadcrumbComponent {
   
   faSun = faSun;
   faMoon = faMoon;
+  faClock = faClock;
 
   
   
