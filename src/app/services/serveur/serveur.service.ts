@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, interval, map, Observable, of } from 'rxjs';
+import { BehaviorSubject, catchError, interval, map, Observable, of, retry, Subject, switchMap, takeUntil } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -10,26 +10,23 @@ export class ServeurService {
 
   private serveurUrl = environment.apiUrl
   private serverStatus = new BehaviorSubject<boolean>(false); // État initial
-   // Observable pour écouter l'état
-  serverStatus$ = this.serverStatus.asObservable();
+  private destroy$ = new Subject<void>(); // Permet d'arrêter proprement l'interval
   
-  constructor(private http: HttpClient){
-    // On vérifie toutes les 60 secondes
-    interval(60000).subscribe(() => {
-      this.checkServerStatus().subscribe();
-    });
+  serverStatus$ = this.serverStatus.asObservable(); // Observable pour écouter l'état du serveur
+  
+  constructor(private http: HttpClient) {
+    interval(60000).pipe(
+      takeUntil(this.destroy$), // Nettoyage de l'intervalle
+      switchMap(() => this.checkServerStatus())
+    ).subscribe();
   }
-
-  getServerStatus(): Observable<boolean> {
-    return this.serverStatus.asObservable();
-  }
-
   /**
    * Vérifie si le serveur est en ligne et met à jour l'état global
    * @returns Observable<boolean> représentant l'état du serveur
    */
   checkServerStatus(): Observable<boolean> {
     return this.http.get<{ status: boolean }>(`${this.serveurUrl}/serveur/status`).pipe(
+      retry(3), // Réessaye jusqu'à 3 fois
       map((response) => {
         const status = response.status;
         if (this.serverStatus.value !== status) { // Évite d'émettre si le statut est le même
@@ -45,12 +42,21 @@ export class ServeurService {
       })
     );
   }
+
+  getServerStatus(): Observable<boolean> {
+    return this.serverStatus.asObservable();
+  }
   /**
    * Récupère les informations système du serveur
    * @returns Observable<any> des données système
    */
   getSystemInfo(): Observable<any> {
     return this.http.get(this.serveurUrl+'/serveur/infos');
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(); 
+    this.destroy$.complete(); 
   }
 
 }

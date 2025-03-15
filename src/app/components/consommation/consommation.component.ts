@@ -17,7 +17,7 @@ import { ControllerDataService } from '../../services/controllerData/controller-
 export class ConsommationComponent {
   controllerData$: BehaviorSubject<Controller | null> = new BehaviorSubject<Controller | null>(null);
   dailyStatistics$: BehaviorSubject<DailyStatistics | null> = new BehaviorSubject<DailyStatistics | null>(null);
-  combinedData$!: Observable<{ controllerData: Controller | null; dailyStatistics: DailyStatistics | null }>;   // Observable combiné
+  // combinedData$!: Observable<{ controllerData: Controller | null; dailyStatistics: DailyStatistics | null }>;   // Observable combiné
 
   loadData$: BehaviorSubject<LoadData | null> = new BehaviorSubject<LoadData | null>(null);
   
@@ -45,9 +45,9 @@ export class ConsommationComponent {
       this.getLoadDataLast();
 
       // Initialisation de combinedData$
-      this.combinedData$ = combineLatest([this.controllerData$, this.dailyStatistics$]).pipe(
-        map(([controllerData, dailyStatistics]) => ({ controllerData, dailyStatistics }))
-      );
+      // this.combinedData$ = combineLatest([this.controllerData$, this.dailyStatistics$]).pipe(
+      //   map(([controllerData, dailyStatistics]) => ({ controllerData, dailyStatistics }))
+      // );
   
       this.serveurService.checkServerStatus()
         .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas

@@ -1,17 +1,10 @@
 
-    <ng-container *ngIf="combinedData$ | async as data">
-      <app-breadcrumb 
-        [title]="'Panneau solaire'" 
-        [controllerData]="data.controllerData"
-        [dailyStatistics]="data.dailyStatistics"
-        [isServerOnline]="isServerOnline">
-      </app-breadcrumb>
-    </ng-container>
+<app-breadcrumb [title]="'Panneau solaire'" ></app-breadcrumb>
 
-    <div class="row g-4">
-      <div class="col-12">
-        <app-ps-data *ngIf="solarData$ | async as solarData" [solarData]="solarData" (labelSelected)="onLabelSelected($event)"></app-ps-data>
-        <app-ps-graphique [selectedLabel]="selectedLabel" ></app-ps-graphique>
-      </div>
-    </div>
+<div class="row g-4">
+  <div class="col-12">
+    <app-ps-data *ngIf="solarData$ | async as solarData" [solarData]="solarData" (labelSelected)="onLabelSelected($event)"></app-ps-data>
+    <app-ps-graphique [selectedLabel]="selectedLabel" ></app-ps-graphique>
+  </div>
+</div>
   

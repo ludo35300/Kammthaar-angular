@@ -10,7 +10,7 @@ export class ChargingErrorsPipe implements PipeTransform {
     charging_mosfet_short_circuit: 'Court-circuit du MOSFET de charge',
     charging_or_anti_reverse_mosfet_open_circuit: 'Circuit ouvert (charge ou anti-retour)',
     disequilibrium_in_three_circuits: 'Déséquilibre dans les trois circuits',
-    fault: 'Défaut général détecté',
+    // fault: 'Défaut général détecté',
     input_over_current: 'Surtension d’entrée',
     load_mosfet_short_circuit: 'Court-circuit du MOSFET côté charge',
     load_over_current: 'Surcharge côté charge',
