@@ -1,13 +1,9 @@
 import { Component } from '@angular/core';
 import { faArrowRight, faMoon, faSolarPanel, faSun } from '@fortawesome/free-solid-svg-icons';
 import { ServeurService } from '../../services/serveur/serveur.service';
-import { Controller } from '../../modeles/controller';
-import { BehaviorSubject, combineLatest, concatMap, distinctUntilChanged, map, Observable, timer } from 'rxjs';
-import { DailyStatistics } from '../../modeles/dailyStatistics';
-import { DailyStatisticsService } from '../../services/dailyStatistics/daily-statistics.service';
+import { BehaviorSubject, distinctUntilChanged, interval, map, Observable, Subscription, switchMap } from 'rxjs';
 import { SolarDataService } from '../../services/solarData/solar-data.service';
 import { SolarData } from '../../modeles/solarData';
-import { ControllerDataService } from '../../services/controllerData/controller-data.service';
 
 
 @Component({
@@ -16,12 +12,9 @@ import { ControllerDataService } from '../../services/controllerData/controller-
   styleUrl: './ps.component.scss'
 })
 export class PsComponent {
-  controllerData$: BehaviorSubject<Controller | null> = new BehaviorSubject<Controller | null>(null);
-  dailyStatistics$: BehaviorSubject<DailyStatistics | null> = new BehaviorSubject<DailyStatistics | null>(null);
-  combinedData$!: Observable<{ controllerData: Controller | null; dailyStatistics: DailyStatistics | null }>;   // Observable combiné
-
   solarData$: BehaviorSubject<SolarData | null> = new BehaviorSubject<SolarData | null>(null);
-
+  private serverStatusSubscription: Subscription | null = null;
+  private dataIntervalSubscription: Subscription | null = null;
   isServerOnline: boolean = false;
   selectedLabel: string  = "Voltage";
   isLoading = true;
@@ -38,105 +31,72 @@ export class PsComponent {
 
   constructor(
     private serveurService: ServeurService,
-    private controllerDataService: ControllerDataService,
-    private dailyStatisticsService: DailyStatisticsService,
     private solarDataService: SolarDataService
   ){}
 
   ngOnInit(): void {
     // on charge les données hors ligne pour eviter le temps d'attente
-    this.getLastControllerData();
-    this.getDailyStatisticsLast();
     this.getSolarDataLast(); 
 
-    // Initialisation de combinedData$
-    this.combinedData$ = combineLatest([this.controllerData$, this.dailyStatistics$]).pipe(
-      map(([controllerData, dailyStatistics]) => ({ controllerData, dailyStatistics }))
-    );
 
-    this.serveurService.checkServerStatus()
+    this.serveurService.getServerStatus()
       .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
       .subscribe((status) => {
         this.isServerOnline = status;
         if (this.isServerOnline) {
-          this.fetchRealtimeData();
+          this.startRealTimeDataUpdate();
         }else {
-            this.getLastControllerData();
-            this.getDailyStatisticsLast();
             this.getSolarDataLast();  
+            this.stopRealTimeDataUpdate();
         }
       });
   }
-  // Requêtes en temps réel avec une pause de 1 seconde entre elles
-    fetchRealtimeData() {
-      const realtimeRequests = [
-        () => this.getControllerRealtime(),
-        () => this.getDailyStatisticsRealtime(),
-        () => this.getSolarDataRealtime()
-      ];
-    
-      realtimeRequests.reduce((chain, request) => {
-        return chain.pipe(
-          concatMap(() => request()), // Exécuter chaque requête séquentiellement
-          concatMap(() => timer(1000)) // Ajouter une pause de 1 seconde
-        );
-      }, timer(0)).subscribe();
+  
+  // Fonction pour obtenir les données en temps réel et les mettre à jour toutes les 10 secondes
+  startRealTimeDataUpdate(): void {
+    if (!this.dataIntervalSubscription) {
+      this.dataIntervalSubscription = interval(10000) // Chaque 10 secondes
+        .pipe(
+          switchMap(() => this.solarDataService.getSolarDataRealtime()) // Récupère les données en temps réel
+        )
+        .subscribe({
+          next: (data) => {
+            this.solarData$.next(data); // Mettre à jour via BehaviorSubject
+          },
+          error: (err) => {
+            console.error("Erreur lors de la récupération des données en temps réel", err);
+          }
+        });
     }
+  }
 
-// Récupération des infos pour le breadcrumb
-  getControllerRealtime(): Observable<Controller> {
-      return this.controllerDataService.getControllerDataRealtime().pipe(
-        map((data) => {
-          this.controllerData$.next(data); // Mettre à jour via BehaviorSubject
-          this.isLoading = false;
-          return data;
-        })
-      );
+  // Fonction pour arrêter la mise à jour des données en temps réel
+  stopRealTimeDataUpdate(): void {
+    if (this.dataIntervalSubscription) {
+      this.dataIntervalSubscription.unsubscribe();
+      this.dataIntervalSubscription = null;
     }
-  
-    // On récupère les dernières données du controller enregistrées
-    getLastControllerData() {
-      this.controllerDataService.getControllerDataLast().subscribe({
-        next: (data) => {
-          this.controllerData$.next(data); // Mise à jour via BehaviorSubject
-          this.isLoading = false;
-        }
-      });
-    }
-  
-    getDailyStatisticsRealtime(): Observable<DailyStatistics> {
-      return this.dailyStatisticsService.getDailyStatisticsRealtime().pipe(
-        map((data) => {
-          this.dailyStatistics$.next(data); // Mettre à jour via BehaviorSubject
-          this.isLoading = false;
-          return data;
-        })
-      );
-    }
-  
-    // On récupère les dernières données du controller enregistrées
-    getDailyStatisticsLast() {
-      this.dailyStatisticsService.getDailyStatisticsLast().subscribe({
-        next: (data) => {
-          this.dailyStatistics$.next(data); // Mise à jour via BehaviorSubject
-          this.isLoading = false;
-        }
-      });
-    }
-  getSolarDataRealtime(): Observable<SolarData> {
-      return this.solarDataService.getSolarDataRealtime().pipe(
-        map((data) => {
-          this.solarData$.next(data); // Mettre à jour via BehaviorSubject
-          return data;
-        })
-      );
-    }
+  }
   // On récupère les dernières données du controlleur enregistrées
-  getSolarDataLast(){
+  // Fonction pour obtenir les dernières données disponibles
+  getSolarDataLast(): void {
     this.solarDataService.getSolarDataLast().subscribe({
       next: (data) => {
         this.solarData$.next(data);
       },
+      error: (err) => {
+        console.error("Erreur lors de la récupération des dernières données", err);
+      }
     });
+  }
+
+  ngOnDestroy(): void {
+    // Nettoyage des abonnements
+    if (this.serverStatusSubscription) {
+      this.serverStatusSubscription.unsubscribe();
+    }
+    if (this.dataIntervalSubscription) {
+      this.dataIntervalSubscription.unsubscribe();
+    }
   }
 }

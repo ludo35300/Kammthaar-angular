@@ -3,6 +3,7 @@ import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Breadcrumb } from '../../modeles/breadcrumb';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,11 +11,12 @@ import { Breadcrumb } from '../../modeles/breadcrumb';
 export class BreadcrumbService {
   private serveurUrl = environment.apiUrl
         
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
+  
   getBreadcrumbRealtime(): Observable<Breadcrumb> {
-    return this.http.get<Breadcrumb>(this.serveurUrl+'/breadcrumb/realtime');
+    return this.http.get<Breadcrumb>(this.serveurUrl+'/breadcrumb/realtime', { headers: this.authService.getAuthHeaders() });
   }
   getBreadcrumbLast(): Observable<Breadcrumb> {
-    return this.http.get<Breadcrumb>(this.serveurUrl+'/breadcrumb/last');
+    return this.http.get<Breadcrumb>(this.serveurUrl+'/breadcrumb/last', { headers: this.authService.getAuthHeaders() });
   }
 }

@@ -11,42 +11,54 @@
             <h4 class="mb-1">Connexion</h4>
           </div>
           <div class="card-body">
-            <form>
+            <div *ngIf="authService.isLoggedIn(); else loggedOut">
+              <p>✅ Vous êtes connecté !</p>
+              <button (click)="authService.logout()"  class="btn w-100 mt-4">Déconnexion</button>
+            </div>
+
+            <ng-template #loggedOut>
+            <form (ngSubmit)="login()">
               <!-- Champ e-mail -->
               <div class="mb-3">
                 <label for="email" class="form-label">Adresse e-mail</label>
                 <div class="input-group">
                   <input
-                    type="email"
-                    class="form-control"
-                    id="email"
-                    required
-                  />
+                    [(ngModel)]="username" 
+                    name="username" 
+                    placeholder="Nom d'utilisateur" 
+                    class="form-control" 
+                    autocomplete="username"
+                    required >
                 </div>
               </div>
-  
               <!-- Champ mot de passe -->
               <div class="mb-3">
                 <label for="password" class="form-label">Mot de passe</label>
                 <div class="input-group">
-                  
-                  <input
-                    type="password"
-                    class="form-control "
-                    id="password"
-                    required
-                  />
+                  <input 
+                    [(ngModel)]="password" 
+                    name="password" 
+                    type="password" 
+                    placeholder="Mot de passe" 
+                    class="form-control"
+                    autocomplete="current-password"
+                    required >
                 </div>
               </div>
-  
+
               <!-- Actions -->
               <!-- <div class="d-flex justify-content-between mb-3">
                 <a href="#" class="text-decoration-none text-info">Mot de passe oublié ?</a>
               </div> -->
   
-              <!-- Bouton connexion -->
-              <button type="submit" class="btn w-100 mt-4">Se connecter</button>
+              
+              
+              
+
+              <button type="submit" class="btn w-100 mt-4">Connexion</button>
+              <p *ngIf="error">{{ error }}</p>
             </form>
+          </ng-template>
           </div>
         </div>
 

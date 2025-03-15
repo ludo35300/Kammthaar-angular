@@ -34,11 +34,14 @@ export class BatterieDataComponent {
   updateGauges(data: BatteryStatus): void {
     if (!data) return;
 
-    this.gauges = [
-      { label: 'Voltage', value: data.voltage || 0, unit: 'V', max: 50 },
-      { label: 'Ampérage', value: data.current || 0, unit: 'A', max: 30 },
-      { label: 'Puissance', value: data.power || 0, unit: 'W', max: 400 }
-    ];
+    // Met à jour chaque gauge sans réinitialiser l'ensemble du tableau
+    const voltageGauge = this.gauges.find(gauge => gauge.label === 'Voltage');
+    const amperageGauge = this.gauges.find(gauge => gauge.label === 'Ampérage');
+    const powerGauge = this.gauges.find(gauge => gauge.label === 'Puissance');
+
+    if (voltageGauge) voltageGauge.value = data.voltage;
+    if (amperageGauge) amperageGauge.value = data.current;
+    if (powerGauge) powerGauge.value = data.power;
   }
 
   // Méthode pour émettre un label sélectionné

@@ -2,10 +2,8 @@ import { Component } from '@angular/core';
 import { Controller } from '../../modeles/controller';
 import { faSun, faMoon, faDumpster, faArrowRight  } from '@fortawesome/free-solid-svg-icons';
 import { ServeurService } from '../../services/serveur/serveur.service';
-import { BehaviorSubject, combineLatest, concatMap, distinctUntilChanged, map, Observable, timer } from 'rxjs';
+import { BehaviorSubject, concatMap, distinctUntilChanged, map, Observable, timer } from 'rxjs';
 import { DailyStatistics } from '../../modeles/dailyStatistics';
-import { DailyStatisticsService } from '../../services/dailyStatistics/daily-statistics.service';
-import { ControllerDataService } from '../../services/controllerData/controller-data.service';
 import { ChargingEquipmentStatus } from '../../modeles/chargingEquipmentStatus';
 import { ChargingEquipmentStatusService } from '../../services/chargingEquipmentStatus/charging-equipment-status.service';
 import { DischargingEquipmentStatusService } from '../../services/dischargingEquipmentStatus/discharging-equipment-status.service';
@@ -36,8 +34,6 @@ export class ControllerComponent {
   
   constructor(
     private serveurService: ServeurService,
-    private controllerDataService: ControllerDataService,
-    private dailyStatisticsService: DailyStatisticsService,
     private chargingEquipmentStatusService: ChargingEquipmentStatusService,
     private dischargingEquipmentStatusService: DischargingEquipmentStatusService
   ){}

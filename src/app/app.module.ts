@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
 import { PsComponent } from './components/ps/ps.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { HeaderComponent } from './layout/header/header.component';
@@ -41,6 +41,8 @@ import { ChargingErrorsPipe } from './pipes/charging-errors.pipe';
 import { DischargingErrorsPipe } from './pipes/discharging-errors.pipe';
 import { LoginComponent } from './components/login/login.component';
 import { AproposComponent } from './components/apropos/apropos.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -84,11 +86,17 @@ import { AproposComponent } from './components/apropos/apropos.component';
     NgxGaugeModule,
     FontAwesomeModule,
     NgApexchartsModule,
-    NgbTooltipModule
+    NgbTooltipModule,
+    FormsModule 
   ],
   providers: [
     provideHttpClient(), 
-    provideAnimationsAsync()
+    provideAnimationsAsync(),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent]
   

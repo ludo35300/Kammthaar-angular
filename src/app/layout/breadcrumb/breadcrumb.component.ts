@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { faClock, faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
-import { BehaviorSubject, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, interval, Subject, Subscription, switchMap, takeUntil } from 'rxjs';
 import { Breadcrumb } from '../../modeles/breadcrumb';
 import { BreadcrumbService } from '../../services/breadcrumb/breadcrumb.service';
 import { ServeurService } from '../../services/serveur/serveur.service';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-breadcrumb',
@@ -14,7 +15,8 @@ export class BreadcrumbComponent {
   @Input() title!: string;
   breadcrumbData$: BehaviorSubject<Breadcrumb | null> = new BehaviorSubject<Breadcrumb | null>(null);
   isServerOnline: boolean = false;
-  private destroy$ = new Subject<void>();
+  private serverStatusSubscription: Subscription | null = null;
+    private dataIntervalSubscription: Subscription | null = null;
   
   
   faSun = faSun;
@@ -24,34 +26,61 @@ export class BreadcrumbComponent {
 
   constructor(
         private breadcrumbService: BreadcrumbService,
-        private serveurService: ServeurService
+        private serveurService: ServeurService,
+        public authService: AuthService
   ){}
       
 
   ngOnInit(): void {
-    // on charge les données hors ligne pour eviter le temps d'attente
-    this.getBreadcrumbLast();
-    this.serveurService.checkServerStatus()
-      .pipe(distinctUntilChanged(), takeUntil(this.destroy$)) // Évite les redondances si le statut ne change pas
-      .subscribe((status) => {
-        this.isServerOnline = status;
-        if (this.isServerOnline) {
-          this.getBreadcrumbRealtime();
-        } else {
-          this.getBreadcrumbLast();
-        }
-      });
+    if(this.authService.isLoggedIn()){
+      // on charge les données hors ligne pour eviter le temps d'attente
+      this.getBreadcrumbLast();
+      this.serveurService.getServerStatus()
+        .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
+        .subscribe((status) => {
+          this.isServerOnline = status;
+          if (this.isServerOnline) {
+            this.startRealTimeDataUpdate();
+          } else {
+            this.getBreadcrumbLast();
+            this.stopRealTimeDataUpdate();
+          }
+        });
+      }
   }
+
+  startRealTimeDataUpdate(): void {
+          if (!this.dataIntervalSubscription) {
+            this.dataIntervalSubscription = interval(30000) // Chaque 30 secondes
+              .pipe(
+                switchMap(() => this.breadcrumbService.getBreadcrumbRealtime()) // Récupère les données en temps réel
+              )
+              .subscribe({
+                next: (data) => {
+                  this.breadcrumbData$.next(data); // Mettre à jour via BehaviorSubject
+                },
+                error: (err) => {
+                  console.error("Erreur lors de la récupération des données en temps réel", err);
+                }
+              });
+          }
+        }
+      
+        // Fonction pour arrêter la mise à jour des données en temps réel
+        stopRealTimeDataUpdate(): void {
+          if (this.dataIntervalSubscription) {
+            this.dataIntervalSubscription.unsubscribe();
+            this.dataIntervalSubscription = null;
+          }
+        }
 
 
    // Récupération des infos du breadcrumb en temps réel
    getBreadcrumbRealtime(){
     this.breadcrumbService.getBreadcrumbRealtime()
-      
       .subscribe({
         next: (data) => {
           const currentData = this.breadcrumbData$.getValue(); // Récupère les données actuelles
-
           // Si les nouvelles données sont différentes des anciennes, on les met à jour
           if (currentData?.current_device_time !== data.current_device_time) {
             this.breadcrumbData$.next(data);
@@ -71,7 +100,12 @@ export class BreadcrumbComponent {
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+    // Nettoyage des abonnements
+    if (this.serverStatusSubscription) {
+      this.serverStatusSubscription.unsubscribe();
+    }
+    if (this.dataIntervalSubscription) {
+      this.dataIntervalSubscription.unsubscribe();
+    }
   }
 }

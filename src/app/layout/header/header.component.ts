@@ -3,6 +3,7 @@ import { distinctUntilChanged } from 'rxjs';
 import { faBars, faCheck, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { ServeurService } from '../../services/serveur/serveur.service';
 import { TITLE } from '../../constantes';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -20,7 +21,8 @@ export class HeaderComponent {
   faBars = faBars
 
   constructor(
-    private serveurService: ServeurService
+    private serveurService: ServeurService,
+    public authService: AuthService,
   ){}
 
   ngOnInit(): void {

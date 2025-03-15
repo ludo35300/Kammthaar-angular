@@ -1,13 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject, combineLatest, concatMap, distinctUntilChanged, map, Observable, timer } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, interval, Subscription, switchMap } from 'rxjs';
 import { faCarBattery, faSun } from '@fortawesome/free-solid-svg-icons';
 import { ServeurService } from '../../services/serveur/serveur.service';
-import { Controller } from '../../modeles/controller';
-import { DailyStatistics } from '../../modeles/dailyStatistics';
-import { DailyStatisticsService } from '../../services/dailyStatistics/daily-statistics.service';
 import { BatteryStatusService } from '../../services/batteryStatus/battery-status.service';
 import { BatteryStatus } from '../../modeles/batteryStatus';
-import { ControllerDataService } from '../../services/controllerData/controller-data.service';
 
 
 @Component({
@@ -16,12 +12,9 @@ import { ControllerDataService } from '../../services/controllerData/controller-
   styleUrl: './batterie.component.scss'
 })
 export class BatterieComponent implements OnInit{
-  controllerData$: BehaviorSubject<Controller | null> = new BehaviorSubject<Controller | null>(null);
-  dailyStatistics$: BehaviorSubject<DailyStatistics | null> = new BehaviorSubject<DailyStatistics | null>(null);
-  combinedData$!: Observable<{ controllerData: Controller | null; dailyStatistics: DailyStatistics | null }>;   // Observable combiné
-  
   batteryStatus$: BehaviorSubject<BatteryStatus | null> = new BehaviorSubject<BatteryStatus | null>(null);
-
+  private serverStatusSubscription: Subscription | null = null;
+  private dataIntervalSubscription: Subscription | null = null;
   isServerOnline: boolean = false;
   isLoading: boolean = true;
 
@@ -31,112 +24,73 @@ export class BatterieComponent implements OnInit{
 
   constructor(
     private serveurService: ServeurService,
-    private controllerDataService: ControllerDataService,
-    private dailyStatisticsService: DailyStatisticsService,
     private batteryStatusService: BatteryStatusService
   ){}
 
   ngOnInit(): void {
-    this.getLastControllerData();
-    this.getDailyStatisticsLast();
     this.getBatterieStatusLast();
 
-    // Initialisation de combinedData$
-    this.combinedData$ = combineLatest([this.controllerData$, this.dailyStatistics$]).pipe(
-      map(([controllerData, dailyStatistics]) => ({ controllerData, dailyStatistics }))
-    );
     
     this.serveurService.getServerStatus()
       .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
       .subscribe((status) => {
         this.isServerOnline = status;
         if (this.isServerOnline) {
-          this.fetchRealtimeData();
+          this.startRealTimeDataUpdate();
         }else {
-            this.getLastControllerData();
-            this.getDailyStatisticsLast();
-
-            this.getBatterieStatusLast(); 
+          this.getBatterieStatusLast();
+          this.stopRealTimeDataUpdate();
         }
       });
   }
 
-  // Requêtes en temps réel avec une pause de 1 seconde entre elles
-  fetchRealtimeData() {
-    const realtimeRequests = [
-      () => this.getControllerRealtime(),
-      () => this.getDailyStatisticsRealtime(),
-
-      () => this.getBatterieStatusRealtime(),
-    ];
-  
-    realtimeRequests.reduce((chain, request) => {
-      return chain.pipe(
-        concatMap(() => request()), // Exécuter chaque requête séquentiellement
-        concatMap(() => timer(1000)) // Ajouter une pause de 1 seconde
-      );
-    }, timer(0)).subscribe();
-  }
-
-  // Récupération des infos du controller pour récupére la date
-  getControllerRealtime(): Observable<Controller> {
-    return this.controllerDataService.getControllerDataRealtime().pipe(
-      map((data) => {
-        this.controllerData$.next(data); // Mettre à jour via BehaviorSubject
-        this.isLoading = false;
-        return data;
-      })
-    );
-  }
-  // On récupère les dernières données du controlleur enregistrées
-  getLastControllerData(){
-    this.controllerDataService.getControllerDataLast().subscribe({
-      next: (data) => {
-        this.controllerData$.next(data);
-        this.isLoading = false;
+  // Fonction pour obtenir les données en temps réel et les mettre à jour toutes les 10 secondes
+    startRealTimeDataUpdate(): void {
+      if (!this.dataIntervalSubscription) {
+        this.dataIntervalSubscription = interval(10000) // Chaque 10 secondes
+          .pipe(
+            switchMap(() => this.batteryStatusService.getBatteryStatusRealtime()) // Récupère les données en temps réel
+          )
+          .subscribe({
+            next: (data) => {
+              this.batteryStatus$.next(data); // Mettre à jour via BehaviorSubject
+            },
+            error: (err) => {
+              console.error("Erreur lors de la récupération des données en temps réel", err);
+            }
+          });
       }
-    });
-  }
-  getDailyStatisticsRealtime(): Observable<DailyStatistics> {
-    return this.dailyStatisticsService.getDailyStatisticsRealtime().pipe(
-      map((data) => {
-        this.dailyStatistics$.next(data); // Mettre à jour via BehaviorSubject
-        this.isLoading = false;
-        return data;
-      })
-    );
-  }
+    }
   
-  // On récupère les dernières données du controller enregistrées
-  getDailyStatisticsLast() {
-    this.dailyStatisticsService.getDailyStatisticsLast().subscribe({
-      next: (data) => {
-        this.dailyStatistics$.next(data); // Mise à jour via BehaviorSubject
-        this.isLoading = false;
+    // Fonction pour arrêter la mise à jour des données en temps réel
+    stopRealTimeDataUpdate(): void {
+      if (this.dataIntervalSubscription) {
+        this.dataIntervalSubscription.unsubscribe();
+        this.dataIntervalSubscription = null;
       }
-    });
-  }
-
-  getBatterieStatusRealtime(): Observable<BatteryStatus> {
-    return this.batteryStatusService.getBatteryStatusRealtime().pipe(
-      map((data) => {
-        this.batteryStatus$.next(data); // Mettre à jour via BehaviorSubject
-        this.isLoading = false;
-        return data;
-      })
-    );
-  }
+    }
   // On récupère les dernières données du controlleur enregistrées
   getBatterieStatusLast(){
     this.batteryStatusService.getBatteryStatusLast().subscribe({
       next: (data) => {
         this.batteryStatus$.next(data);
+        this.isLoading = false;
       },
     });
   }
 
   onLabelSelected(label: string) {
     this.selectedLabel = label; // Mettre à jour le label pour transmettre au graphique
+  }
+
+  ngOnDestroy(): void {
+    // Nettoyage des abonnements
+    if (this.serverStatusSubscription) {
+      this.serverStatusSubscription.unsubscribe();
+    }
+    if (this.dataIntervalSubscription) {
+      this.dataIntervalSubscription.unsubscribe();
+    }
   }
 
 }

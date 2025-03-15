@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, interval, map, Observable, of, retry, Subject, switchMap, takeUntil } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class ServeurService {
   
   serverStatus$ = this.serverStatus.asObservable(); // Observable pour écouter l'état du serveur
   
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private authService: AuthService) {
     interval(60000).pipe(
       takeUntil(this.destroy$), // Nettoyage de l'intervalle
       switchMap(() => this.checkServerStatus())
@@ -25,7 +26,7 @@ export class ServeurService {
    * @returns Observable<boolean> représentant l'état du serveur
    */
   checkServerStatus(): Observable<boolean> {
-    return this.http.get<{ status: boolean }>(`${this.serveurUrl}/serveur/status`).pipe(
+    return this.http.get<{ status: boolean }>(`${this.serveurUrl}/serveur/status`, { headers: this.authService.getAuthHeaders() }).pipe(
       retry(3), // Réessaye jusqu'à 3 fois
       map((response) => {
         const status = response.status;
@@ -51,7 +52,7 @@ export class ServeurService {
    * @returns Observable<any> des données système
    */
   getSystemInfo(): Observable<any> {
-    return this.http.get(this.serveurUrl+'/serveur/infos');
+    return this.http.get(this.serveurUrl+'/serveur/infos', { headers: this.authService.getAuthHeaders() });
   }
 
   ngOnDestroy(): void {

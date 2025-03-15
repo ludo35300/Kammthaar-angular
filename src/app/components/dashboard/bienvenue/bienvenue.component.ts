@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { faChargingStation } from '@fortawesome/free-solid-svg-icons';
 import { EnergyStatistics } from '../../../modeles/energyStatistics';
+import { AuthService } from '../../../services/auth/auth.service';
 
 @Component({
   selector: 'app-bienvenue',
@@ -11,9 +12,9 @@ export class BienvenueComponent {
   isLoading = true;
     
   @Input() energyStatistics: EnergyStatistics | null = null;
-
-  // a changer lors de l'intégration du login
-  nom = "Ludo";
+   constructor(
+      public authService: AuthService, 
+    ){}
 
   faChargingStation = faChargingStation;
   

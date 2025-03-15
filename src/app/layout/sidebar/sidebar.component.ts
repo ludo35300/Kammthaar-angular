@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { faCheck, faXmark, faUser, faCarBattery, faDumpster, faSolarPanel, faLocationArrow, faChevronDown, faBars, faChevronRight, faInfoCircle, faCogs, faPlugCircleMinus } from '@fortawesome/free-solid-svg-icons';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -23,6 +24,8 @@ export class SidebarComponent {
   faBars = faBars
   faInfoCircle = faInfoCircle
   faCogs = faCogs
+
+  constructor(public authService: AuthService,){}
 
   closeSidebar(): void {
     if (window.innerWidth <= 1100) {
