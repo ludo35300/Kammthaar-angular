@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { faClock, faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
-import { BehaviorSubject, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, catchError, distinctUntilChanged, of, retry, Subject, takeUntil } from 'rxjs';
 import { Breadcrumb } from '../../modeles/breadcrumb';
 import { BreadcrumbService } from '../../services/breadcrumb/breadcrumb.service';
 import { ServeurService } from '../../services/serveur/serveur.service';
@@ -37,25 +37,17 @@ export class BreadcrumbComponent {
         this.isServerOnline = status;
         if (this.isServerOnline) {
           this.getBreadcrumbRealtime();
-        } else {
-          this.getBreadcrumbLast();
         }
       });
   }
 
 
-   // Récupération des infos du breadcrumb en temps réel
-   getBreadcrumbRealtime(){
+  // Récupération des infos du breadcrumb en temps réel
+  getBreadcrumbRealtime(){
     this.breadcrumbService.getBreadcrumbRealtime()
-      
       .subscribe({
         next: (data) => {
-          const currentData = this.breadcrumbData$.getValue(); // Récupère les données actuelles
-
-          // Si les nouvelles données sont différentes des anciennes, on les met à jour
-          if (currentData?.current_device_time !== data.current_device_time) {
-            this.breadcrumbData$.next(data);
-          }
+          this.breadcrumbData$.next(data);
           this.isLoading = false;
         }
       });
@@ -64,8 +56,10 @@ export class BreadcrumbComponent {
   getBreadcrumbLast(){
     this.breadcrumbService.getBreadcrumbLast().subscribe({
       next: (data) => {
-        this.breadcrumbData$.next(data);
-        this.isLoading = false;
+        if (data && data.current_device_time) { // Vérification de la validité des données avant de les ajouter
+          this.breadcrumbData$.next(data);
+          this.isLoading = false;
+        }
       }
     });
   }
