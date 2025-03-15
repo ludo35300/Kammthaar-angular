@@ -1,12 +1,5 @@
 
-    <ng-container *ngIf="combinedData$ | async as data">
-      <app-breadcrumb 
-        [title]="'Controlleur MPPT'" 
-        [controllerData]="data.controllerData"
-        [dailyStatistics]="data.dailyStatistics"
-        [isServerOnline]="isServerOnline">
-      </app-breadcrumb>
-    </ng-container>
+<app-breadcrumb [title]="'Controlleur MPPT'"></app-breadcrumb>
     <div class="row g-4">
       <div class="col-12 col-sm-12 col-md-6 col-lg-6">
         <app-charging *ngIf="chargingEquipmentStatus$ | async as chargingEquipmentStatus" [chargingEquipmentStatus]="chargingEquipmentStatus"></app-charging>

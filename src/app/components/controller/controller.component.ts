@@ -43,14 +43,9 @@ export class ControllerComponent {
   ){}
   
   ngOnInit(): void {
-      this.getLastControllerData();
-      this.getDailyStatisticsLast();
       this.getChargingEquipmentStatusLast();
       this.getDischargingEquipmentStatusLast();
-      // Initialisation de combinedData$
-      this.combinedData$ = combineLatest([this.controllerData$, this.dailyStatistics$]).pipe(
-        map(([controllerData, dailyStatistics]) => ({ controllerData, dailyStatistics }))
-      );
+     
       
       this.serveurService.getServerStatus()
         .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
@@ -59,8 +54,6 @@ export class ControllerComponent {
           if (this.isServerOnline) {
             this.fetchRealtimeData();
           }else {
-              this.getLastControllerData();
-              this.getDailyStatisticsLast();
               this.getChargingEquipmentStatusLast();
               this.getDischargingEquipmentStatusLast();
           }
@@ -70,8 +63,6 @@ export class ControllerComponent {
     // Requêtes en temps réel avec une pause de 1 seconde entre elles
     fetchRealtimeData() {
       const realtimeRequests = [
-        () => this.getControllerRealtime(),
-        () => this.getDailyStatisticsRealtime(),
         () => this.getChargingEquipmentStatusRealtime(),
         () => this.getDischargingEquipmentStatusRealtime(),
       ];
@@ -84,44 +75,6 @@ export class ControllerComponent {
       }, timer(0)).subscribe();
     }
   
-    // Récupération des infos du controller pour récupére la date
-    getControllerRealtime(): Observable<Controller> {
-      return this.controllerDataService.getControllerDataRealtime().pipe(
-        map((data) => {
-          this.controllerData$.next(data); // Mettre à jour via BehaviorSubject
-          this.isLoading = false;
-          return data;
-        })
-      );
-    }
-    // On récupère les dernières données du controlleur enregistrées
-    getLastControllerData(){
-      this.controllerDataService.getControllerDataLast().subscribe({
-        next: (data) => {
-          this.controllerData$.next(data);
-          this.isLoading = false;
-        }
-      });
-    }
-    getDailyStatisticsRealtime(): Observable<DailyStatistics> {
-      return this.dailyStatisticsService.getDailyStatisticsRealtime().pipe(
-        map((data) => {
-          this.dailyStatistics$.next(data); // Mettre à jour via BehaviorSubject
-          this.isLoading = false;
-          return data;
-        })
-      );
-    }
-    
-    // On récupère les dernières données du controller enregistrées
-    getDailyStatisticsLast() {
-      this.dailyStatisticsService.getDailyStatisticsLast().subscribe({
-        next: (data) => {
-          this.dailyStatistics$.next(data); // Mise à jour via BehaviorSubject
-          this.isLoading = false;
-        }
-      });
-    }
     getChargingEquipmentStatusRealtime(): Observable<ChargingEquipmentStatus> {
       return this.chargingEquipmentStatusService.getRealtime().pipe(
         map((data) => {

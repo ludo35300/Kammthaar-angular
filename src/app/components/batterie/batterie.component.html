@@ -8,14 +8,7 @@
     </div>
 
     <div *ngIf="!isLoading">
-      <ng-container *ngIf="combinedData$ | async as data">
-        <app-breadcrumb 
-          [title]="'Batterie'" 
-          [controllerData]="data.controllerData"
-          [dailyStatistics]="data.dailyStatistics"
-          [isServerOnline]="isServerOnline">
-        </app-breadcrumb>
-      </ng-container>
+      <app-breadcrumb  [title]="'Batterie'"></app-breadcrumb>
       <div class="row  g-4">
         <div class="col-12 col-sm-12 col-md-8 col-lg-8">
           <app-batterie-data *ngIf="batteryStatus$ | async as batteryStatus" [batteryStatus]="batteryStatus" (labelSelected)="onLabelSelected($event)" ></app-batterie-data>

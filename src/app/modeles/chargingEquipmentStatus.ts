@@ -3,7 +3,7 @@ export interface Errors {
     charging_mosfet_short_circuit: boolean;
     charging_or_anti_reverse_mosfet_open_circuit: boolean;
     disequilibrium_in_three_circuits: boolean;
-    fault: boolean;
+    // fault: boolean;
     input_over_current: boolean;
     load_mosfet_short_circuit: boolean;
     load_over_current: boolean;

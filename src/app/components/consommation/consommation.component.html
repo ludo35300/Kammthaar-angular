@@ -1,16 +1,7 @@
-
-      <ng-container *ngIf="combinedData$ | async as data">
-        <app-breadcrumb 
-          [title]="'Consommation'" 
-          [controllerData]="data.controllerData"
-          [dailyStatistics]="data.dailyStatistics"
-          [isServerOnline]="isServerOnline">
-        </app-breadcrumb>
-      </ng-container>
-
-      <div class="row  g-4">
-        <div class="col-12">
-          <app-consommation-data *ngIf="loadData$ | async as loadData" [loadData]="loadData" (labelSelected)="onLabelSelected($event)"></app-consommation-data>
-          <app-consommation-graphique [selectedLabel]="selectedLabel"></app-consommation-graphique>
-        </div>
-      </div>
+<app-breadcrumb [title]="'Consommation'"></app-breadcrumb>
+<div class="row  g-4">
+  <div class="col-12">
+    <app-consommation-data *ngIf="loadData$ | async as loadData" [loadData]="loadData" (labelSelected)="onLabelSelected($event)"></app-consommation-data>
+    <app-consommation-graphique [selectedLabel]="selectedLabel"></app-consommation-graphique>
+  </div>
+</div>
