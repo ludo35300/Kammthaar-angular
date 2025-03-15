@@ -36,8 +36,6 @@ export class ControllerComponent {
   
   constructor(
     private serveurService: ServeurService,
-    private controllerDataService: ControllerDataService,
-    private dailyStatisticsService: DailyStatisticsService,
     private chargingEquipmentStatusService: ChargingEquipmentStatusService,
     private dischargingEquipmentStatusService: DischargingEquipmentStatusService
   ){}
@@ -53,9 +51,6 @@ export class ControllerComponent {
           this.isServerOnline = status;
           if (this.isServerOnline) {
             this.fetchRealtimeData();
-          }else {
-              this.getChargingEquipmentStatusLast();
-              this.getDischargingEquipmentStatusLast();
           }
         });
     }
@@ -70,7 +65,7 @@ export class ControllerComponent {
       realtimeRequests.reduce((chain, request) => {
         return chain.pipe(
           concatMap(() => request()), // Exécuter chaque requête séquentiellement
-          concatMap(() => timer(1000)) // Ajouter une pause de 1 seconde
+          concatMap(() => timer(2000)) // Ajouter une pause de 1 seconde
         );
       }, timer(0)).subscribe();
     }
