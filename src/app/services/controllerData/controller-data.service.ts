@@ -12,9 +12,9 @@ export class ControllerDataService {
         
   constructor(private http: HttpClient) { }
   getControllerDataRealtime(): Observable<Controller> {
-    return this.http.get<Controller>(this.serveurUrl+'/controller/realtime');
+    return this.http.get<Controller>(this.serveurUrl+'/controller/realtime', { withCredentials: true });
   }
   getControllerDataLast(): Observable<Controller> {
-    return this.http.get<Controller>(this.serveurUrl+'/controller/last');
+    return this.http.get<Controller>(this.serveurUrl+'/controller/last', { withCredentials: true });
   }
 }

@@ -14,24 +14,24 @@ export class BatteryStatusService {
   constructor(private http: HttpClient, private authService: AuthService) { }
 
   getBatteryStatusRealtime(): Observable<BatteryStatus> {
-    return this.http.get<BatteryStatus>(this.serveurUrl+'/battery/realtime', { headers: this.authService.getAuthHeaders() });
+    return this.http.get<BatteryStatus>(this.serveurUrl+'/battery/realtime', { withCredentials: true });
   }
   getBatteryStatusLast(): Observable<BatteryStatus> {
-    return this.http.get<BatteryStatus>(this.serveurUrl+'/battery/last', { headers: this.authService.getAuthHeaders() });
+    return this.http.get<BatteryStatus>(this.serveurUrl+'/battery/last', { withCredentials: true });
   }
   getPourcent24h(): Observable<any>{
-    return this.http.get<any>(this.serveurUrl+"/battery/last/24h/state_of_charge", { headers: this.authService.getAuthHeaders() });
+    return this.http.get<any>(this.serveurUrl+"/battery/last/24h/state_of_charge", { withCredentials: true });
   }
   getAmperage24h(): Observable<any>{
-    return this.http.get<any>(this.serveurUrl+"/battery/last/24h/current", { headers: this.authService.getAuthHeaders() });
+    return this.http.get<any>(this.serveurUrl+"/battery/last/24h/current", { withCredentials: true });
   }
   getVoltage24h(): Observable<any>{
-    return this.http.get<any>(this.serveurUrl+"/battery/last/24h/voltage", { headers: this.authService.getAuthHeaders() });
+    return this.http.get<any>(this.serveurUrl+"/battery/last/24h/voltage", { withCredentials: true });
   }
   getPower24h(): Observable<any>{
-    return this.http.get<any>(this.serveurUrl+"/battery/last/24h/power", { headers: this.authService.getAuthHeaders() });
+    return this.http.get<any>(this.serveurUrl+"/battery/last/24h/power", { withCredentials: true });
   }
   getTemp24h(): Observable<any>{
-    return this.http.get<any>(this.serveurUrl+"/battery/last/24h/temperature", { headers: this.authService.getAuthHeaders() });
+    return this.http.get<any>(this.serveurUrl+"/battery/last/24h/temperature", { withCredentials: true });
   }
 }

@@ -11,14 +11,14 @@ import { AuthService } from '../auth/auth.service';
 export class BatterieParametresService {
   private serveurUrl = environment.apiUrl
 
-  constructor(private http: HttpClient, private authService: AuthService) { }
+  constructor(private http: HttpClient) { }
 
   getBatterieParametresData(): Observable<BatterieParametres> {
-    return this.http.get<BatterieParametres>(this.serveurUrl+'/battery/parameters/realtime', { headers: this.authService.getAuthHeaders() });
+    return this.http.get<BatterieParametres>(this.serveurUrl+'/battery/parameters/realtime', { withCredentials: true });
   }
 
   getLastBatterieParametresData(): Observable<BatterieParametres> {
-    return this.http.get<BatterieParametres>(this.serveurUrl+'/battery/parameters/last', { headers: this.authService.getAuthHeaders() });
+    return this.http.get<BatterieParametres>(this.serveurUrl+'/battery/parameters/last', { withCredentials: true });
   }
 
 }

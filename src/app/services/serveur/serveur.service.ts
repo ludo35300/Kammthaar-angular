@@ -20,13 +20,14 @@ export class ServeurService {
       takeUntil(this.destroy$), // Nettoyage de l'intervalle
       switchMap(() => this.checkServerStatus())
     ).subscribe();
+    
   }
   /**
    * Vérifie si le serveur est en ligne et met à jour l'état global
    * @returns Observable<boolean> représentant l'état du serveur
    */
   checkServerStatus(): Observable<boolean> {
-    return this.http.get<{ status: boolean }>(`${this.serveurUrl}/serveur/status`, { headers: this.authService.getAuthHeaders() }).pipe(
+    return this.http.get<{ status: boolean }>(`${this.serveurUrl}/serveur/status`).pipe(
       retry(3), // Réessaye jusqu'à 3 fois
       map((response) => {
         const status = response.status;
@@ -52,7 +53,7 @@ export class ServeurService {
    * @returns Observable<any> des données système
    */
   getSystemInfo(): Observable<any> {
-    return this.http.get(this.serveurUrl+'/serveur/infos', { headers: this.authService.getAuthHeaders() });
+    return this.http.get(this.serveurUrl+'/serveur/infos', { withCredentials: true });
   }
 
   ngOnDestroy(): void {

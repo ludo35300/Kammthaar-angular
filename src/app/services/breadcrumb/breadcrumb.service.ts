@@ -14,9 +14,9 @@ export class BreadcrumbService {
   constructor(private http: HttpClient, private authService: AuthService) { }
   
   getBreadcrumbRealtime(): Observable<Breadcrumb> {
-    return this.http.get<Breadcrumb>(this.serveurUrl+'/breadcrumb/realtime', { headers: this.authService.getAuthHeaders() });
+    return this.http.get<Breadcrumb>(this.serveurUrl+'/breadcrumb/realtime', { withCredentials: true });
   }
   getBreadcrumbLast(): Observable<Breadcrumb> {
-    return this.http.get<Breadcrumb>(this.serveurUrl+'/breadcrumb/last', { headers: this.authService.getAuthHeaders() });
+    return this.http.get<Breadcrumb>(this.serveurUrl+'/breadcrumb/last', { withCredentials: true });
   }
 }

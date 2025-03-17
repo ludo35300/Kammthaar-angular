@@ -13,9 +13,9 @@ export class EnergyStatisticsService {
     
   constructor(private http: HttpClient, private authService: AuthService) { }
   getEnergyStatisticsRealtime(): Observable<EnergyStatistics> {
-      return this.http.get<EnergyStatistics>(this.serveurUrl+'/statistics/energy/realtime', { headers: this.authService.getAuthHeaders() });
+      return this.http.get<EnergyStatistics>(this.serveurUrl+'/statistics/energy/realtime', { withCredentials: true });
   }
   getEnergyStatisticsLast(): Observable<EnergyStatistics> {
-        return this.http.get<EnergyStatistics>(this.serveurUrl+'/statistics/energy/last', { headers: this.authService.getAuthHeaders() });
+        return this.http.get<EnergyStatistics>(this.serveurUrl+'/statistics/energy/last', { withCredentials: true });
   }
 }

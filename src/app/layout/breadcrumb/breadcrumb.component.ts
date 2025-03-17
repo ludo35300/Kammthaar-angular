@@ -32,7 +32,7 @@ export class BreadcrumbComponent {
       
 
   ngOnInit(): void {
-    if(this.authService.isLoggedIn()){
+    if(this.authService.isAuthenticated()){
       // on charge les données hors ligne pour eviter le temps d'attente
       this.getBreadcrumbLast();
       this.serveurService.getServerStatus()
@@ -40,7 +40,8 @@ export class BreadcrumbComponent {
         .subscribe((status) => {
           this.isServerOnline = status;
           if (this.isServerOnline) {
-            this.startRealTimeDataUpdate();
+            this.getBreadcrumbRealtime(); // Pour récupérer les infos immédiatement 
+            this.startRealTimeDataUpdate(); // Pour refresh les infos toutes les 30
           } else {
             this.getBreadcrumbLast();
             this.stopRealTimeDataUpdate();
@@ -51,7 +52,7 @@ export class BreadcrumbComponent {
 
   startRealTimeDataUpdate(): void {
           if (!this.dataIntervalSubscription) {
-            this.dataIntervalSubscription = interval(30000) // Chaque 30 secondes
+            this.dataIntervalSubscription = interval(30000) // Chaque 10 secondes
               .pipe(
                 switchMap(() => this.breadcrumbService.getBreadcrumbRealtime()) // Récupère les données en temps réel
               )

@@ -13,12 +13,17 @@ export class LoginComponent {
   error = '';
 
   constructor(public authService: AuthService, private router: Router) {}
+  ngOnInit() {
+    this.authService.checkAuthStatus();
+    this.authService.authStatus$.subscribe(
+      (isAuthenticated) => {
+        this.router.navigate(['/dashboard']);
+      }
+    );
+  }
 
   login(): void {
-    this.authService.login(this.username, this.password).subscribe({
-      next: () => this.router.navigate(['/dashboard']),
-      error: () => this.error = 'Identifiants invalides'
-    });
+    this.authService.login(this.username, this.password)
   }
 
   logout(): void {

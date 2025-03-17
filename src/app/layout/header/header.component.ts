@@ -19,11 +19,20 @@ export class HeaderComponent {
   faXmark = faXmark
   faUser = faUser
   faBars = faBars
+  isLoggedIn = false;
+  username: string | undefined;
+
 
   constructor(
     private serveurService: ServeurService,
     public authService: AuthService,
-  ){}
+  ){
+    this.authService.authStatus$.subscribe(
+      (isAuthenticated) => {
+        this.isLoggedIn = isAuthenticated;
+      }
+    );
+  }
 
   ngOnInit(): void {
     this.serveurService.getServerStatus()
@@ -31,6 +40,16 @@ export class HeaderComponent {
       .subscribe((status) => {
           this.isServerOnline = status;
       });
+      if(this.isLoggedIn){
+        this.authService.getUserInfo().subscribe(
+          (response) => {
+            this.username = response.username;
+          },
+          (error) => {
+            console.error('Erreur de récupération des informations utilisateur', error);
+          }
+        );
+      }
   }
   
 }

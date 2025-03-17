@@ -14,9 +14,9 @@ export class DischargingEquipmentStatusService {
   constructor(private http: HttpClient, private authService: AuthService) { }
     
   getRealtime(): Observable<DischargingEquipmentStatus> {
-    return this.http.get<DischargingEquipmentStatus>(this.serveurUrl+'/discharging/realtime', { headers: this.authService.getAuthHeaders() });
+    return this.http.get<DischargingEquipmentStatus>(this.serveurUrl+'/discharging/realtime', { withCredentials: true });
   }
   getLast(): Observable<DischargingEquipmentStatus> {
-    return this.http.get<DischargingEquipmentStatus>(this.serveurUrl+'/discharging/last', { headers: this.authService.getAuthHeaders() });
+    return this.http.get<DischargingEquipmentStatus>(this.serveurUrl+'/discharging/last', { withCredentials: true });
   }
 }

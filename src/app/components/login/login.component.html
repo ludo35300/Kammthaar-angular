@@ -11,7 +11,7 @@
             <h4 class="mb-1">Connexion</h4>
           </div>
           <div class="card-body">
-            <div *ngIf="authService.isLoggedIn(); else loggedOut">
+            <div *ngIf="(authService.authStatus$ | async) else loggedOut">
               <p>✅ Vous êtes connecté !</p>
               <button (click)="authService.logout()"  class="btn w-100 mt-4">Déconnexion</button>
             </div>
@@ -24,6 +24,7 @@
                 <div class="input-group">
                   <input
                     [(ngModel)]="username" 
+                    id="username" 
                     name="username" 
                     placeholder="Nom d'utilisateur" 
                     class="form-control" 
@@ -39,6 +40,7 @@
                     [(ngModel)]="password" 
                     name="password" 
                     type="password" 
+                    id="password"
                     placeholder="Mot de passe" 
                     class="form-control"
                     autocomplete="current-password"
@@ -47,9 +49,9 @@
               </div>
 
               <!-- Actions -->
-              <!-- <div class="d-flex justify-content-between mb-3">
-                <a href="#" class="text-decoration-none text-info">Mot de passe oublié ?</a>
-              </div> -->
+              <div class="d-flex justify-content-between mb-3">
+                <p class="text-info">Ludo35300 / Kammthaar1999</p>
+              </div>
   
               
               

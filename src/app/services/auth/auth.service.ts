@@ -1,9 +1,8 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, tap } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, of, switchMap, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
-import {jwtDecode} from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
@@ -11,69 +10,59 @@ import {jwtDecode} from 'jwt-decode';
 export class AuthService {
 
   private serveurUrl = environment.apiUrl;
-  private tokenKey = environment.token;
-  private isLoggedInSubject = new BehaviorSubject<boolean>(this.isLoggedIn());
-
+  private authStatus = new BehaviorSubject<boolean>(false); // État global de connexion
+  authStatus$ = this.authStatus.asObservable();
   constructor(private http: HttpClient, private router: Router) {}
 
+  
   login(username: string, password: string) {
-    return this.http.post<{  access_token: string, refresh_token: string }>(`${this.serveurUrl}/login`, { username, password }).pipe(
-      tap(response => {
-        localStorage.setItem(this.tokenKey, response.access_token);  // Access token
-        localStorage.setItem('refresh_token', response.refresh_token);  // Refresh token
-        this.isLoggedInSubject.next(true);
-      })
-    );
-  }
-  refreshAccessToken() {
-    const refreshToken = localStorage.getItem('refresh_token');
-    if (!refreshToken) {
-      this.logout();  // Si le refresh token n'est pas disponible, déconnecte l'utilisateur
-      return;
-    }
-  
-    return this.http.post<{ access_token: string }>(`${this.serveurUrl}/refresh`, { refresh_token: refreshToken }).pipe(
-      tap(response => {
-        // Met à jour l'access token dans le localStorage
-        localStorage.setItem(this.tokenKey, response.access_token);
-      })
-    );
+      return this.http.post(`${this.serveurUrl}/login`, { username, password }, { withCredentials: true })
+        .subscribe({
+          next: (response) => {
+            this.authStatus.next(true);  // L'utilisateur est connecté
+            this.router.navigate(['/dashboard']);  // Rediriger vers une page protégée
+          },
+          error: (err) => {
+            this.authStatus.next(false);  // L'utilisateur n'est pas connecté
+            console.error('Login failed', err);
+          }
+        });
   }
 
+  // Méthode pour rafraîchir le token
+  refreshToken(): Observable<any> {
+    return this.http.post(`${this.serveurUrl}/refresh`, {}, { withCredentials: true }); 
+  }
+
+  
   logout() {
-    localStorage.removeItem(this.tokenKey);
-    this.isLoggedInSubject.next(false);
-    this.router.navigate(['/login']);
-  }
-
-  getToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
-  }
-
-  isLoggedIn(): boolean {
-    return !!this.getToken();
-  }
-  
-  getAuthHeaders(): HttpHeaders {
-    const token = this.getToken();
-    return new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`  // On envoie le token ici
+    this.http.post(`${this.serveurUrl}/logout`, {}, { withCredentials: true }).subscribe(() => {
+      this.authStatus.next(false);
+      this.router.navigate(['/login']);
     });
   }
 
-  getUsername(): string | null {
-    const token = this.getToken();
-    if (!token) return null;
-
-    try {
-      const decoded: any = jwtDecode(token);
-      return decoded.username || null;  // Vérifie si "username" est bien dans le token
-    } catch (error) {
-      console.error('Erreur de décodage du token', error);
-      return null;
-    }
+  checkAuthStatus(): void {
+    this.http.get<{ authenticated: boolean }>(`${this.serveurUrl}/check_auth`, { withCredentials: true })
+      .subscribe({
+        next: (response) => {
+          this.authStatus.next(response.authenticated); // Met à jour l'état global
+        },
+        error: () => {
+          this.authStatus.next(false); // En cas d'erreur, on considère l'utilisateur comme déconnecté
+        }
+      });
   }
+
+  // Retourne un observable pour que les composants puissent écouter l’état d’authentification
+  isAuthenticated(): Observable<boolean> {
+    return this.authStatus.asObservable();
+  }
+  getUserInfo(): Observable<any> {
+    return this.http.get(`${this.serveurUrl}/user`, { withCredentials: true });
+  }
+
+  
 }
 
 

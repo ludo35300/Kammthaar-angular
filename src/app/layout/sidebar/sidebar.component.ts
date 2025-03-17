@@ -24,8 +24,19 @@ export class SidebarComponent {
   faBars = faBars
   faInfoCircle = faInfoCircle
   faCogs = faCogs
-
-  constructor(public authService: AuthService,){}
+  isLoggedIn = false;
+  
+  constructor(public authService: AuthService,){
+    
+  }
+  ngOnInit() {
+    this.authService.checkAuthStatus();
+    this.authService.authStatus$.subscribe(
+      (isAuthenticated) => {
+        this.isLoggedIn = isAuthenticated;
+      }
+    );
+  }
 
   closeSidebar(): void {
     if (window.innerWidth <= 1100) {

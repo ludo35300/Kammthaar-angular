@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { PsComponent } from './components/ps/ps.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { HeaderComponent } from './layout/header/header.component';
@@ -43,6 +42,7 @@ import { LoginComponent } from './components/login/login.component';
 import { AproposComponent } from './components/apropos/apropos.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { FormsModule } from '@angular/forms';
+import { CookieService } from 'ngx-cookie-service';  // Importer CookieService
 
 @NgModule({
   declarations: [
@@ -90,8 +90,9 @@ import { FormsModule } from '@angular/forms';
     FormsModule 
   ],
   providers: [
-    provideHttpClient(), 
+    provideHttpClient(withInterceptorsFromDi()), 
     provideAnimationsAsync(),
+    CookieService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

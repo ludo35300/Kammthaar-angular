@@ -14,9 +14,9 @@ export class ChargingEquipmentStatusService {
   constructor(private http: HttpClient, private authService: AuthService) { }
     
   getRealtime(): Observable<ChargingEquipmentStatus> {
-    return this.http.get<ChargingEquipmentStatus>(this.serveurUrl+'/charging/realtime', { headers: this.authService.getAuthHeaders() });
+    return this.http.get<ChargingEquipmentStatus>(this.serveurUrl+'/charging/realtime', { withCredentials: true });
   }
   getLast(): Observable<ChargingEquipmentStatus> {
-    return this.http.get<ChargingEquipmentStatus>(this.serveurUrl+'/charging/last', { headers: this.authService.getAuthHeaders() });
+    return this.http.get<ChargingEquipmentStatus>(this.serveurUrl+'/charging/last', { withCredentials: true });
   }
 }

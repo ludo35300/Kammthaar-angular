@@ -27,7 +27,7 @@
       </button>
 
       <!-- Profil -->
-      <div class="dropdown" *ngIf="authService.isLoggedIn();">
+      <div class="dropdown"  *ngIf="isLoggedIn">
 
 
         <button
@@ -37,7 +37,7 @@
           aria-expanded="false"
         >
           <fa-icon [icon]="faUser"></fa-icon>&nbsp;
-          <span class="d-none d-lg-inline">{{ authService.getUsername() }} &nbsp;</span>
+          <span class="d-none d-lg-inline">{{ username }} &nbsp;</span>
         </button>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
           <li><a (click)="authService.logout()" class="dropdown-item" [routerLinkActive]="['is-active']">Déconnexion</a></li>
@@ -45,7 +45,7 @@
         </ul>
       </div>
       <button
-          *ngIf="!authService.isLoggedIn();"
+          *ngIf="!isLoggedIn;"
           class="btn btn-profil"
           routerLink="/login"
         >
