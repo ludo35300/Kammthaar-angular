@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { StatistiquesComponent } from './statistiques.component';
 import { provideHttpClient } from '@angular/common/http';
-import { DashboardService } from '../../../services/dashboard/dashboard.service';
 import { NgxGauge, NgxGaugeModule } from 'ngx-gauge';
+import { EnergyStatisticsService } from '../../../services/energyStatistics/energy-statistics.service';
 
 describe('StatistiquesComponent', () => {
   let component: StatistiquesComponent;
@@ -14,7 +14,7 @@ describe('StatistiquesComponent', () => {
       declarations: [StatistiquesComponent],
       providers: [
         provideHttpClient(), // Fournit HttpClient
-        DashboardService,
+        EnergyStatisticsService,
       ],
       imports: [NgxGaugeModule]
 

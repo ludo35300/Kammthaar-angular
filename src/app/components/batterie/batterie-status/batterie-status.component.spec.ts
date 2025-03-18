@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { BatterieStatusComponent } from './batterie-status.component';
 import { provideHttpClient } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -14,10 +13,7 @@ describe('BatterieStatusComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [
-        BatterieStatusComponent,
-        
-      ],
+      declarations: [ BatterieStatusComponent ],
       providers: [
         provideHttpClient(), // Fournit HttpClient
         ServeurService,           // Fournit PsService
@@ -48,6 +44,4 @@ describe('BatterieStatusComponent', () => {
     expect(component).toBeTruthy();
   });
   
-
-
 });

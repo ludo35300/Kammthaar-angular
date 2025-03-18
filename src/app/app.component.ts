@@ -1,44 +1,34 @@
 import { Component, HostListener } from '@angular/core';
-import { ServeurService } from './services/serveur/serveur.service';
-import { distinctUntilChanged } from 'rxjs';
 import { AuthService } from './services/auth/auth.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
 
-  isSidebarOpen = true; // Par défaut, la sidebar est ouverte
+export class AppComponent {
+  isSidebarOpen = true;   // La sidebar est ouverte par défault
   isServerOnline: boolean | null = null;
   
-  constructor(
-      private serveurService: ServeurService,private authService: AuthService, private router: Router  ){
-        // this.checkLoginStatus();
-      }
+  constructor(private authService: AuthService){}
 
   ngOnInit() {
-    this.checkScreenSize(); // Vérifie la taille de l'écran au démarrage
-    this.authService.checkAuthStatus();
+    this.checkScreenSize();             // Vérifie la taille de l'écran au démarrage
+    this.authService.checkAuthStatus(); // Vérifie l'authentification au démarrage
   }
 
-  // Écouter l'événement de redimensionnement de la fenêtre
-  @HostListener('window:resize', ['$event'])
-  
+  // Écoute l'événement de redimensionnement de la fenêtre
+  @HostListener('window:resize', ['$event']) 
 
-  // Vérifie la taille de l'écran et met à jour la valeur de isSidebarOpen
+  // Si la taille de l'écran est inférieure à 1100px, la sidebar est fermée 
   checkScreenSize() {
-    if (window.innerWidth <= 1100) {
-      this.isSidebarOpen = false; // Ferme la sidebar si l'écran est petit
-    } else {
-      this.isSidebarOpen = true;  // Garde la sidebar ouverte si l'écran est plus grand
-    }
+    this.isSidebarOpen = window.innerWidth > 1100;
   }
   
+  // Bascule la visibilité de la sidebar
   toggleSidebar() {
-    this.isSidebarOpen = !this.isSidebarOpen; // Bascule la visibilité de la sidebar
+    this.isSidebarOpen = !this.isSidebarOpen;
   }
 
 }

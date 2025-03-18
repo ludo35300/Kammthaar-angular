@@ -5,6 +5,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { ServeurService } from '../../services/serveur/serveur.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { RouterModule } from '@angular/router';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -17,7 +18,7 @@ describe('HeaderComponent', () => {
         provideHttpClient(), // Fournit HttpClient
         ServeurService,           // Fournit PsService
       ],
-      imports: [FontAwesomeModule, NgbTooltipModule]
+      imports: [FontAwesomeModule, NgbTooltipModule, RouterModule.forRoot([]),]
     })
     .compileComponents();
 

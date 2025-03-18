@@ -4,6 +4,7 @@ import { SidebarComponent } from './sidebar.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { of } from 'rxjs';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('SidebarComponent', () => {
   let component: SidebarComponent;
@@ -15,7 +16,9 @@ describe('SidebarComponent', () => {
 
       imports: [FontAwesomeModule, RouterModule],
       providers: [
+        provideHttpClient(), // Fournit HttpClient
         { provide: ActivatedRoute, useValue: { snapshot: { paramMap: of({}) } } }  // Mock de ActivatedRoute
+
       ]
     })
     .compileComponents();

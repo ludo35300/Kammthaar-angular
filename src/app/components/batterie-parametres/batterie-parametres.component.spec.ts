@@ -1,20 +1,33 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BatterieParametresComponent } from './batterie-parametres.component';
-import { ServeurService } from '../../services/serveur/serveur.service';
 import { provideHttpClient } from '@angular/common/http';
+import { ServeurService } from '../../services/serveur/serveur.service';
+import { BreadcrumbComponent } from '../../layout/breadcrumb/breadcrumb.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { BatterieParametresComponent } from './batterie-parametres.component';
+import { ParametresComponent } from './batterie/parametres.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
-describe('BatterieParametresComponent', () => {
+describe('BatterieRealtimeComponent', () => {
   let component: BatterieParametresComponent;
   let fixture: ComponentFixture<BatterieParametresComponent>;
+  
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BatterieParametresComponent],
-      providers: [
-        provideHttpClient(), // Fournit HttpClient
-        ServeurService,           // Fournit PsService
+      declarations: [
+        BatterieParametresComponent, 
+        ParametresComponent,
+        BreadcrumbComponent, 
       ],
+      providers: [
+              provideHttpClient(), // Fournit HttpClient
+              ServeurService,           // Fournit PsService
+      ],
+      imports: [FontAwesomeModule, NgbTooltipModule],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+
     })
     .compileComponents();
 

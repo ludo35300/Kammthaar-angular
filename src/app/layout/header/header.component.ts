@@ -11,45 +11,42 @@ import { AuthService } from '../../services/auth/auth.service';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
+
   @Output() toggleSidebar = new EventEmitter<void>();
   isServerOnline: boolean  = false;
+  isLoggedIn: boolean = false;
   isSidebarOpen = true; // Par défaut, la sidebar est ouverte
   title = TITLE
   faCheck = faCheck
   faXmark = faXmark
   faUser = faUser
   faBars = faBars
-  isLoggedIn = false;
   username: string | undefined;
 
-
-  constructor(
-    private serveurService: ServeurService,
-    public authService: AuthService,
-  ){
-    this.authService.authStatus$.subscribe(
-      (isAuthenticated) => {
-        this.isLoggedIn = isAuthenticated;
-      }
-    );
-  }
+  constructor(private serveurService: ServeurService,  public authService: AuthService){}
 
   ngOnInit(): void {
+    // Vérifie le statust du serveur
     this.serveurService.getServerStatus()
-      .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
-      .subscribe((status) => {
-          this.isServerOnline = status;
+    .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
+    .subscribe((status) => {
+        this.isServerOnline = status;
+    });
+    // Vérifie si l'utilisateur est connecté
+    if(this.authService.isAuthenticated()){
+      this.isLoggedIn = true;
+    }
+    // Récupère les informations de l'utilisateur
+    if(this.isLoggedIn){
+      this.authService.getUserInfo().subscribe({
+        next:(response) => {
+          this.username = response.username;
+        },
+        error: (error) => {
+          console.error('Erreur de récupération des informations utilisateur', error);
+        }
       });
-      if(this.isLoggedIn){
-        this.authService.getUserInfo().subscribe(
-          (response) => {
-            this.username = response.username;
-          },
-          (error) => {
-            console.error('Erreur de récupération des informations utilisateur', error);
-          }
-        );
-      }
+    }
   }
   
 }

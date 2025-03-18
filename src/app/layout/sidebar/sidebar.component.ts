@@ -26,16 +26,12 @@ export class SidebarComponent {
   faCogs = faCogs
   isLoggedIn = false;
   
-  constructor(public authService: AuthService,){
-    
-  }
+  constructor(public authService: AuthService,){}
+  
   ngOnInit() {
-    this.authService.checkAuthStatus();
-    this.authService.authStatus$.subscribe(
-      (isAuthenticated) => {
-        this.isLoggedIn = isAuthenticated;
-      }
-    );
+    if(this.authService.isAuthenticated()){
+      this.isLoggedIn = true;
+    }
   }
 
   closeSidebar(): void {
