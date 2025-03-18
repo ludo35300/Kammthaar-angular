@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ControllerComponent } from './controller.component';
-import { ControllerService } from '../../services/controller/controller.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { provideHttpClient } from '@angular/common/http';
 import { ServeurService } from '../../services/serveur/serveur.service';
@@ -9,6 +8,7 @@ import { BreadcrumbComponent } from '../../layout/breadcrumb/breadcrumb.componen
 import { ControllerGraphiqueComponent } from '../consommation/consommation-graphique/consommation-graphique.component';
 import { ControllerTemperatureComponent } from './controller-temperature/controller-temperature.component';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { ControllerDataService } from '../../services/controllerData/controller-data.service';
 
 describe('ControllerRealtimeComponent', () => {
   let component: ControllerComponent;
@@ -25,7 +25,7 @@ describe('ControllerRealtimeComponent', () => {
       ],
       providers: [
               provideHttpClient(), // Fournit HttpClient
-              ControllerService,
+              ControllerDataService,
               ServeurService
             ],
       imports:[ FontAwesomeModule, NgbTooltipModule]

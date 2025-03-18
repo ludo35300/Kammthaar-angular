@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ControllerTemperatureComponent } from './controller-temperature.component';
-import { ControllerService } from '../../../services/controller/controller.service';
 import { provideHttpClient } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { ControllerDataService } from '../../../services/controllerData/controller-data.service';
 
 describe('ControllerTemperatureComponent', () => {
   let component: ControllerTemperatureComponent;
@@ -15,7 +15,7 @@ describe('ControllerTemperatureComponent', () => {
       declarations: [ControllerTemperatureComponent],
       providers: [
               provideHttpClient(), // Fournit HttpClient
-              ControllerService,           // Fournit PsService
+              ControllerDataService,           // Fournit PsService
             ],
             imports: [FontAwesomeModule, NgbTooltipModule]
     })

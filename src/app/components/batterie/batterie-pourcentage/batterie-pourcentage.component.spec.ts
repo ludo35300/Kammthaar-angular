@@ -4,7 +4,7 @@ import { BatteriePourcentageComponent } from './batterie-pourcentage.component';
 import { provideHttpClient } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { BatterieService } from '../../../services/batterie/batterie.service';
+import { BatteryStatusService } from '../../../services/batteryStatus/battery-status.service';
 
 describe('BatteriePourcentageComponent', () => {
   let component: BatteriePourcentageComponent;
@@ -15,7 +15,7 @@ describe('BatteriePourcentageComponent', () => {
       declarations: [BatteriePourcentageComponent],
       providers: [
               provideHttpClient(), // Fournit HttpClient
-              BatterieService,           // Fournit PsService
+              BatteryStatusService,           // Fournit PsService
             ],
       imports: [FontAwesomeModule, NgbTooltipModule]
     })

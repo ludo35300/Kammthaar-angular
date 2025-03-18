@@ -2,12 +2,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PsComponent } from './ps.component';
 import { provideHttpClient } from '@angular/common/http';
-import { PsService } from '../../services/ps/ps.service';
 import { BreadcrumbComponent } from '../../layout/breadcrumb/breadcrumb.component';
 import { PsDataComponent } from './ps-data/ps-data.component';
 import { PsGraphiqueComponent } from './ps-graphique/ps-graphique.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { SolarDataService } from '../../services/solarData/solar-data.service';
 
 describe('PsRealtimeComponent', () => {
   let component: PsComponent;
@@ -18,7 +18,7 @@ describe('PsRealtimeComponent', () => {
       declarations: [PsComponent, BreadcrumbComponent, PsDataComponent, PsGraphiqueComponent],
       providers: [
               provideHttpClient(), // Fournit HttpClient
-              PsService,           // Fournit PsService
+              SolarDataService,           // Fournit PsService
             ],
       imports: [FontAwesomeModule, NgbTooltipModule]
     })

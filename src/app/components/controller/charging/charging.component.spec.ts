@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ChargingComponent } from './charging.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 describe('ChargingComponent', () => {
   let component: ChargingComponent;
@@ -8,7 +10,8 @@ describe('ChargingComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ChargingComponent]
+      declarations: [ChargingComponent],
+      imports: [FontAwesomeModule, NgbTooltipModule]
     })
     .compileComponents();
 

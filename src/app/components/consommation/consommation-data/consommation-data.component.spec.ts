@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ControllerDataComponent } from './consommation-data.component';
-import { ControllerService } from '../../../services/controller/controller.service';
 import { provideHttpClient } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { ControllerDataService } from '../../../services/controllerData/controller-data.service';
 
 describe('ControllerDataComponent', () => {
   let component: ControllerDataComponent;
@@ -15,7 +15,7 @@ describe('ControllerDataComponent', () => {
       declarations: [ControllerDataComponent],
       providers: [
               provideHttpClient(), // Fournit HttpClient
-              ControllerService,           // Fournit PsService
+              ControllerDataService,           // Fournit PsService
             ],
       imports: [FontAwesomeModule, NgbTooltipModule]
     })

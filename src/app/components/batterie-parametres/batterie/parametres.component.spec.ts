@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BatterieParametresComponent } from '../batterie-parametres.component';
-import { BatterieService } from '../../../services/batterie/batterie.service';
+import { BatterieParametresService } from '../../../services/batterie-parametres/batterie-parametres.service';
 
 describe('BatterieParametresComponent', () => {
   let component: BatterieParametresComponent;
@@ -14,7 +14,7 @@ describe('BatterieParametresComponent', () => {
       declarations: [BatterieParametresComponent],
       providers: [
               provideHttpClient(), // Fournit HttpClient
-              BatterieService,           // Fournit PsService
+              BatterieParametresService,           // Fournit BatterieService
             ],
       imports:[FontAwesomeModule]
     })

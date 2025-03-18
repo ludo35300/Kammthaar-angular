@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { faSun, faMoon, faDumpster, faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { BehaviorSubject, distinctUntilChanged, interval, map, Observable, Subscription, switchMap } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, interval, Subscription, switchMap } from 'rxjs';
 import { ServeurService } from '../../services/serveur/serveur.service';
 import { LoadData } from '../../modeles/loadData';
 import { LoadDataService } from '../../services/loadData/load-data.service';

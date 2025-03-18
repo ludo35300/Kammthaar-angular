@@ -2,9 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PsDataComponent } from './ps-data.component';
 import { provideHttpClient } from '@angular/common/http';
-import { PsService } from '../../../services/ps/ps.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { SolarDataService } from '../../../services/solarData/solar-data.service';
 
 describe('PsDataComponent', () => {
   let component: PsDataComponent;
@@ -16,7 +16,7 @@ describe('PsDataComponent', () => {
       imports: [FontAwesomeModule, NgbTooltipModule],
       providers: [
         provideHttpClient(), // Fournit HttpClient
-        PsService,           // Fournit PsService
+        SolarDataService,           // Fournit PsService
       ],
     })
     .compileComponents();

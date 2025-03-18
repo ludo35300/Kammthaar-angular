@@ -10,13 +10,13 @@ import { AuthService } from '../../../services/auth/auth.service';
 })
 export class BienvenueComponent {
   isLoading = true;
-    
   @Input() energyStatistics: EnergyStatistics | null = null;
-   constructor(
-      public authService: AuthService, 
-    ){}
-
   faChargingStation = faChargingStation;
+  
+  constructor(
+    public authService: AuthService, 
+  ){}
+
   
 
 }

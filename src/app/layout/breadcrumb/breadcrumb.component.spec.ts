@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BreadcrumbComponent } from './breadcrumb.component';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { HttpClientModule, provideHttpClient } from '@angular/common/http';
 
 describe('BreadcrumbComponent', () => {
   let component: BreadcrumbComponent;
@@ -8,8 +9,11 @@ describe('BreadcrumbComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NgbTooltipModule],
-      declarations: [BreadcrumbComponent]
+      imports: [NgbTooltipModule, HttpClientModule  ],
+      declarations: [BreadcrumbComponent],
+      providers: [
+        provideHttpClient(), // Fournit HttpClient
+      ],
     })
     .compileComponents();
 

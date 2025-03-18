@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AproposComponent } from './apropos.component';
+import { BreadcrumbComponent } from '../../layout/breadcrumb/breadcrumb.component';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('AproposComponent', () => {
   let component: AproposComponent;
@@ -8,7 +10,10 @@ describe('AproposComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AproposComponent]
+      declarations: [AproposComponent,BreadcrumbComponent,],
+      providers: [
+              provideHttpClient(), // Fournit HttpClient
+            ],
     })
     .compileComponents();
 

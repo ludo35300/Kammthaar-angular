@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DischargingComponent } from './discharging.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 describe('DischargingComponent', () => {
   let component: DischargingComponent;
@@ -8,7 +10,8 @@ describe('DischargingComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DischargingComponent]
+      declarations: [DischargingComponent],
+      imports: [FontAwesomeModule, NgbTooltipModule]
     })
     .compileComponents();
 
