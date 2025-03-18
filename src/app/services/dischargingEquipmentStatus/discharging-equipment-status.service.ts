@@ -3,6 +3,7 @@ import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { DischargingEquipmentStatus } from '../../modeles/dischargingEquipmentStatus';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,12 +11,12 @@ import { DischargingEquipmentStatus } from '../../modeles/dischargingEquipmentSt
 export class DischargingEquipmentStatusService {
   private serveurUrl = environment.apiUrl
     
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
     
   getRealtime(): Observable<DischargingEquipmentStatus> {
-    return this.http.get<DischargingEquipmentStatus>(this.serveurUrl+'/discharging/realtime');
+    return this.http.get<DischargingEquipmentStatus>(this.serveurUrl+'/discharging/realtime', { withCredentials: true });
   }
   getLast(): Observable<DischargingEquipmentStatus> {
-    return this.http.get<DischargingEquipmentStatus>(this.serveurUrl+'/discharging/last');
+    return this.http.get<DischargingEquipmentStatus>(this.serveurUrl+'/discharging/last', { withCredentials: true });
   }
 }

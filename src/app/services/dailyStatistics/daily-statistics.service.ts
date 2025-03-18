@@ -13,9 +13,9 @@ export class DailyStatisticsService {
   constructor(private http: HttpClient) { }
   
   getDailyStatisticsRealtime(): Observable<DailyStatistics> {
-    return this.http.get<DailyStatistics>(this.serveurUrl+'/statistics/daily/realtime');
+    return this.http.get<DailyStatistics>(this.serveurUrl+'/statistics/daily/realtime', { withCredentials: true });
   }
   getDailyStatisticsLast(): Observable<DailyStatistics> {
-      return this.http.get<DailyStatistics>(this.serveurUrl+'/statistics/daily/last');
+      return this.http.get<DailyStatistics>(this.serveurUrl+'/statistics/daily/last', { withCredentials: true });
   }
 }

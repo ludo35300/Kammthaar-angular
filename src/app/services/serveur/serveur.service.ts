@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, interval, map, Observable, of, retry, Subject, switchMap, takeUntil } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,11 +15,12 @@ export class ServeurService {
   
   serverStatus$ = this.serverStatus.asObservable(); // Observable pour écouter l'état du serveur
   
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private authService: AuthService) {
     interval(60000).pipe(
       takeUntil(this.destroy$), // Nettoyage de l'intervalle
       switchMap(() => this.checkServerStatus())
     ).subscribe();
+    
   }
   /**
    * Vérifie si le serveur est en ligne et met à jour l'état global
@@ -51,7 +53,7 @@ export class ServeurService {
    * @returns Observable<any> des données système
    */
   getSystemInfo(): Observable<any> {
-    return this.http.get(this.serveurUrl+'/serveur/infos');
+    return this.http.get(this.serveurUrl+'/serveur/infos', { withCredentials: true });
   }
 
   ngOnDestroy(): void {

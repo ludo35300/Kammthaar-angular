@@ -27,7 +27,7 @@
       </button>
 
       <!-- Profil -->
-      <div class="dropdown">
+      <div class="dropdown"  *ngIf="isLoggedIn">
 
 
         <button
@@ -37,13 +37,21 @@
           aria-expanded="false"
         >
           <fa-icon [icon]="faUser"></fa-icon>&nbsp;
-          <span class="d-none d-lg-inline">Profil &nbsp;</span>
+          <span class="d-none d-lg-inline">{{ username }} &nbsp;</span>
         </button>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-          <li><a routerLink="/login" class="dropdown-item" [routerLinkActive]="['is-active']">Se connecter</a></li>
+          <li><a (click)="authService.logout()" class="dropdown-item" [routerLinkActive]="['is-active']">Déconnexion</a></li>
           <!-- <li><a class="dropdown-item" href="#">Déconnexion</a></li> -->
         </ul>
       </div>
+      <button
+          *ngIf="!isLoggedIn;"
+          class="btn btn-profil"
+          routerLink="/login"
+        >
+          <fa-icon [icon]="faUser"></fa-icon>&nbsp;
+          <span class="d-none d-lg-inline">Connexion &nbsp;</span>
+        </button>
     </div>
   </div>
 </nav>

@@ -1,5 +1,5 @@
 <div class="sidebar  d-flex flex-column" [ngClass]="{ collapsed: !isOpen }">
-  <ul class="list-unstyled pt-4 flex-grow-1">
+  <ul class="list-unstyled pt-4 flex-grow-1" *ngIf="isLoggedIn" >
       <li>
         <a routerLink="/dashboard" [routerLinkActive]="['is-active']" class="d-flex align-items-center px-3 py-2" (click)="closeSidebar()" >
           <fa-icon [icon]="faLocationArrow" class="me-3"></fa-icon>Dashboard

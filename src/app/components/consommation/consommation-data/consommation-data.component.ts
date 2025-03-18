@@ -35,11 +35,14 @@ export class ControllerDataComponent {
   // Mise à jour des jauges en fonction des données récupérées
   updateGauges(data: LoadData): void {
     if (!data) return;
-    this.gauges = [
-      { label: 'Voltage', value: data.voltage || 0, unit: 'V', max: 24 },
-      { label: 'Ampérage', value: data.current || 0, unit: 'A', max: 30 },
-      { label: 'Puissance', value: data.power || 0, unit: 'W', max: 100 }
-    ];
+    // Met à jour chaque gauge sans réinitialiser l'ensemble du tableau
+    const voltageGauge = this.gauges.find(gauge => gauge.label === 'Voltage');
+    const amperageGauge = this.gauges.find(gauge => gauge.label === 'Ampérage');
+    const powerGauge = this.gauges.find(gauge => gauge.label === 'Puissance');
+
+    if (voltageGauge) voltageGauge.value = data.voltage;
+    if (amperageGauge) amperageGauge.value = data.current;
+    if (powerGauge) powerGauge.value = data.power;
   }
 
   // Méthode pour émettre un label sélectionné

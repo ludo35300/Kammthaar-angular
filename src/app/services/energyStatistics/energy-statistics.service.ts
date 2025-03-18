@@ -3,6 +3,7 @@ import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { EnergyStatistics } from '../../modeles/energyStatistics';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,11 +11,11 @@ import { EnergyStatistics } from '../../modeles/energyStatistics';
 export class EnergyStatisticsService {
   private serveurUrl = environment.apiUrl
     
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
   getEnergyStatisticsRealtime(): Observable<EnergyStatistics> {
-      return this.http.get<EnergyStatistics>(this.serveurUrl+'/statistics/energy/realtime');
+      return this.http.get<EnergyStatistics>(this.serveurUrl+'/statistics/energy/realtime', { withCredentials: true });
   }
   getEnergyStatisticsLast(): Observable<EnergyStatistics> {
-        return this.http.get<EnergyStatistics>(this.serveurUrl+'/statistics/energy/last');
+        return this.http.get<EnergyStatistics>(this.serveurUrl+'/statistics/energy/last', { withCredentials: true });
   }
 }

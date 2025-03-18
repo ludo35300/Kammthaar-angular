@@ -8,15 +8,16 @@ import { BatterieParametresComponent } from './components/batterie-parametres/ba
 import { ConsommationComponent } from './components/consommation/consommation.component';
 import { LoginComponent } from './components/login/login.component';
 import { AproposComponent } from './components/apropos/apropos.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'ps', component: PsComponent },
-  { path: 'controller', component: ControllerComponent },
-  { path: 'consommation', component: ConsommationComponent },
-  { path: 'batterie/details', component: BatterieComponent},
-  { path: 'batterie/parametres', component: BatterieParametresComponent},
+  { path: 'dashboard', component: DashboardComponent , canActivate: [AuthGuard]},
+  { path: 'ps', component: PsComponent , canActivate: [AuthGuard]},
+  { path: 'controller', component: ControllerComponent , canActivate: [AuthGuard]},
+  { path: 'consommation', component: ConsommationComponent , canActivate: [AuthGuard]},
+  { path: 'batterie/details', component: BatterieComponent, canActivate: [AuthGuard]},
+  { path: 'batterie/parametres', component: BatterieParametresComponent, canActivate: [AuthGuard]},
   { path: 'login', component: LoginComponent},
   { path: 'apropos', component: AproposComponent},
 
