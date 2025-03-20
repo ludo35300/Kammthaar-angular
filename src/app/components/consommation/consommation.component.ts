@@ -35,9 +35,8 @@ export class ConsommationComponent {
       this.getLoadDataLast();
 
   
-      this.serveurService.getServerStatus()
-        .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
-        .subscribe((status) => {
+      this.serverStatusSubscription = this.serveurService.serverStatus$.subscribe(status => {
+        this.isServerOnline = status;
           this.isServerOnline = status;
           if (this.isServerOnline) {
             this.startRealTimeDataUpdate();

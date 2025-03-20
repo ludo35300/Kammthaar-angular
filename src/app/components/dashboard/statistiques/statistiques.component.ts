@@ -23,12 +23,13 @@ export class StatistiquesComponent {
       this.isLoading = false;
     }
   }
-  // Mise à jour des jauges en fonction des données récupérées
+
   updateGauges(data: EnergyStatistics): void {
-    if (!data) return;
-    this.gauges = [
-      { label: 'Générés aujourd\'hui', value: data.generated_today, unit: 'kWh', max: 1.5 },
-      { label: 'Consommés aujourd\'hui', value: data.consumed_today, unit: 'kWh', max: 1.5 },
-    ];
-  }
+      if (!data) return;
+      // Met à jour chaque gauge sans réinitialiser l'ensemble du tableau
+      const generatedToday = this.gauges.find(gauge => gauge.label === 'Générés aujourd\'hui');
+      const consumedToday = this.gauges.find(gauge => gauge.label === 'Consommés aujourd\'hui');
+      if (generatedToday) generatedToday.value = data.generated_today;
+      if (consumedToday) consumedToday.value = data.consumed_today;
+    }
 }

@@ -13,9 +13,11 @@ import { SolarData } from '../../modeles/solarData';
 })
 export class PsComponent {
   solarData$: BehaviorSubject<SolarData | null> = new BehaviorSubject<SolarData | null>(null);
-  private serverStatusSubscription: Subscription | null = null;
   private dataIntervalSubscription: Subscription | null = null;
+
+  private serverStatusSubscription: Subscription | null = null;
   isServerOnline: boolean = false;
+  
   selectedLabel: string  = "Voltage";
   isLoading = true;
   
@@ -39,9 +41,8 @@ export class PsComponent {
     this.getSolarDataLast(); 
 
 
-    this.serveurService.getServerStatus()
-      .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
-      .subscribe((status) => {
+    this.serverStatusSubscription = this.serveurService.serverStatus$.subscribe(status => {
+      this.isServerOnline = status;
         this.isServerOnline = status;
         if (this.isServerOnline) {
           this.startRealTimeDataUpdate();

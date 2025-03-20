@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, map, Observable, of, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, of, Subscription, switchMap, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 
@@ -8,25 +8,28 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthService {
-
   private serveurUrl = environment.apiUrl;
+
   private authStatus = new BehaviorSubject<boolean>(false); // État global de connexion
   authStatus$ = this.authStatus.asObservable();
+
+  private erreurConnexion = new BehaviorSubject<string | null>(null); 
+  erreurConnexion$ = this.erreurConnexion.asObservable();
+
   constructor(private http: HttpClient, private router: Router) {}
 
-  
   login(username: string, password: string) {
-      return this.http.post(`${this.serveurUrl}/login`, { username, password }, { withCredentials: true })
-        .subscribe({
-          next: (response) => {
-            this.authStatus.next(true);  // L'utilisateur est connecté
-            this.router.navigate(['/dashboard']);  // Rediriger vers une page protégée
-          },
-          error: (err) => {
-            this.authStatus.next(false);  // L'utilisateur n'est pas connecté
-            console.error('Login failed', err);
-          }
-        });
+    return this.http.post(`${this.serveurUrl}/login`, { username, password }, { withCredentials: true })
+      .subscribe({
+        next: (response) => {
+          this.authStatus.next(true);  // L'utilisateur est connecté
+          this.router.navigate(['/dashboard']);  // Rediriger vers une page protégée
+        },
+        error: (err) => {
+          this.authStatus.next(false);  // L'utilisateur n'est pas connecté
+          this.erreurConnexion.next(`Erreur de connexion: ${err}`);
+        }
+      });
   }
 
   // Méthode pour rafraîchir le token
@@ -48,10 +51,12 @@ export class AuthService {
         next: (response) => {
           this.authStatus.next(response.authenticated); // Met à jour l'état global
         },
-        error: () => {
+        error: (error) => {
           this.authStatus.next(false); // En cas d'erreur, on considère l'utilisateur comme déconnecté
+          this.erreurConnexion.next(`Erreur de connexion: ${error}`);
         }
       });
+      
   }
 
   // Retourne un observable pour que les composants puissent écouter l’état d’authentification

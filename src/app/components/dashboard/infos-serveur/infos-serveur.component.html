@@ -4,27 +4,35 @@
     <div class="card-body">
         <h5 class="card-title">Informations du Raspberry Pi</h5>
                     
+        <div class="loading-spinner" *ngIf="isLoading">
+            <fa-icon [icon]="faSun" class="fa-spin" animation="spin"></fa-icon>
+            <p>Chargement en cours...</p>
+        </div>
+
+        <!-- Affichage des messages -->
+        <div *ngIf="!isLoading && messageErreur" class="alert alert-danger mt-5" role="alert">
+            <fa-icon [icon]="faWarning"></fa-icon> &nbsp;
+            <span [innerHTML]="messageErreur"></span>
+        </div>
         
-        
-        <ul class="list-group list-group-flush" >
-            <li class="list-group-item" *ngIf="isServerOnline">
-                Le Raspberry est connecté <fa-icon [icon]="faCheck" class="float-end text-success"></fa-icon> 
-            </li>
-            <li class="list-group-item" *ngIf="!isServerOnline">
-                Le serveur est hors ligne <fa-icon [icon]="faWarning" class="float-end text-warning"></fa-icon> 
-            </li>
-            <li class="list-group-item" *ngIf="systemInfo">
-                Utilisation du processeur <span class="float-end">{{ systemInfo.cpu_usage }}%</span> 
-            </li>
-            <li class="list-group-item" *ngIf="systemInfo">
-                Occupation de la mémoire <span class="float-end">{{ systemInfo.memory_usage }}%</span> 
-            </li>
-            <li class="list-group-item" *ngIf="systemInfo">
-                Utilisation du disque <span class="float-end">{{ systemInfo.disk_usage }}%</span> 
-            </li>
-            <li class="list-group-item" *ngIf="systemInfo">
-                Température du serveur <span class="float-end">{{ systemInfo.temperature  | number: '1.0-1'  }}°C</span> 
-            </li>
+        <ul class="list-group list-group-flush" *ngIf="!isLoading && !messageErreur">
+            <ng-container *ngIf="systemInfo$ | async as systemInfo">
+                <li class="list-group-item">
+                    Le Raspberry est connecté <fa-icon [icon]="faCheck" class="float-end text-success"></fa-icon> 
+                </li>
+                <li class="list-group-item">
+                    Utilisation du processeur <span class="float-end">{{ systemInfo.cpu_usage }}%</span> 
+                </li>
+                <li class="list-group-item">
+                    Occupation de la mémoire <span class="float-end">{{ systemInfo.memory_usage }}%</span> 
+                </li>
+                <li class="list-group-item">
+                    Utilisation du disque <span class="float-end">{{ systemInfo.disk_usage }}%</span> 
+                </li>
+                <li class="list-group-item">
+                    Température du serveur <span class="float-end">{{ systemInfo.temperature  | number: '1.0-1'  }}°C</span> 
+                </li>
+            </ng-container>
         </ul>
     </div>
 </div>

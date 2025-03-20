@@ -45,7 +45,7 @@ body { margin: 0; font-family: "Roboto", "Inter", "Manrope" , "Helvetica Neue", 
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* S'assure que le spinner est centré verticalement */
+  height: 60vh; /* S'assure que le spinner est centré verticalement */
   text-align: center;
 
   .fa-spin {
@@ -55,7 +55,7 @@ body { margin: 0; font-family: "Roboto", "Inter", "Manrope" , "Helvetica Neue", 
   }
 
   p {
+    color: #fff;
     font-size: 18px; /* Optionnel : Taille du texte */
-    color: #555; /* Couleur du texte */
   }
 }

@@ -29,21 +29,17 @@ export class BatterieDataComponent {
       this.isLoading = false;
     }
   }
-
   // Mise à jour des jauges en fonction des données récupérées
   updateGauges(data: BatteryStatus): void {
     if (!data) return;
-
     // Met à jour chaque gauge sans réinitialiser l'ensemble du tableau
     const voltageGauge = this.gauges.find(gauge => gauge.label === 'Voltage');
     const amperageGauge = this.gauges.find(gauge => gauge.label === 'Ampérage');
     const powerGauge = this.gauges.find(gauge => gauge.label === 'Puissance');
-
     if (voltageGauge) voltageGauge.value = data.voltage;
     if (amperageGauge) amperageGauge.value = data.current;
     if (powerGauge) powerGauge.value = data.power;
   }
-
   // Méthode pour émettre un label sélectionné
   onViewGraph(label: string) {
     this.labelSelected.emit(label);
