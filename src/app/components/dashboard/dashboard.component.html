@@ -13,11 +13,11 @@
     </div>
       
     <div class="row g-4 mt-1"  *ngIf="!isLoading">
-        <div class="col-12 col-sm-12 col-md-5 col-lg-5">
-          <app-statistiques *ngIf="energyStatistics$ | async as energyStatistics" [energyStatistics]="energyStatistics"></app-statistiques>
+        <div class="col-12 col-sm-12 col-md-7 col-lg-7">
+          <app-statistiques *ngIf="energyStatistics7days$ | async as energyStatistics7days" [energyStatistics7days]="energyStatistics7days"></app-statistiques>
         </div>
 
-        <div class="col-12 col-sm-12 col-md-7 col-lg-7">
+        <div class="col-12 col-sm-12 col-md-5 col-lg-5">
           <app-infos-serveur *ngIf="isServerOnline"></app-infos-serveur>
         </div>
     </div>

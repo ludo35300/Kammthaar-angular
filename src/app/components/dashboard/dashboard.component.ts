@@ -14,6 +14,7 @@ import { EnergyStatistics } from '../../modeles/energyStatistics';
 export class DashboardComponent implements OnInit{
   isLoading = true;
 
+  energyStatistics7days$: BehaviorSubject<any | null> = new BehaviorSubject<any | null>(null);
   energyStatistics$: BehaviorSubject<EnergyStatistics | null> = new BehaviorSubject<EnergyStatistics | null>(null);
   private dataIntervalSubscription: Subscription | null = null;
   messageErreur = "";
@@ -34,6 +35,7 @@ export class DashboardComponent implements OnInit{
 
   ngOnInit(): void {
     this.getEnergyStatisticsLast();
+    this.getEnergyStatisticsLast7days();
 
     this.serveurService.serverStatus$.subscribe(status => {
       this.isServerOnline = status;
@@ -71,6 +73,15 @@ export class DashboardComponent implements OnInit{
       }
     });
   }
+
+  // On récupère les dernières données du controller enregistrées
+    getEnergyStatisticsLast7days() {
+      this.energyStatisticsService.getEnergyStatisticsLast7days().subscribe({
+        next: (data) => {
+          this.energyStatistics7days$.next(data); // Mise à jour via BehaviorSubject
+          this.isLoading = false;
+        }
+      });
   
-  
+    }
 }

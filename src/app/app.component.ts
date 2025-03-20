@@ -21,9 +21,7 @@ export class AppComponent {
     this.serveurService.checkServerStatus();
     this.authService.authStatus$.subscribe(
       (isAuthenticated) => {
-        if(isAuthenticated){
-          console.log(isAuthenticated)
-        }else{
+        if(!isAuthenticated){
           this.isLoading = false;
         }
       }

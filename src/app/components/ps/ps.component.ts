@@ -18,7 +18,7 @@ export class PsComponent {
   private serverStatusSubscription: Subscription | null = null;
   isServerOnline: boolean = false;
   
-  selectedLabel: string  = "Voltage";
+  selectedLabel: string  = "Puissance";
   isLoading = true;
   
   faSolarPanel = faSolarPanel

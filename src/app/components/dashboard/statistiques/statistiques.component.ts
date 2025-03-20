@@ -1,5 +1,12 @@
 import { Component, Input } from '@angular/core';
-import { EnergyStatistics } from '../../../modeles/energyStatistics';
+import {
+  ApexAxisChartSeries,
+  ApexChart,
+  ApexXAxis,
+  ApexDataLabels,
+  ApexTitleSubtitle,
+  ApexPlotOptions,
+} from "ng-apexcharts";
 
 @Component({
   selector: 'app-statistiques',
@@ -8,28 +15,122 @@ import { EnergyStatistics } from '../../../modeles/energyStatistics';
 })
 export class StatistiquesComponent {
   isLoading = true;
+  chartOptions: any;
+  @Input() energyStatistics7days: any | null = null;
+
   
-  @Input() energyStatistics: EnergyStatistics | null = null;
-
-  // Configuration des gauges
-  gauges= [
-      { label: 'Générés aujourd\'hui', value: 0, unit: 'kWh', max: 10 },
-      { label: 'Consommés aujourd\'hui', value: 0, unit: 'kWh', max: 10 }
-  ];
-
-  ngOnChanges(){
-    if(this.energyStatistics){
-      this.updateGauges(this.energyStatistics);
-      this.isLoading = false;
-    }
+  ngOnInit(){
+    this.loadChart();
   }
+  // Configuration des gauges
+  constructor(){}
 
-  updateGauges(data: EnergyStatistics): void {
-      if (!data) return;
-      // Met à jour chaque gauge sans réinitialiser l'ensemble du tableau
-      const generatedToday = this.gauges.find(gauge => gauge.label === 'Générés aujourd\'hui');
-      const consumedToday = this.gauges.find(gauge => gauge.label === 'Consommés aujourd\'hui');
-      if (generatedToday) generatedToday.value = data.generated_today;
-      if (consumedToday) consumedToday.value = data.consumed_today;
-    }
+  loadChart() {
+    const dates = Object.keys(this.energyStatistics7days);
+    const consumed = dates.map(date => this.energyStatistics7days[date].consumed_today);
+    const generated = dates.map(date => this.energyStatistics7days[date].generated_today);
+
+    this.chartOptions = {
+      series: [
+        {
+          name: "Consommation",
+          data: consumed
+        },
+        {
+          name: "Production",
+          data: generated,
+        }
+      ],
+      chart: {
+        
+        type: "bar",
+        height: 300,
+        background: "#1C455D",
+        
+        toolbar: {
+          show: false,
+        }
+      },
+      grid: {
+        show: false
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: "55%",
+          borderRadius: 5,
+          borderRadiusApplication: 'end'
+        }
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      title: {
+        text: "Statistiques des 7 derniers jours",
+        margin: 10,
+        style: {
+          fontSize:  '14px',
+          fontWeight:  '400',
+          fontFamily:  "Manrope",
+          color:  '#ffffffd9'
+        },
+      },
+      yaxis: {
+        labels: {
+          style: {
+            fontSize:  '12px',
+          fontWeight:  '200',
+          fontFamily:  "Manrope",
+            colors: '#ffffffd9',
+          },
+          formatter: (value: number) => {
+            return `${value.toFixed(1)} KWh`; // Ajoute KWh ici
+          }
+        }
+      },
+      xaxis: {
+        categories: dates,
+        labels:{
+          style: {
+            fontSize:  '12px',
+          fontWeight:  '300',
+          fontFamily:  "Manrope",
+            colors: '#ffffffd9',
+          },
+          formatter: (value: number) => {
+            const date = new Date(value);
+            const options: Intl.DateTimeFormatOptions = {
+              month: 'long',
+              day: 'numeric'
+            };
+            return new Intl.DateTimeFormat('fr-FR', options).format(date); 
+          },
+        }
+      },
+      legend: {
+        position: 'top',
+        horizontalAlign: 'right',
+        labels: {
+          colors: "#ffffffd9" // Légende en blanc
+        },
+      },
+      tooltip: {
+        theme: 'dark',
+        x: {
+          formatter: (value: number) => {
+            const date = new Date(value);
+            const options: Intl.DateTimeFormatOptions = {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            };
+            return new Intl.DateTimeFormat('fr-FR', options).format(date); 
+          },
+        },
+        y: {
+          formatter: (val: number) => `${val} KWh`,
+        }
+      },
+    };
+  }
 }
