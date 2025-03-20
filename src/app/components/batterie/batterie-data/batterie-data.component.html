@@ -18,6 +18,7 @@
               ><fa-icon [icon]="faChart"></fa-icon></a>
             </div>
         </div>
+        <!-- Affichage de la gauge -->
         <div class="text-center" *ngIf="!isLoading">
           <ngx-gauge
             [type]="'arch'"
@@ -30,11 +31,10 @@
             cap="round"
           ></ngx-gauge>
         </div>
+        <!-- Icone de chargement -->
         <div *ngIf="isLoading" class="mb-3 text-center">
-          <p class="loading" 
-              [ngbTooltip]="'Chargement des données en cours...'" 
-              placement="bottom">
-              <fa-icon [icon]="faSun" class="fa-spin" animation="spin"></fa-icon>
+          <p class="loading" [ngbTooltip]="'Chargement des données en cours...'" placement="bottom">
+            <fa-icon [icon]="faSun" class="fa-spin" animation="spin"></fa-icon>
           </p>
         </div>
           

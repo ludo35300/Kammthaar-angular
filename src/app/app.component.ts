@@ -1,5 +1,6 @@
 import { Component, HostListener } from '@angular/core';
 import { AuthService } from './services/auth/auth.service';
+import { ServeurService } from './services/serveur/serveur.service';
 
 @Component({
   selector: 'app-root',
@@ -10,12 +11,23 @@ import { AuthService } from './services/auth/auth.service';
 export class AppComponent {
   isSidebarOpen = true;   // La sidebar est ouverte par défault
   isServerOnline: boolean | null = null;
-  
-  constructor(private authService: AuthService){}
+  isLoading = true;
+  constructor(private authService: AuthService, private serveurService: ServeurService){}
 
   ngOnInit() {
     this.checkScreenSize();             // Vérifie la taille de l'écran au démarrage
+    
     this.authService.checkAuthStatus(); // Vérifie l'authentification au démarrage
+    this.serveurService.checkServerStatus();
+    this.authService.authStatus$.subscribe(
+      (isAuthenticated) => {
+        if(isAuthenticated){
+          console.log(isAuthenticated)
+        }else{
+          this.isLoading = false;
+        }
+      }
+    );
   }
 
   // Écoute l'événement de redimensionnement de la fenêtre

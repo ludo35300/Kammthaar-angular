@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Controller } from '../../modeles/controller';
 import { faSun, faMoon, faDumpster, faArrowRight  } from '@fortawesome/free-solid-svg-icons';
 import { ServeurService } from '../../services/serveur/serveur.service';
-import { BehaviorSubject, concatMap, distinctUntilChanged, map, Observable, timer } from 'rxjs';
+import { BehaviorSubject, concatMap, distinctUntilChanged, map, Observable, Subscription, timer } from 'rxjs';
 import { DailyStatistics } from '../../modeles/dailyStatistics';
 import { ChargingEquipmentStatus } from '../../modeles/chargingEquipmentStatus';
 import { ChargingEquipmentStatusService } from '../../services/chargingEquipmentStatus/charging-equipment-status.service';
@@ -22,6 +22,7 @@ export class ControllerComponent {
   chargingEquipmentStatus$: BehaviorSubject<ChargingEquipmentStatus | null> = new BehaviorSubject<ChargingEquipmentStatus | null>(null);
   dischargingEquipmentStatus$: BehaviorSubject<DischargingEquipmentStatus | null> = new BehaviorSubject<DischargingEquipmentStatus | null>(null);
 
+  private serverStatusSubscription: Subscription | null = null;
   isServerOnline: boolean = false;
   selectedLabel: string | null = "Puissance";
 
@@ -43,10 +44,8 @@ export class ControllerComponent {
       this.getDischargingEquipmentStatusLast();
      
       
-      this.serveurService.getServerStatus()
-        .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
-        .subscribe((status) => {
-          this.isServerOnline = status;
+      this.serverStatusSubscription = this.serveurService.serverStatus$.subscribe(status => {
+        this.isServerOnline = status;
           if (this.isServerOnline) {
             this.fetchRealtimeData();
           }else {

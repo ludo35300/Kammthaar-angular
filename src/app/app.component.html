@@ -3,7 +3,7 @@
   <app-header (toggleSidebar)="toggleSidebar()"></app-header>
 
   <!-- Sidebar + Contenu -->
-  <div class="d-flex">
+  <div class="d-flex" >
     <!-- Sidebar -->
     <app-sidebar [isOpen]="isSidebarOpen" [ngClass]="{ 'sidebar-open': isSidebarOpen, 'sidebar-closed': !isSidebarOpen }" (toggleSidebar)="toggleSidebar()"></app-sidebar>
 
@@ -11,7 +11,7 @@
     <div class="content-wrapper flex-grow-1" [ngClass]="{ 'sidebar-open': isSidebarOpen, 'sidebar-closed': !isSidebarOpen }">
       <main class="main-content">
         
-        <router-outlet></router-outlet>
+        <router-outlet ></router-outlet>
           
       </main>
     </div>

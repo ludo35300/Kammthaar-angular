@@ -1,18 +1,15 @@
 
 .card {
     max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
     background: #1A2537;
     padding: 0.75rem 1rem;
     border-radius: 8px;
     box-shadow:0 2px 4px -1px #afb6c933 !important;
     color: rgba(255, 255, 255, .8);
-    p{
-        color:#635BFF;
-        font-size: 20px;
-    }
-
     h4{
-        color: #fff;
+        color:#635BFF;
     }
     .image{
         border-left: solid #333F55 1px;
@@ -58,5 +55,9 @@ label {
 }
 .btn:hover{
     background-color: #6F68FF;
+}
+.text-info{
+    font-size: 12px;
+    margin-top: 35px;
 }
       

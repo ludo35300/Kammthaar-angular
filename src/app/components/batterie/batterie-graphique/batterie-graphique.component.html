@@ -1,9 +1,15 @@
 <div class="card shadow-sm border-0 mt-4">
   <div class="row g-4">
     <div class="col-12">
-      <!-- Contenu texte -->
-      <div class="card-body text-center" *ngIf="!isLoading">
+      <div class="card-body text-center" >
+        <!-- Affichage de l'icône de chargement -->
+        <div class="loading-spinner" *ngIf="isLoading">
+          <fa-icon [icon]="faSun" class="fa-spin" animation="spin"></fa-icon>
+          <p>Chargement en cours...</p>
+        </div>
+        <!-- Graphique -->
         <apx-chart
+          *ngIf="!isLoading"
           [series]="chartSeries"
           [chart]="chartOptions.chart"
           [xaxis]="chartOptions.xaxis"

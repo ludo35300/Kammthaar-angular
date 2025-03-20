@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { faArrowRight, faChartLine, faCheck, faMoon, faSun, faWarning } from '@fortawesome/free-solid-svg-icons';
 import { ServeurService } from '../../services/serveur/serveur.service';
-import { BehaviorSubject, distinctUntilChanged, map, Observable } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, interval, map, Observable, Subscription, switchMap } from 'rxjs';
 import { Raspberry } from '../../modeles/server_infos';
 import { EnergyStatisticsService } from '../../services/energyStatistics/energy-statistics.service';
 import { EnergyStatistics } from '../../modeles/energyStatistics';
@@ -12,12 +12,14 @@ import { EnergyStatistics } from '../../modeles/energyStatistics';
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements OnInit{
-  isServerOnline: boolean = false;
   isLoading = true;
 
   energyStatistics$: BehaviorSubject<EnergyStatistics | null> = new BehaviorSubject<EnergyStatistics | null>(null);
-  systemInfo$: BehaviorSubject<Raspberry | null> = new BehaviorSubject<Raspberry | null>(null);
+  private dataIntervalSubscription: Subscription | null = null;
+  messageErreur = "";
 
+  isServerOnline: boolean = false;
+  
   faWarning = faWarning
   faArrowRight = faArrowRight
   faSun = faSun
@@ -33,29 +35,31 @@ export class DashboardComponent implements OnInit{
   ngOnInit(): void {
     this.getEnergyStatisticsLast();
 
-    this.serveurService.getServerStatus()
-      .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
-      .subscribe((status) => {
-        this.isServerOnline = status;
-        if (this.isServerOnline) {
-          this.getInfosServeur();
-          this.getEnergyStatisticsRealtime()
+    this.serveurService.serverStatus$.subscribe(status => {
+      this.isServerOnline = status;
+        if (status) {
+          this.startRealTimeDataUpdate()
         } else {
           this.getEnergyStatisticsLast();
         }
       });
   }
 
-  
-
-  getEnergyStatisticsRealtime(): Observable<EnergyStatistics> {
-    return this.energyStatisticsService.getEnergyStatisticsRealtime().pipe(
-      map((data) => {
-        this.energyStatistics$.next(data); // Mettre à jour via BehaviorSubject
-        this.isLoading = false;
-        return data;
-      })
-    );
+  startRealTimeDataUpdate(): void {
+    if (!this.dataIntervalSubscription) {
+      this.dataIntervalSubscription = interval(10000) // Chaque 10 secondes
+        .pipe(
+            switchMap(() => this.energyStatisticsService.getEnergyStatisticsRealtime()) // Récupère les données en temps réel
+          )
+          .subscribe({
+            next: (data) => {
+              this.energyStatistics$.next(data); // Mettre à jour via BehaviorSubject
+            },
+            error: (err) => {
+              this.messageErreur = `Erreur lors de la récupération des statistiques:, ${err}`
+            }
+          });
+    }
   }
 
   // On récupère les dernières données du controller enregistrées
@@ -67,12 +71,6 @@ export class DashboardComponent implements OnInit{
       }
     });
   }
-  //  On récupère les infos du serveur Kammthaar en temps réel
-  getInfosServeur(){ 
-    this.serveurService.getSystemInfo().subscribe({
-      next: (data) => (this.systemInfo$.next(data))
-    });
-  }
+  
+  
 }
-
-

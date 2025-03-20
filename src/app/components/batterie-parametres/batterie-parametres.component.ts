@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BehaviorSubject, distinctUntilChanged, map, Observable } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, map, Observable, Subscription } from 'rxjs';
 import { ServeurService } from '../../services/serveur/serveur.service';
 import { Controller } from '../../modeles/controller';
 import { BatterieParametres } from '../../modeles/batteryParameters';
@@ -13,6 +13,7 @@ import { BatterieParametresService } from '../../services/batterie-parametres/ba
 export class BatterieParametresComponent {
   batterieParametresData$: BehaviorSubject<BatterieParametres | null> = new BehaviorSubject<BatterieParametres | null>(null);
 
+  private serverStatusSubscription: Subscription | null = null;
   isServerOnline: boolean = false;
   isLoading: boolean = true;
 
@@ -26,10 +27,8 @@ export class BatterieParametresComponent {
   ngOnInit(): void {
     this.getLastBatterieParametresData();
       
-    this.serveurService.getServerStatus()
-      .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
-      .subscribe((status) => {
-        this.isServerOnline = status;
+    this.serverStatusSubscription = this.serveurService.serverStatus$.subscribe(status => {
+      this.isServerOnline = status;
         if (this.isServerOnline) {
           this.getBatterieParametresRealtime();
         }else {

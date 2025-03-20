@@ -1,18 +1,27 @@
-<div class="d-flex justify-content-center align-items-center min-vh-100">
+<!-- Affichage de l'icône de chargement -->
+<div class="loading-spinner" *ngIf="isLoading">
+  <fa-icon [icon]="faSun" class="fa-spin" animation="spin"></fa-icon>
+  <p>Chargement en cours...</p>
+</div>
+
+<div class="mt-5" *ngIf="!isLoading">
+  
+  <div *ngIf="erreurMessageConnexion" class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{ erreurMessageConnexion }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+  </div>
+
     <div class="card shadow-sm border-none" style="max-width: 900px; border-radius: 20px;">
       <div class="row g-0">
         <!-- Colonne gauche (formulaire) -->
         <div class="col-lg-6 p-4">
           <div class="card-header">
-            <p>
-                <img src="../../../assets/favicon.ico" alt="Logo" class="img-fluid" style="border-radius: 100px;" /> &nbsp;
-                Kammthaar
-            </p>
+            
             <h4 class="mb-1">Connexion</h4>
           </div>
           <div class="card-body">
             <div *ngIf="(authService.authStatus$ | async) else loggedOut">
-              <p>✅ Vous êtes connecté !</p>
+              <p>Vous êtes connecté !</p>
               <button (click)="authService.logout()"  class="btn w-100 mt-4">Déconnexion</button>
             </div>
 
@@ -20,7 +29,7 @@
             <form (ngSubmit)="login()">
               <!-- Champ e-mail -->
               <div class="mb-3">
-                <label for="username" class="form-label">Adresse e-mail</label>
+                <label for="username" class="form-label">Identifiant</label>
                 <div class="input-group">
                   <input
                     [(ngModel)]="username" 
@@ -49,9 +58,9 @@
               </div>
 
               <!-- Actions -->
-              <div class="d-flex justify-content-between mb-3">
+              
                 <p class="text-info">Ludo35300 / Kammthaar1999</p>
-              </div>
+              
   
               
               

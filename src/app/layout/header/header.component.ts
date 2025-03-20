@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { distinctUntilChanged } from 'rxjs';
+import { distinctUntilChanged, Subscription } from 'rxjs';
 import { faBars, faCheck, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { ServeurService } from '../../services/serveur/serveur.service';
 import { TITLE } from '../../constantes';
@@ -13,7 +13,7 @@ import { AuthService } from '../../services/auth/auth.service';
 export class HeaderComponent {
 
   @Output() toggleSidebar = new EventEmitter<void>();
-  isServerOnline: boolean  = false;
+  isServerOnline: boolean = false;
   isLoggedIn: boolean = false;
   isSidebarOpen = true; // Par défaut, la sidebar est ouverte
   title = TITLE
@@ -27,26 +27,21 @@ export class HeaderComponent {
 
   ngOnInit(): void {
     // Vérifie le statust du serveur
-    this.serveurService.getServerStatus()
-    .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
-    .subscribe((status) => {
-        this.isServerOnline = status;
+    this.serveurService.serverStatus$.subscribe(status => {
+      this.isServerOnline = status;
     });
-    // Vérifie si l'utilisateur est connecté
-    if(this.authService.isAuthenticated()){
-      this.isLoggedIn = true;
-    }
-    // Récupère les informations de l'utilisateur
-    if(this.isLoggedIn){
-      this.authService.getUserInfo().subscribe({
-        next:(response) => {
-          this.username = response.username;
-        },
-        error: (error) => {
-          console.error('Erreur de récupération des informations utilisateur', error);
-        }
-      });
-    }
+     // Vérifie si l'utilisateur est connecté et récupère les informations de l'utilisateur
+     this.authService.authStatus$.subscribe(isAuthenticated => {
+      this.isLoggedIn = isAuthenticated;
+      if (isAuthenticated) {
+        // Récupérer les informations de l'utilisateur uniquement si l'utilisateur est connecté
+        this.authService.getUserInfo().subscribe({
+          next: (response) => {
+            this.username = response.username;
+          }
+        });
+      }
+     });
   }
   
 }

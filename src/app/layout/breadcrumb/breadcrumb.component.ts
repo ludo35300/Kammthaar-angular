@@ -35,10 +35,8 @@ export class BreadcrumbComponent {
     if(this.authService.isAuthenticated()){
       // on charge les données hors ligne pour eviter le temps d'attente
       this.getBreadcrumbLast();
-      this.serveurService.getServerStatus()
-        .pipe(distinctUntilChanged()) // Évite les redondances si le statut ne change pas
-        .subscribe((status) => {
-          this.isServerOnline = status;
+      this.serverStatusSubscription = this.serveurService.serverStatus$.subscribe(status => {
+        this.isServerOnline = status;
           if (this.isServerOnline) {
             this.getBreadcrumbRealtime(); // Pour récupérer les infos immédiatement 
             this.startRealTimeDataUpdate(); // Pour refresh les infos toutes les 30

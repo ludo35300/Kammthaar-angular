@@ -1,22 +1,31 @@
 <div class="container-fluid">
   <div class="content">
+    <app-breadcrumb  [title]="'Batterie'"></app-breadcrumb>
+
     <!-- Affichage de l'icône de chargement -->
     <div class="loading-spinner" *ngIf="isLoading">
       <fa-icon [icon]="faSun" class="fa-spin" animation="spin"></fa-icon>
-      <!-- Optionnel : Texte de chargement -->
       <p>Chargement en cours...</p>
     </div>
 
     <div *ngIf="!isLoading">
-      <app-breadcrumb  [title]="'Batterie'"></app-breadcrumb>
+      <!-- Breadcrumb -->
+      
+      <!-- Affichage des messages -->
+      <div *ngIf="erreurMessageServeur" class="alert alert-warning" role="alert">
+        <fa-icon [icon]="faWarning"></fa-icon>&nbsp; {{ erreurMessageServeur }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
+      </div>
+      
+      <!-- Contenu de la page -->
       <div class="row  g-4">
         <div class="col-12 col-sm-12 col-md-8 col-lg-8">
-          <app-batterie-data *ngIf="batteryStatus$ | async as batteryStatus" [batteryStatus]="batteryStatus" (labelSelected)="onLabelSelected($event)" ></app-batterie-data>
-          <app-batterie-graphique [selectedLabel]="selectedLabel" ></app-batterie-graphique>
+          <app-batterie-data *ngIf="batteryStatus$ | async as batteryStatus" [batteryStatus]="batteryStatus" (labelSelected)="titreSelected($event)" ></app-batterie-data>
+          <app-batterie-graphique [selectedLabel]="titreGraphique" ></app-batterie-graphique>
         </div>
         <div class="col-12 col-sm-12 col-md-4 col-lg-4">
-          <app-batterie-pourcentage *ngIf="batteryStatus$ | async as batteryStatus" [batteryStatus]="batteryStatus" (labelSelected)="onLabelSelected($event)"></app-batterie-pourcentage>
-          <app-batterie-temperature *ngIf="batteryStatus$ | async as batteryStatus" [batteryStatus]="batteryStatus" (labelSelected)="onLabelSelected($event)"></app-batterie-temperature>
+          <app-batterie-pourcentage *ngIf="batteryStatus$ | async as batteryStatus" [batteryStatus]="batteryStatus" (labelSelected)="titreSelected($event)"></app-batterie-pourcentage>
+          <app-batterie-temperature *ngIf="batteryStatus$ | async as batteryStatus" [batteryStatus]="batteryStatus" (labelSelected)="titreSelected($event)"></app-batterie-temperature>
           <app-batterie-status *ngIf="batteryStatus$ | async as batteryStatus" [batteryStatus]="batteryStatus" ></app-batterie-status>
         </div>
       </div>

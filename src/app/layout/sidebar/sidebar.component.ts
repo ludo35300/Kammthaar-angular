@@ -29,9 +29,9 @@ export class SidebarComponent {
   constructor(public authService: AuthService,){}
   
   ngOnInit() {
-    if(this.authService.isAuthenticated()){
-      this.isLoggedIn = true;
-    }
+    this.authService.authStatus$.subscribe(isAuthenticated => {
+      this.isLoggedIn = isAuthenticated;
+    });
   }
 
   closeSidebar(): void {
