@@ -11,6 +11,12 @@
           <app-bienvenue  *ngIf="energyStatistics$ | async as energyStatistics" [energyStatistics]="energyStatistics"></app-bienvenue>
         </div>
     </div>
+
+    <div class="mt-4" *ngIf="!isLoading">
+      <div class="col-12"  class="stats-container">
+        <app-resume-electric ></app-resume-electric>
+      </div>
+  </div>
       
     <div class="row g-4 mt-1"  *ngIf="!isLoading">
         <div class="col-12 col-sm-12 col-md-7 col-lg-7">
