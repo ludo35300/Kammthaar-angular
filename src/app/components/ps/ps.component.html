@@ -1,7 +1,11 @@
 
 <app-breadcrumb [title]="'Panneau solaire'" ></app-breadcrumb>
-
-<div class="row g-4">
+<!-- Affichage de l'icône de chargement -->
+<div class="loading-spinner" *ngIf="isLoading">
+  <fa-icon [icon]="faSun" class="fa-spin" animation="spin"></fa-icon>
+  <p>Chargement en cours...</p>
+</div>
+<div class="row g-4" *ngIf="!isLoading">
   <div class="col-12">
     <app-ps-data *ngIf="solarData$ | async as solarData" [solarData]="solarData" (labelSelected)="onLabelSelected($event)"></app-ps-data>
     <app-ps-graphique [selectedLabel]="selectedLabel" ></app-ps-graphique>

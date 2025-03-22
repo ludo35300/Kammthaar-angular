@@ -84,6 +84,7 @@ export class PsComponent {
     this.solarDataService.getSolarDataLast().subscribe({
       next: (data) => {
         this.solarData$.next(data);
+        this.isLoading = false;
       },
       error: (err) => {
         console.error("Erreur lors de la récupération des dernières données", err);
