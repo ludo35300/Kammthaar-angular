@@ -12,11 +12,10 @@ import { EnergyStatistics } from '../../modeles/energyStatistics';
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent implements OnInit{
-  isLoading = true;
-
+  
   energyStatistics7days$: BehaviorSubject<any | null> = new BehaviorSubject<any | null>(null);
   energyStatistics$: BehaviorSubject<EnergyStatistics | null> = new BehaviorSubject<EnergyStatistics | null>(null);
-  private dataIntervalSubscription: Subscription | null = null;
+  
   messageErreur = "";
 
   isServerOnline: boolean = false;
@@ -34,54 +33,21 @@ export class DashboardComponent implements OnInit{
   ){}
 
   ngOnInit(): void {
-    this.getEnergyStatisticsLast();
     this.getEnergyStatisticsLast7days();
 
     this.serveurService.serverStatus$.subscribe(status => {
       this.isServerOnline = status;
-        if (status) {
-          this.startRealTimeDataUpdate()
-        } else {
-          this.getEnergyStatisticsLast();
-        }
-      });
-  }
-
-  startRealTimeDataUpdate(): void {
-    if (!this.dataIntervalSubscription) {
-      this.dataIntervalSubscription = interval(10000) // Chaque 10 secondes
-        .pipe(
-            switchMap(() => this.energyStatisticsService.getEnergyStatisticsRealtime()) // Récupère les données en temps réel
-          )
-          .subscribe({
-            next: (data) => {
-              this.energyStatistics$.next(data); // Mettre à jour via BehaviorSubject
-            },
-            error: (err) => {
-              this.messageErreur = `Erreur lors de la récupération des statistiques:, ${err}`
-            }
-          });
-    }
-  }
-
-  // On récupère les dernières données du controller enregistrées
-  getEnergyStatisticsLast() {
-    this.energyStatisticsService.getEnergyStatisticsLast().subscribe({
-      next: (data) => {
-        this.energyStatistics$.next(data); // Mise à jour via BehaviorSubject
-        this.isLoading = false;
-      }
     });
   }
+
+
 
   // On récupère les dernières données du controller enregistrées
     getEnergyStatisticsLast7days() {
       this.energyStatisticsService.getEnergyStatisticsLast7days().subscribe({
         next: (data) => {
           this.energyStatistics7days$.next(data); // Mise à jour via BehaviorSubject
-          this.isLoading = false;
         }
       });
-  
     }
 }

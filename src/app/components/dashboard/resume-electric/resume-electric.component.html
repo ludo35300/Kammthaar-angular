@@ -1,23 +1,48 @@
-<div class="row  mt-1">
+<!-- Affichage de l'icône de chargement -->
+
+
+<div class="row g-4 mt-2" >
     <div class="col-12 col-sm-6 col-md-4 col-lg-4" *ngIf="solarData$ | async as solarData">
-      <div class="card shadow-sm border-0 d-flex flex-column h-100">
+      <div class="card pv shadow-sm border-0 d-flex flex-column h-100">
         
         <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-3" *ngIf="breadcrumbData$ | async as breadcrumbData">
                 <h3 class="mb-0">Informations PV</h3>
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckCheckedDisabled" checked disabled>
+                <div class="form-check form-switch" [ngbTooltip]="breadcrumbData.day_time ? 'Panneau actif' : 'Panneau inactif'" placement="bottom">
+                    <input 
+                        *ngIf="!isLoadingDay"
+                        class="form-check-input" 
+                        type="checkbox" 
+                        role="switch" 
+                        id="flexSwitchCheckCheckedDisabled" 
+                        [checked]="breadcrumbData.day_time" 
+                        disabled>
+                      <!-- Icone de chargement -->  
+                      <fa-icon *ngIf="isLoadingDay" [icon]="faSun" class="fa-spin" animation="spin"></fa-icon>
                 </div>
             </div>
-          <div class="row mb-2">
+          <div class="row mb-2  text-center">
             <div class="col-4 mt-2">
               <img src="../../../../assets/dashboard/solarPanel.png" alt="Panneau solaire" class="icon" />
+              <a
+                  routerLink="/ps" [routerLinkActive]="['is-active']"
+                  [ngbTooltip]="'Afficher les détails de la consommation électrique'" 
+                  placement="left"
+                  class="custom-link btn btn-primary mt-1"
+                >Détails</a>
             </div>
-            <div class="col-8">
+
+            <div class="col-8 " *ngIf="isLoadingPv">
+              <fa-icon [icon]="faSun" class="fa-spin" animation="spin"></fa-icon>
+              <p>Chargement en cours...</p>
+            </div>
+
+            <div class="col-8" *ngIf="!isLoadingPv">
                 <p><strong>Voltage:</strong> {{ solarData.voltage }}V</p>
                 <p><strong>Ampérage:</strong> {{ solarData.current }}A</p>
                 <p><strong>Puissance:</strong> {{ solarData.power }}W</p>
                 <!-- <p><strong>Status:</strong> {{ solarData.status }}</p> -->
+                
             </div>
           </div>
         </div>
@@ -25,7 +50,7 @@
     </div>
 
     <div class="col-12 col-sm-6 col-md-4 col-lg-4" *ngIf="loadData$ | async as loadData">
-        <div class="card shadow-sm border-0 d-flex flex-column h-100">
+        <div class="card consommation shadow-sm border-0 d-flex flex-column h-100">
             
           <div class="card-body">
             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -34,16 +59,28 @@
                     <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckCheckedDisabled" checked disabled>
                 </div>
             </div>
-            <div class="row mb-2">
+            <div class="row mb-2  text-center">
               <div class="col-4 mt-2">
                 <img src="../../../../assets/dashboard/controller.png" alt="Controlleur MPPT" class="icon" />
+                <a
+                  routerLink="/consommation" [routerLinkActive]="['is-active']"
+                  [ngbTooltip]="'Afficher les détails de la consommation électrique'" 
+                  placement="left"
+                  class="custom-link btn btn-primary mt-1"
+                >Détails</a>
               </div>
-              <div class="col-8">
+              <div class="col-8 " *ngIf="isLoadingConsommation">
+                <fa-icon [icon]="faSun" class="fa-spin" animation="spin"></fa-icon>
+                <p>Chargement en cours...</p>
+              </div>
+              <div class="col-8" *ngIf="!isLoadingConsommation">
                 <p><strong>Voltage:</strong> {{ loadData.voltage }}V</p>
                 <p><strong>Ampérage:</strong> {{ loadData.current }}A</p>
                 <p><strong>Puissance:</strong> {{ loadData.power }}W</p>
                 <!-- <p><strong>Status:</strong> {{ loadData.status }}</p> -->
+                
               </div>
+              
             </div>
           </div>
         </div>
@@ -51,69 +88,35 @@
 
 
     <div class="col-12 col-sm-6 col-md-4 col-lg-4" *ngIf="batteryStatus$ | async as batteryStatus">
-        <div class="card shadow-sm border-0 d-flex flex-column h-100">
+        <div class="card batterie shadow-sm border-0 d-flex flex-column h-100">
         
           <div class="card-body">
             <h3>Information Batterie</h3>
-            <div class="row mb-2">
+            <div class="row mb-2  text-center">
               <div class="col-4 mt-4">
                 
                 <img src="../../../../assets/dashboard/battery.png" alt="Batterie" class="icon" />
+                <a
+                  routerLink="/batterie/details" [routerLinkActive]="['is-active']"
+                  [ngbTooltip]="'Afficher les détails de la batterie'" 
+                  placement="left"
+                  class="custom-link btn btn-primary mt-1"
+                >Détails</a>
               </div>
-              <div class="col-8">
+              <div class="col-8 " *ngIf="isLoadingBatterie">
+                <fa-icon [icon]="faSun" class="fa-spin" animation="spin"></fa-icon>
+                <p>Chargement en cours...</p>
+              </div>
+              <div class="col-8" *ngIf="!isLoadingBatterie">
                 <p><strong>Voltage:</strong> {{ batteryStatus.voltage }}V</p>
                 <p><strong>Ampérage:</strong> {{ batteryStatus.current }}A</p>
                 <p><strong>Température:</strong> {{ batteryStatus.temperature }}°C</p>
                 <p><strong>Charge:</strong> {{ batteryStatus.state_of_charge }}%</p>
-                <p><strong>Status:</strong> {{ batteryStatus.status.battery_status }}</p>
+                <p><strong>Status:</strong> {{ batteryStatus.status.battery_status | titlecase}}</p>
+                
               </div>
             </div>
           </div>
         </div>
     </div>
 </div>
-<!-- 
-<div class="card shadow-sm border-0 mt-4">
-    <div class="row g-0">
-        <div class="card-body">
-
-            <div class="solar-status">
-                <div class="info-box">
-                  <img src="../../../../assets/dashboard/solarPanel.png" alt="Panneau solaire" class="icon" />
-                  <div class="info">
-                    <h3>PV Information</h3>
-                    <p><strong>Voltage:</strong> {{ pvInfo.voltage }}V</p>
-                    <p><strong>Ampérage:</strong> {{ pvInfo.current }}A</p>
-                    <p><strong>Puissance:</strong> {{ pvInfo.power }}W</p>
-                    <p><strong>Status:</strong> {{ pvInfo.status }}</p>
-                  </div>
-                </div>
-              
-                <div class="info-box">
-                  <img src="../../../../assets/dashboard/controller.png" alt="Controlleur MPPT" class="icon" />
-                  <div class="info">
-                    <h3>Consommation</h3>
-                    <p><strong>Voltage:</strong> {{ loadInfo.voltage }}V</p>
-                    <p><strong>Ampérage:</strong> {{ loadInfo.current }}A</p>
-                    <p><strong>Puissance:</strong> {{ loadInfo.power }}W</p>
-                    <p><strong>Status:</strong> {{ loadInfo.status }}</p>
-                  </div>
-                </div>
-              
-                <div class="info-box">
-                  
-                  <div class="info">
-                    <h3>Battery Information</h3>
-                    <p><strong>Voltage:</strong> {{ batteryInfo.voltage }}V</p>
-                    <p><strong>Ampérage:</strong> {{ batteryInfo.current }}A</p>
-                    <p><strong>Température:</strong> {{ batteryInfo.temperature }}°C</p>
-                    <p><strong>Charge:</strong> {{ batteryInfo.soc }}%</p>
-                    <p><strong>Status:</strong> {{ batteryInfo.status }}</p>
-                  </div>
-                </div>
-              </div>
-          
-      </div>
-    
-    
-</div> -->

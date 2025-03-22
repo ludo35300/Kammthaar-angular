@@ -1,24 +1,19 @@
 
     <!-- Affichage de l'icône de chargement -->
-    <div class="loading-spinner" *ngIf="isLoading">
-      <fa-icon [icon]="faSun" class="fa-spin" animation="spin"></fa-icon>
-      <p>Chargement en cours...</p>
-    </div>
+    
     
 
-    <div class="row g-4" *ngIf="!isLoading">
+    <div class="row g-4">
         <div class="col-12">
-          <app-bienvenue  *ngIf="energyStatistics$ | async as energyStatistics" [energyStatistics]="energyStatistics"></app-bienvenue>
+          <app-bienvenue [isServerOnline]="isServerOnline"></app-bienvenue>
         </div>
     </div>
 
-    <div class="mt-4" *ngIf="!isLoading">
-      <div class="col-12"  class="stats-container">
+    <div class="row g-4mt-4">
         <app-resume-electric ></app-resume-electric>
-      </div>
-  </div>
+    </div>
       
-    <div class="row g-4 mt-1"  *ngIf="!isLoading">
+    <div class="row g-4 mt-1">
         <div class="col-12 col-sm-12 col-md-7 col-lg-7">
           <app-statistiques *ngIf="energyStatistics7days$ | async as energyStatistics7days" [energyStatistics7days]="energyStatistics7days"></app-statistiques>
         </div>

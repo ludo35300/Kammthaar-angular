@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { faSun } from '@fortawesome/free-solid-svg-icons';
 import {
   ApexAxisChartSeries,
   ApexChart,
@@ -16,11 +17,15 @@ import {
 export class StatistiquesComponent {
   isLoading = true;
   chartOptions: any;
+  faSun = faSun;
   @Input() energyStatistics7days: any | null = null;
 
   
   ngOnInit(){
     this.loadChart();
+    if(this.energyStatistics7days != null){
+      this.isLoading = false;
+    }
   }
   // Configuration des gauges
   constructor(){}
@@ -32,28 +37,16 @@ export class StatistiquesComponent {
 
     this.chartOptions = {
       series: [
-        {
-          name: "Consommation",
-          data: consumed
-        },
-        {
-          name: "Production",
-          data: generated,
-        }
+        { name: "Consommation", data: consumed },
+        { name: "Production", data: generated }
       ],
       chart: {
-        
         type: "bar",
         height: 300,
         background: "#1C455D",
-        
-        toolbar: {
-          show: false,
-        }
+        toolbar: { show: false }
       },
-      grid: {
-        show: false
-      },
+      grid: { show: false },
       plotOptions: {
         bar: {
           horizontal: false,
@@ -62,9 +55,7 @@ export class StatistiquesComponent {
           borderRadiusApplication: 'end'
         }
       },
-      dataLabels: {
-        enabled: false,
-      },
+      dataLabels: {  enabled: false },
       title: {
         text: "Statistiques des 7 derniers jours",
         margin: 10,
@@ -79,13 +70,11 @@ export class StatistiquesComponent {
         labels: {
           style: {
             fontSize:  '12px',
-          fontWeight:  '200',
-          fontFamily:  "Manrope",
+            fontWeight:  '200',
+            fontFamily:  "Manrope",
             colors: '#ffffffd9',
           },
-          formatter: (value: number) => {
-            return `${value.toFixed(1)} KWh`; // Ajoute KWh ici
-          }
+          formatter: (value: number) => { return `${value.toFixed(1)} KWh`; } // Ajoute KWh
         }
       },
       xaxis: {
@@ -93,16 +82,13 @@ export class StatistiquesComponent {
         labels:{
           style: {
             fontSize:  '12px',
-          fontWeight:  '300',
-          fontFamily:  "Manrope",
+            fontWeight:  '300',
+            fontFamily:  "Manrope",
             colors: '#ffffffd9',
           },
           formatter: (value: number) => {
             const date = new Date(value);
-            const options: Intl.DateTimeFormatOptions = {
-              month: 'long',
-              day: 'numeric'
-            };
+            const options: Intl.DateTimeFormatOptions = { month: 'long', day: 'numeric' };
             return new Intl.DateTimeFormat('fr-FR', options).format(date); 
           },
         }
@@ -110,9 +96,7 @@ export class StatistiquesComponent {
       legend: {
         position: 'top',
         horizontalAlign: 'right',
-        labels: {
-          colors: "#ffffffd9" // Légende en blanc
-        },
+        labels: { colors: "#ffffffd9" }
       },
       tooltip: {
         theme: 'dark',
@@ -120,16 +104,12 @@ export class StatistiquesComponent {
           formatter: (value: number) => {
             const date = new Date(value);
             const options: Intl.DateTimeFormatOptions = {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
+              year: 'numeric', month: 'long', day: 'numeric'
             };
             return new Intl.DateTimeFormat('fr-FR', options).format(date); 
           },
         },
-        y: {
-          formatter: (val: number) => `${val} KWh`,
-        }
+        y: { formatter: (val: number) => `${val} KWh` }
       },
     };
   }

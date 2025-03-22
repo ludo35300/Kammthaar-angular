@@ -1,11 +1,47 @@
 .card {
   color: #DDE0E3;
-    background: linear-gradient(180deg, #f8c20a1f 0, #f8c20a08);
     box-shadow:0px 11px 14px -7px rgba(0, 0, 0, .2), 0px 23px 36px 3px rgba(0, 0, 0, .14), 0px 9px 44px 8px rgba(0, 0, 0, .12);
-
-    color: #fffff9;
+    border-radius: 12px;
     padding: 1,75rem 1rem;
+}
+.batterie{
+  background: linear-gradient(180deg, #36c76b79 , #36c76c08);
+  a{
+    border: none;
+    background-color: #1A2537 !important;
+    color: #36C76C;
+    &:hover{
+      background-color: #36C76C !important;
+      color: #1A2537 !important;
+    }
   }
+}
+.pv{
+  background: linear-gradient(180deg, #f8c10a4f, #f8c20a08);
+  a{
+    background-color: #1A2537 !important;
+    color: #F8C20A;
+    &:hover{
+      background-color: #F8C20A !important;
+      color: #1A2537 !important;
+    }
+  }
+}
+.consommation{
+  background: linear-gradient(180deg, #ff669142, #ff669208);
+  a{
+    color: #D3597D !important;
+    background-color: #1A2537 !important;
+    &:hover{
+    color: #1A2537 !important;
+    background-color: #D3597D !important;
+    }
+  }
+}
+.custom-link{
+  border: none;
+}
+
 
   .solar-status {
     display: flex;
@@ -24,12 +60,15 @@
   
   .icon {
     width: 100px;
-    height: auto;
     margin-right: 10px;
   }
   
   .info {
     text-align: left;
+  }
+  .fa-spin {
+    color: #007bff; /* Couleur du spinner */
+    margin-top: 10px; /* Espacement sous l'icône */
   }
   
   h3 {

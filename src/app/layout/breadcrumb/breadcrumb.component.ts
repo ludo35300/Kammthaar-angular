@@ -41,7 +41,6 @@ export class BreadcrumbComponent {
             this.getBreadcrumbRealtime(); // Pour récupérer les infos immédiatement 
             this.startRealTimeDataUpdate(); // Pour refresh les infos toutes les 30
           } else {
-            this.getBreadcrumbLast();
             this.stopRealTimeDataUpdate();
           }
         });

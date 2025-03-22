@@ -2,7 +2,7 @@
   <div class="row g-4">
     <div class="col-12">
       <div class="card-body text-center" >
-        <div id="chart">
+        <div id="chart" *ngIf="!isLoading">
             <apx-chart
               [series]="chartOptions.series"
               [chart]="chartOptions.chart"
@@ -15,6 +15,10 @@
               [tooltip]="chartOptions.tooltip"
               [grid]="chartOptions.grid"
             ></apx-chart>
+        </div>
+        <div  *ngIf="isLoading">
+          <fa-icon [icon]="faSun" class="fa-spin" animation="spin"></fa-icon>
+          <p>Chargement en cours...</p>
         </div>
       </div>
     </div>
