@@ -34,9 +34,9 @@ export class SidebarComponent {
     });
   }
 
+  // Ferme la sidebar quand l'écran est inférieur à 1100px 
   closeSidebar(): void {
     if (window.innerWidth <= 1100) {
-      // Se ferme uniquement si l'écran est petit (mobile/tablette)
       this.isOpen = false;
       this.toggleSidebar.emit()
     }

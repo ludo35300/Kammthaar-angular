@@ -1,24 +1,26 @@
-<!-- Gauges -->
-<div class="row g-4">
-    <div class="col-12 " *ngFor="let gauge of gauges">
-        <div class="card shadow-sm border-0">
-            <div class="row ">
-                <div class="col-6">
-                    <h5>{{gauge.label}}</h5>
-                </div>
-                <div class="col-6 col-lg-6 gauge text-center ">
-                    <ngx-gauge
-                    [type]="'arch'"
-                    [thick]="10"
-                    [size]="140"
-                    [value]="gauge.value"
-                    [label]="gauge.unit"
-                    [foregroundColor]="'#16CDC7'"
-                    [max]="gauge.max"
-                    cap="round"
-                    ></ngx-gauge>
-                </div>
-            </div>
+<div class="card shadow-sm border-0 ">
+  <div class="row g-4">
+    <div class="col-12">
+      <div class="card-body text-center" >
+        <div id="chart" *ngIf="!isLoading">
+            <apx-chart
+              [series]="chartOptions.series"
+              [chart]="chartOptions.chart"
+              [xaxis]="chartOptions.xaxis"
+              [yaxis]="chartOptions.yaxis"
+              [title]="chartOptions.title"
+              [legend]="chartOptions.legend"
+              [plotOptions]="chartOptions.plotOptions"
+              [dataLabels]="chartOptions.dataLabels"
+              [tooltip]="chartOptions.tooltip"
+              [grid]="chartOptions.grid"
+            ></apx-chart>
         </div>
+        <div  *ngIf="isLoading">
+          <fa-icon [icon]="faSun" class="fa-spin" animation="spin"></fa-icon>
+          <p>Chargement en cours...</p>
+        </div>
+      </div>
     </div>
+  </div>
 </div>

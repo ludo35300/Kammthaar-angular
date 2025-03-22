@@ -42,7 +42,8 @@ import { LoginComponent } from './components/login/login.component';
 import { AproposComponent } from './components/apropos/apropos.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { FormsModule } from '@angular/forms';
-import { CookieService } from 'ngx-cookie-service';  // Importer CookieService
+import { CookieService } from 'ngx-cookie-service';
+import { ResumeElectricComponent } from './components/dashboard/resume-electric/resume-electric.component';  // Importer CookieService
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import { CookieService } from 'ngx-cookie-service';  // Importer CookieService
     ChargingErrorsPipe,
     DischargingErrorsPipe,
     LoginComponent,
-    AproposComponent
+    AproposComponent,
+    ResumeElectricComponent
   ],
   imports: [
     NgOptimizedImage,

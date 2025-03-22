@@ -18,7 +18,7 @@ export class PsComponent {
   private serverStatusSubscription: Subscription | null = null;
   isServerOnline: boolean = false;
   
-  selectedLabel: string  = "Voltage";
+  selectedLabel: string  = "Puissance";
   isLoading = true;
   
   faSolarPanel = faSolarPanel
@@ -56,7 +56,7 @@ export class PsComponent {
   // Fonction pour obtenir les données en temps réel et les mettre à jour toutes les 10 secondes
   startRealTimeDataUpdate(): void {
     if (!this.dataIntervalSubscription) {
-      this.dataIntervalSubscription = interval(10000) // Chaque 10 secondes
+      this.dataIntervalSubscription = interval(5000) // Chaque 10 secondes
         .pipe(
           switchMap(() => this.solarDataService.getSolarDataRealtime()) // Récupère les données en temps réel
         )

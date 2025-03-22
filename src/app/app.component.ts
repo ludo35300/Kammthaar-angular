@@ -18,16 +18,14 @@ export class AppComponent {
     this.checkScreenSize();             // Vérifie la taille de l'écran au démarrage
     
     this.authService.checkAuthStatus(); // Vérifie l'authentification au démarrage
-    this.serveurService.checkServerStatus();
     this.authService.authStatus$.subscribe(
       (isAuthenticated) => {
-        if(isAuthenticated){
-          console.log(isAuthenticated)
-        }else{
+        if(!isAuthenticated){
           this.isLoading = false;
         }
       }
     );
+    this.serveurService.checkServerStatus();  // Verifie si le serveur est connecté
   }
 
   // Écoute l'événement de redimensionnement de la fenêtre

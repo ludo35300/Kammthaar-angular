@@ -1,32 +1,27 @@
 
-        <div class="card shadow-sm border-0 mt-4">
-            <div class="row g-0">
-              <!-- Contenu texte -->
-              <div class="col-sm-6 col-md-6 col-lg-8">
-                <div class="card-body">
+<div class="card shadow-sm border-0 mt-4">
+  <div class="row g-0">
+    <div class="col-sm-6 col-md-6 col-lg-8">
+      <div class="card-body">
+        <h6 class="card-text">Bienvenue {{ username }}</h6>
+        <p>Voici le résumé de l'installation photovoltaïque de Kammthaar.</p>
+        <p *ngIf="isServerOnline">
+          Le camion est en ligne, les données sont affichées en temps réel et rafraîchies toutes les 5 secondes.
+        </p>
+        <p *ngIf="!isServerOnline">
+          Le camion est hors-ligne, les données affichées sont les dernières enregistrées. <!-- TODO ajouter la date et l'heure -->
+        </p>
+      </div>
 
-                  <p class="card-text">
-                    <!-- Bienvenue {{ authService.getUsername() }} -->
-                  </p>
-                  <p class="card-title mb-3"><fa-icon [icon]="faChargingStation"></fa-icon>&nbsp; 
-                    Généré ce mois ci: {{ energyStatistics?.generated_this_month }} kWh
-                  </p>
-                  <p class="card-title mb-3"><fa-icon [icon]="faChargingStation"></fa-icon>&nbsp; 
-                    Consommé ce mois ci: {{ energyStatistics?.consumed_this_month }} kWh
-                  </p>
-                  
-                </div>
-              </div>
-              <!-- Logo / Image -->
-            <div class="col-sm-6 col-md-6 col-lg-4 d-flex align-items-center justify-content-center">
-                <img
-                  src="../../../../assets/welcome-bg.png"
-                  alt="Logo"
-                  width="180px"
-                  class="img-fluid p-3"
-                  
-                />
-              </div>
-            </div>
-            
-        </div>
+    </div>
+    <!-- Image -->
+    <div class="col-sm-6 col-md-6 col-lg-4 d-flex align-items-center justify-content-center">
+      <img
+        src="../../../../assets/dashboard/van.png"
+        alt="Logo"
+        width="150px"
+        class="img-fluid"
+      />
+    </div>
+  </div>      
+</div>
