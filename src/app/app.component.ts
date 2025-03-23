@@ -16,7 +16,7 @@ export class AppComponent {
   ngOnInit() {
     this.checkScreenSize();             // Vérifie la taille de l'écran au démarrage
     
-    this.authService.checkAuthStatus(); // Vérifie l'authentification au démarrage
+    // this.authService.checkAuthStatus(); // Vérifie l'authentification au démarrage
     this.authService.authStatus$.subscribe(
       (isAuthenticated) => {
         if(!isAuthenticated){

@@ -4,6 +4,7 @@ import { ServeurService } from '../../services/serveur/serveur.service';
 import { BehaviorSubject, distinctUntilChanged, interval, map, Observable, Subscription, switchMap } from 'rxjs';
 import { SolarDataService } from '../../services/solarData/solar-data.service';
 import { SolarData } from '../../modeles/solarData';
+import { AuthService } from '../../services/auth/auth.service';
 
 
 @Component({
@@ -33,24 +34,31 @@ export class PsComponent {
 
   constructor(
     private serveurService: ServeurService,
-    private solarDataService: SolarDataService
+    private solarDataService: SolarDataService,
+    private authService: AuthService,
   ){}
 
   ngOnInit(): void {
     // on charge les données hors ligne pour eviter le temps d'attente
-    this.getSolarDataLast(); 
+    
+    this.authService.isAuthenticated().subscribe(isAuthenticated => {
+      if (isAuthenticated) {
+        this.getSolarDataLast(); 
+
+        this.serverStatusSubscription = this.serveurService.serverStatus$.subscribe(status => {
+          this.isServerOnline = status;
+            if (this.isServerOnline) {
+              this.startRealTimeDataUpdate();
+            }else {
+                this.getSolarDataLast();  
+                this.stopRealTimeDataUpdate();
+            }
+          });
+      }
+    });
 
 
-    this.serverStatusSubscription = this.serveurService.serverStatus$.subscribe(status => {
-      this.isServerOnline = status;
-        this.isServerOnline = status;
-        if (this.isServerOnline) {
-          this.startRealTimeDataUpdate();
-        }else {
-            this.getSolarDataLast();  
-            this.stopRealTimeDataUpdate();
-        }
-      });
+    
   }
   
   // Fonction pour obtenir les données en temps réel et les mettre à jour toutes les 10 secondes
