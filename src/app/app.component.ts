@@ -10,14 +10,13 @@ import { ServeurService } from './services/serveur/serveur.service';
 
 export class AppComponent {
   isSidebarOpen = true;   // La sidebar est ouverte par défault
-  isServerOnline: boolean | null = null;
   isLoading = true;
   constructor(private authService: AuthService, private serveurService: ServeurService){}
 
   ngOnInit() {
     this.checkScreenSize();             // Vérifie la taille de l'écran au démarrage
     
-    this.authService.checkAuthStatus(); // Vérifie l'authentification au démarrage
+    // this.authService.checkAuthStatus(); // Vérifie l'authentification au démarrage
     this.authService.authStatus$.subscribe(
       (isAuthenticated) => {
         if(!isAuthenticated){
