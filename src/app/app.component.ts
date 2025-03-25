@@ -11,20 +11,14 @@ import { ServeurService } from './services/serveur/serveur.service';
 export class AppComponent {
   isSidebarOpen = true;   // La sidebar est ouverte par défault
   isLoading = true;
+
   constructor(private authService: AuthService, private serveurService: ServeurService){}
 
   ngOnInit() {
     this.checkScreenSize();             // Vérifie la taille de l'écran au démarrage
+    this.authService.checkAuthStatus(); // Vérifie l'authentification au démarrage
+    this.serveurService.checkServerStatus(); // Vérifie le statut du serveur au démarrage
     
-    // this.authService.checkAuthStatus(); // Vérifie l'authentification au démarrage
-    this.authService.authStatus$.subscribe(
-      (isAuthenticated) => {
-        if(!isAuthenticated){
-          this.isLoading = false;
-        }
-      }
-    );
-    this.serveurService.checkServerStatus();  // Verifie si le serveur est connecté
   }
 
   // Écoute l'événement de redimensionnement de la fenêtre

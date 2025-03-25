@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { faSun, faMoon, faDumpster, faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import { BehaviorSubject, distinctUntilChanged, interval, Subscription, switchMap } from 'rxjs';
+import { BehaviorSubject, filter, interval, Subscription, switchMap } from 'rxjs';
 import { ServeurService } from '../../services/serveur/serveur.service';
 import { LoadData } from '../../modeles/loadData';
 import { LoadDataService } from '../../services/loadData/load-data.service';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-consommation',
@@ -14,6 +15,8 @@ export class ConsommationComponent {
   loadData$: BehaviorSubject<LoadData | null> = new BehaviorSubject<LoadData | null>(null);
   private serverStatusSubscription: Subscription | null = null;
   private dataIntervalSubscription: Subscription | null = null;
+
+  
 
   isServerOnline: boolean = false;
   selectedLabel: string | null = "Puissance";
@@ -28,16 +31,16 @@ export class ConsommationComponent {
   constructor(
     private serveurService: ServeurService,
     private loadDataService: LoadDataService,
+    private authService: AuthService
   ){}
     
     ngOnInit(): void {
       // on charge les données hors ligne pour eviter le temps d'attente
       this.getLoadDataLast();
 
-  
       this.serverStatusSubscription = this.serveurService.serverStatus$.subscribe(status => {
-        this.isServerOnline = status;
           this.isServerOnline = status;
+          
           if (this.isServerOnline) {
             this.startRealTimeDataUpdate();
           } else {
@@ -52,14 +55,13 @@ export class ConsommationComponent {
         if (!this.dataIntervalSubscription) {
           this.dataIntervalSubscription = interval(10000) // Chaque 10 secondes
             .pipe(
+              switchMap(() => this.serveurService.checkServerStatus()), // Vérifie le Raspberry
+              filter((isOnline) => isOnline),
               switchMap(() => this.loadDataService.getLoadDataRealtime()) // Récupère les données en temps réel
             )
             .subscribe({
               next: (data) => {
                 this.loadData$.next(data); // Mettre à jour via BehaviorSubject
-              },
-              error: (err) => {
-                console.error("Erreur lors de la récupération des données en temps réel", err);
               }
             });
         }

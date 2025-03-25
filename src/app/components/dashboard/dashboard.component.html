@@ -1,27 +1,19 @@
+<div class="row g-4">
+  <div class="col-12">
+    <app-bienvenue [isServerOnline]="isServerOnline"></app-bienvenue>
+  </div>
+</div>
 
-    <!-- Affichage de l'icône de chargement -->
-    
-    
-
-    <div class="row g-4">
-        <div class="col-12">
-          <app-bienvenue [isServerOnline]="isServerOnline"></app-bienvenue>
-        </div>
-    </div>
-
-    <div class="row g-4mt-4">
-        <app-resume-electric ></app-resume-electric>
-    </div>
+<div class="row g-4mt-4">
+  <app-resume-electric ></app-resume-electric>
+</div>
       
-    <div class="row g-4 mt-1">
-        <div class="col-12 col-sm-12 col-md-7 col-lg-7">
-          <app-statistiques *ngIf="energyStatistics7days$ | async as energyStatistics7days" [energyStatistics7days]="energyStatistics7days"></app-statistiques>
-        </div>
+<div class="row g-4 mt-1">
+  <div class="col-12 col-sm-12 col-md-7 col-lg-7">
+    <app-statistiques *ngIf="energyStatistics7days$ | async as energyStatistics7days" [energyStatistics7days]="energyStatistics7days"></app-statistiques>
+  </div>
 
-        <div class="col-12 col-sm-12 col-md-5 col-lg-5">
-          <app-infos-serveur *ngIf="isServerOnline"></app-infos-serveur>
-        </div>
-    </div>
-
-
-    
+  <div class="col-12 col-sm-12 col-md-5 col-lg-5">
+    <app-infos-serveur *ngIf="isServerOnline"></app-infos-serveur>
+  </div>
+</div>

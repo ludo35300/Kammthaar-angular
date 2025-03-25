@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { distinctUntilChanged, Subscription } from 'rxjs';
 import { faBars, faCheck, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { ServeurService } from '../../services/serveur/serveur.service';
 import { TITLE } from '../../constantes';
@@ -30,6 +29,7 @@ export class HeaderComponent {
     this.serveurService.serverStatus$.subscribe(status => {
       this.isServerOnline = status;
     });
+
      // Vérifie si l'utilisateur est connecté et récupère les informations de l'utilisateur
      this.authService.authStatus$.subscribe(isAuthenticated => {
       this.isLoggedIn = isAuthenticated;

@@ -16,7 +16,8 @@ export class AuthService {
   private erreurConnexion = new BehaviorSubject<string | null>(null); 
   erreurConnexion$ = this.erreurConnexion.asObservable();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {
+  }
 
   login(username: string, password: string) {
     return this.http.post(`${this.serveurUrl}/login`, { username, password }, { withCredentials: true })

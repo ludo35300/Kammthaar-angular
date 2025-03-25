@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject, interval, Subscription, switchMap } from 'rxjs';
+import { BehaviorSubject, filter, interval, Subscription, switchMap } from 'rxjs';
 import { faCarBattery, faCheck, faSun, faWarning } from '@fortawesome/free-solid-svg-icons';
 import { ServeurService } from '../../services/serveur/serveur.service';
 import { BatteryStatusService } from '../../services/batteryStatus/battery-status.service';
@@ -50,10 +50,6 @@ export class BatterieComponent implements OnInit{
         this.stopRealTimeDataUpdate();
       }
     });
-    // Récupération des messages d'erreur de connexion à Kammthaar (Raspberry)
-    this.errorSubscription = this.serveurService.errorMessage$.subscribe(message => {
-      this.erreurMessageServeur = message;
-    });
     
   }
 
@@ -62,6 +58,8 @@ export class BatterieComponent implements OnInit{
     if (!this.dataIntervalSubscription) {
       this.dataIntervalSubscription = interval(10000) // Chaque 10 secondes
         .pipe(
+          switchMap(() => this.serveurService.checkServerStatus()), // Vérifie le Raspberry
+          filter((isOnline) => isOnline),
           switchMap(() => this.batteryStatusService.getBatteryStatusRealtime()) // Récupère les données en temps réel
         )
         .subscribe({
