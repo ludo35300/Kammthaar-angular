@@ -23,6 +23,7 @@ export class BreadcrumbComponent {
   faMoon = faMoon;
   faClock = faClock;
   isLoading = true;
+  isLoggedIn = false;
 
   constructor(
         private breadcrumbService: BreadcrumbService,
@@ -32,7 +33,6 @@ export class BreadcrumbComponent {
       
 
   ngOnInit(): void {
-    if(this.authService.isAuthenticated()){
       // on charge les données hors ligne pour eviter le temps d'attente
       this.getBreadcrumbLast();
       this.serverStatusSubscription = this.serveurService.serverStatus$.subscribe(status => {
@@ -44,7 +44,6 @@ export class BreadcrumbComponent {
             this.stopRealTimeDataUpdate();
           }
         });
-      }
   }
 
   startRealTimeDataUpdate(): void {

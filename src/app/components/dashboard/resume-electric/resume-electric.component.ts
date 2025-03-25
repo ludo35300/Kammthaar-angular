@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { SolarDataService } from '../../../services/solarData/solar-data.service';
-import { BehaviorSubject, forkJoin, interval, Subscription, switchMap, tap, timer } from 'rxjs';
+import { BehaviorSubject, filter, forkJoin, interval, Subscription, switchMap, tap, timer } from 'rxjs';
 import { SolarData } from '../../../modeles/solarData';
 import { ServeurService } from '../../../services/serveur/serveur.service';
 import { LoadData } from '../../../modeles/loadData';
@@ -64,8 +64,11 @@ export class ResumeElectricComponent {
 
   startRealTimeDataUpdate(): void {
     if (!this.dataIntervalSubscription) {
-      this.dataIntervalSubscription = interval(5000)
-        .pipe(switchMap(() => this.fetchRealtimeData()))
+      this.dataIntervalSubscription = interval(10000) // rafraichissement toutes les 10 secondes
+        .pipe(
+        switchMap(() => this.serveurService.checkServerStatus()), // Vérifie le Raspberry
+        filter((isOnline) => isOnline),
+        switchMap(() => this.fetchRealtimeData()))
         .subscribe({
           error: (err) => console.error("Erreur lors de la récupération des données en temps réel", err)
         });
@@ -133,6 +136,16 @@ export class ResumeElectricComponent {
         this.isLoadingDay = false;
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    // Nettoyage des abonnements
+    if (this.serverStatusSubscription) {
+      this.serverStatusSubscription.unsubscribe();
+    }
+    if (this.dataIntervalSubscription) {
+      this.dataIntervalSubscription.unsubscribe();
+    }
   }
 
 }

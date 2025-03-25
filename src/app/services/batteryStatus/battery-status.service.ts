@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, switchMap, take } from 'rxjs';
+import { Observable } from 'rxjs';
 import { BatteryStatus } from '../../modeles/batteryStatus';
-import { ServeurService } from '../serveur/serveur.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,19 +10,10 @@ import { ServeurService } from '../serveur/serveur.service';
 export class BatteryStatusService {
   private serveurUrl = environment.apiUrl
           
-  constructor(private http: HttpClient, private serveurService: ServeurService) { }
+  constructor(private http: HttpClient) { }
 
   getBatteryStatusRealtime(): Observable<BatteryStatus | null> {
-    this.serveurService.checkServerStatus();
-    return this.serveurService.serverStatus$.pipe(
-      switchMap((isOnline) => {
-        if (isOnline) {
-          return this.http.get<BatteryStatus>(`${this.serveurUrl}/battery/realtime`, { withCredentials: true });
-        } else {
-          return of(null); // Retourne `null` si le serveur est hors ligne
-        }
-      })
-    );
+    return this.http.get<BatteryStatus>(`${this.serveurUrl}/battery/realtime`, { withCredentials: true });
   }
 
   getBatteryStatusLast(): Observable<BatteryStatus> {

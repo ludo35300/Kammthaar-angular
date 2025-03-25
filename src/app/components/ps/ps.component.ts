@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { faArrowRight, faMoon, faSolarPanel, faSun } from '@fortawesome/free-solid-svg-icons';
 import { ServeurService } from '../../services/serveur/serveur.service';
-import { BehaviorSubject, distinctUntilChanged, interval, map, Observable, Subscription, switchMap } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, filter, interval, map, Observable, Subscription, switchMap } from 'rxjs';
 import { SolarDataService } from '../../services/solarData/solar-data.service';
 import { SolarData } from '../../modeles/solarData';
 import { AuthService } from '../../services/auth/auth.service';
@@ -64,8 +64,10 @@ export class PsComponent {
   // Fonction pour obtenir les données en temps réel et les mettre à jour toutes les 10 secondes
   startRealTimeDataUpdate(): void {
     if (!this.dataIntervalSubscription) {
-      this.dataIntervalSubscription = interval(5000) // Chaque 10 secondes
+      this.dataIntervalSubscription = interval(10000) // Chaque 10 secondes
         .pipe(
+          switchMap(() => this.serveurService.checkServerStatus()), // Vérifie le Raspberry
+          filter((isOnline) => isOnline),
           switchMap(() => this.solarDataService.getSolarDataRealtime()) // Récupère les données en temps réel
         )
         .subscribe({

@@ -6,7 +6,7 @@
         <h6 class="card-text">Bienvenue {{ username }}</h6>
         <p>Voici le résumé de l'installation photovoltaïque de Kammthaar.</p>
         <p *ngIf="isServerOnline">
-          Le camion est en ligne, les données sont affichées en temps réel et rafraîchies toutes les 5 secondes.
+          Le camion est en ligne, les données sont affichées en temps réel et rafraîchies toutes les 10 secondes.
         </p>
         <p *ngIf="!isServerOnline">
           Le camion est hors-ligne, les données affichées sont les dernières enregistrées. <!-- TODO ajouter la date et l'heure -->
